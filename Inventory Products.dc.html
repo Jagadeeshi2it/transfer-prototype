@@ -96,6 +96,13 @@
 
   <dc-import name="App Side Nav" selected="Transfer" hint-size="70px,100vh"></dc-import>
 
+  <div onClick="{{ toggleGuided }}" role="switch" aria-checked="{{ guidedOn }}" aria-label="Guided workflow" title="Guided workflow: row click selects, chevron hidden" style="position: fixed; left: 0; bottom: 34px; width: 70px; z-index: 90; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; cursor: pointer; user-select: none;">
+    <span style="font-size: 9px; font-weight: 500; letter-spacing: 0.02em; color: #ffffff; opacity: 0.85;">Guided</span>
+    <span style="position: relative; width: 30px; height: 16px; border-radius: 999px; background: {{ guidedTrack }}; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.45); transition: background-color 150ms ease;">
+      <span style="position: absolute; top: 2px; left: {{ guidedKnob }}; width: 12px; height: 12px; border-radius: 50%; background: #ffffff; transition: left 150ms ease;"></span>
+    </span>
+  </div>
+
   <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
 
   <div style="position: sticky; top: 0; z-index: 40;"><dc-import name="App Top Nav" hint-size="100%,50px"></dc-import></div>
@@ -707,6 +714,7 @@ class Component extends DCLogic {
   componentWillUnmount() { clearTimeout(this._toastT); }
 
   componentDidMount() {
+    try { const g = localStorage.getItem("ip_guided"); if (g !== null) this.setState({ guided: g === "1" }); } catch (e) {}
     try { const m = sessionStorage.getItem("nt_toast"); if (m) { sessionStorage.removeItem("nt_toast"); this.toast(m, "All set!", "success"); } } catch (e) {}
   }
 
@@ -1256,7 +1264,7 @@ class Component extends DCLogic {
       { name: "RUXIENCE 500 MG/50 ML VIAL", desc: "rituximab-pvvr 10 mg/mL intravenous solution", chips: ["SDV"].map(c => this.chip(c)), ndc: "00069024901", source: "McKesson Corporation", invType: "Purchased", sendLoc: "Badri Station-Virtual", qty: "1 vials / 500 mg / 50 mL", created: "08/06/2025", status: "Submitted" }
     ].map((u, i) => Object.assign(u, { tipOpen: this.state.tipIdx === i, tipShow: () => this.setState({ tipIdx: i }), tipHide: () => this.setState({ tipIdx: null }) }));
     const pk = this.state.picked || {};
-    const guided = this.props.guidedWorkflow ?? false;
+    const guided = this.state.guided ?? this.props.guidedWorkflow ?? false;
     const noop = () => {};
     sorted.forEach(r => {
       const on = !!pk[r.key];
@@ -1297,6 +1305,10 @@ class Component extends DCLogic {
     });
     return Object.assign(icons, handlers, sel, {
       unallocRows: unallocRows,
+      guidedOn: guided,
+      guidedTrack: guided ? "#2f9e6e" : "rgba(255,255,255,0.18)",
+      guidedKnob: guided ? "16px" : "2px",
+      toggleGuided: () => { const next = !guided; this.setState({ guided: next }); try { localStorage.setItem("ip_guided", next ? "1" : "0"); } catch (e) {} },
       unallocCount: unallocRows.length,
       rows: sorted,
       belowPar: this.state.belowPar,
