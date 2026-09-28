@@ -1,0 +1,59 @@
+[
+  {
+    "id": "cap_mth7avsy_sdnidn",
+    "selector": "div.main-content",
+    "label": "ALIMTA 100 MG VIAL SDVCLIMATE pemetrexed…",
+    "tag": "div",
+    "url": "https://app.dev.allygpo.com/new-inventory/product/2343",
+    "title": "AllyIQ",
+    "timestamp": "2026-08-31T12:14:47.939Z",
+    "innerText": "ALIMTA 100 MG VIAL\nSDVCLIMATE\npemetrexed disodium 100 mg intravenous powder for solution\nInventory\n1 each / 100 mg/ 100 mL\nReceived\n-- each / -- mg\nProduct Details\nNDC\n00002764001\nItem Type\nMedication\nProduct Inventory Details\nSource\nAmerisourceBergen\nInventoryType\nPurchased\nProduct Location\nDoor\n1\nBin\nMyBin 3\nProduct Par Values\nPar Min\n--\nPar Max\n--\nMOVE PRODUCT\nSerial\n\t\nLot\n\t\nExpiration\n\t\nRestocked Date\n\t\nInventory\n\t\n\n\n\t\n\t\n\t\n\t\t\n\n87654321\n\t234567\t\n07/31/2026\nExpired\n\t06/30/2026\t1 each / 100 mg / 100 mL\t\nEdit\nPrint QR\nBACK TO ALL PRODUCTS",
+    "outerHTML": "<div class=\"main-content pb-8 product-details-page font-normal \"><div class=\"page-title-container flex align-items-center \"><div class=\"w-9 full-height flex align-items-center\"><div class=\"flex align-items-center\"><div><div class=\"title\"><div class=\"logo-container flex\"><div class=\"flex align-items-center\"><span class=\"flex \"><span class=\"flex flex-column\"><span class=\"flex flex-wrap align-items-center\"><span class=\"mr-2\">ALIMTA 100 MG VIAL</span><div class=\"flex-nowrap\"><span class=\"flex-no-wrap\"><label class=\"dose-type-container mr-1 \">SDV</label></span><span class=\"flex-no-wrap\"><label class=\"dose-type-container mr-1 align-self-center bg-chip-blue \">CLIMATE</label></span></div></span></span></span></div></div></div><div class=\"label-text italic-font-style\">pemetrexed disodium 100 mg intravenous powder for solution</div></div></div></div><div class=\"flex border-left w-3 full-height align-items-center pl-6\"><div class=\"flex flex-column gap-3\"><div class=\"flex justify-content-between\"><div class=\"label-text mr-3\">Inventory</div><div class=\"text-medium header-quantity-value\">1 each / 100 mg/ 100 mL</div></div><div class=\"flex justify-content-between\"><div class=\"label-text mr-3\">Received</div><div class=\"text-medium header-quantity-value\">-- each / -- mg</div></div></div></div></div><div class=\"flex bg-primary-blue-50 border-line-light border-top-none px-4 py-2\" data-testid=\"product-assignment-details\"><div class=\"w-5\"><div class=\"text-small-medium text-steel mb-1\">Product Details</div><div class=\"justify-content-between\"><div class=\"flex\"><span class=\"text-sm text-label w-3\">NDC</span><span class=\"text-small-semibold w-4 ml-2\">00002764001</span></div><div class=\"flex\"><span class=\"text-sm text-label w-3\">Item Type</span><span class=\"text-small-semibold w-4 ml-2\">Medication</span></div></div></div><div class=\"w-6\"><div class=\"text-small-medium text-steel mb-1\">Product Inventory Details</div><div class=\"justify-content-between\"><div class=\"flex\"><span class=\"text-sm text-label w-3\">Source</span><span class=\"text-small-semibold w-4 ml-2\">AmerisourceBergen</span></div><div class=\"flex\"><span class=\"text-sm text-label w-3\">InventoryType</span><span class=\"text-small-semibold w-4 ml-2\">Purchased</span></div></div></div><div class=\"w-4\"><div class=\"text-small-medium text-steel mb-1\">Product Location</div><div class=\"justify-content-between\"><div class=\"flex\"><span class=\"text-sm text-label w-3\">Door</span><span class=\"text-small-semibold w-4 ml-2\">1</span></div><div class=\"flex\"><span class=\"text-sm text-label w-3\">Bin</span><span class=\"text-small-semibold w-4 ml-2\">MyBin 3</span></div></div></div><div class=\"w-3\"><div class=\"text-small-medium text-steel mb-1\">Product Par Values</div><div class=\"justify-content-between\"><div class=\"flex\"><span class=\"text-sm text-label w-3\">Par Min</span><span class=\"text-small-semibold w-4 ml-2\">--</span></div><div class=\"flex\"><span class=\"text-sm text-label w-3\">Par Max</span><span class=\"text-small-semibold w-4 ml-2\">--</span></div></div></div></div><div class=\"my-3 mx-4\"><div class=\"flex justify-content-between align-items-center pb-2\"><span></span><span><button aria-label=\"MOVE PRODUCT\" class=\"ml-auto mr-1 primary-button sm-button p-button p-component p-button-sm\" data-pc-name=\"button\" data-pc-section=\"root\"><span class=\"p-button-label p-c\" data-pc-section=\"label\">MOVE PRODUCT</span></button></span></div><div class=\"mt-2\"><div data-testid=\"station-assigned-product-table\"><div class=\"p-component app-data-table data-table font-medium false\n        false \"><div class=\"app-table-wrapper\"><table class=\"app-table \"><thead class=\"app-table-thead \"><tr><th class=\"un-pinned-column\"><div class=\"font-medium flex-1\" style=\"width: auto;\"><button type=\"button\" class=\"flex align-items-center cursor-pointer select-none border-none bg-transparent p-0 w-full text-left text-medium white-space-nowrap\">Serial<i class=\"ml-2 pi pi-sort-alt filter-icon\"></i></button></div></th><th class=\"un-pinned-column\"><div class=\"font-medium flex-1\" style=\"width: auto;\"><button type=\"button\" class=\"flex align-items-center cursor-pointer select-none border-none bg-transparent p-0 w-full text-left text-medium white-space-nowrap\">Lot<i class=\"ml-2 pi pi-sort-alt filter-icon\"></i></button></div></th><th class=\"un-pinned-column\"><div class=\"font-medium flex-1\" style=\"width: auto;\"><button type=\"button\" class=\"flex align-items-center cursor-pointer select-none border-none bg-transparent p-0 w-full text-left text-medium white-space-nowrap\">Expiration<i class=\"ml-2 pi pi-sort-alt filter-icon\"></i></button></div></th><th class=\"un-pinned-column\"><div class=\"font-medium flex-1\" style=\"width: auto;\"><button type=\"button\" class=\"flex align-items-center cursor-pointer select-none border-none bg-transparent p-0 w-full text-left text-medium white-space-nowrap\">Restocked Date<i class=\"ml-2 pi pi-sort-alt filter-icon\"></i></button></div></th><th class=\"un-pinned-column\"><div class=\"font-medium flex-1\" style=\"width: auto;\"><button type=\"button\" class=\"flex align-items-center cursor-pointer select-none border-none bg-transparent p-0 w-full text-left text-medium white-space-nowrap\">Inventory<i class=\"ml-2 pi pi-sort-alt filter-icon\"></i></button></div></th><th class=\"un-pinned-column\"><div class=\"flex align-items-center\" style=\"width: auto;\"></div></th></tr><tr><th class=\"\" style=\"width: 150px;\"><div><div class=\"flex w-full\"><input class=\"w-full p-inputtext p-component\" placeholder=\"Search by Serial Number\" data-pc-name=\"inputtext\" data-pc-section=\"root\" type=\"text\" value=\"\"></div></div></th><th class=\"\" style=\"width: 150px;\"><div><div class=\"flex w-full\"><input class=\"w-full p-inputtext p-component\" placeholder=\"Search by Lot Number\" data-pc-name=\"inputtext\" data-pc-section=\"root\" type=\"text\" value=\"\"></div></div></th><th class=\"\" style=\"width: 150px;\"><div><div class=\"flex w-full\"><input class=\"w-full p-inputtext p-component\" placeholder=\"Search by Expiration Date\" data-pc-name=\"inputtext\" data-pc-section=\"root\" type=\"text\" value=\"\"></div></div></th><th class=\"\" style=\"width: 150px;\"><div><div class=\"flex w-full\"><input class=\"w-full p-inputtext p-component\" placeholder=\"Search by Restocked Date\" data-pc-name=\"inputtext\" data-pc-section=\"root\" type=\"text\" value=\"\"></div></div></th><th class=\"\" style=\"width: 150px;\"></th><th class=\"\" style=\"width: 150px;\"></th></tr></thead><tbody class=\"app-table-tbody \"><tr class=\"\"><td class=\"text-left flex-1\"><span class=\"flex pl-4\"><span>87654321</span></span></td><td class=\"text-left flex-1\">234567</td><td class=\"text-left flex-1\"><div class=\"flex-col \"><div class=\"flex justify-content-start align-items-center  \"><span class=\"\">07/31/2026</span><span data-testid=\"expired-item-87654321\" class=\"bg-red-600 text-light text-extra-small-medium ml-2 px-2 py-1 border-round-xl\" style=\"white-space: nowrap;\">Expired</span></div></div></td><td class=\"text-left flex-1\">06/30/2026</td><td class=\"text-left flex-1\">1 each / 100 mg / 100 mL</td><td class=\"fit-column text-center flex-1\"><div class=\"flex flex-row gap-2\"><button aria-label=\"Edit\" class=\"text-button text-small-semibold p-button p-component p-button-text\" data-testid=\"edit-serial-btn-87654321\" data-pc-name=\"button\" data-pc-section=\"root\"><span class=\"p-button-icon p-c p-button-icon-left pi pi-pencil\" data-pc-section=\"icon\"></span><span class=\"p-button-label p-c\" data-pc-section=\"label\">Edit</span></button><div><button aria-label=\"Print QR\" class=\"text-button text-small-semibold p-button p-component p-button-text\" data-pc-name=\"button\" data-pc-section=\"root\"><span class=\"p-button-icon p-c p-button-icon-left pi pi-print text-small-medium\" data-pc-section=\"icon\"></span><span class=\"p-button-label p-c\" data-pc-section=\"label\">Print QR</span></button><div style=\"display: none;\"><div></div></div></div></div></td></tr></tbody></table></div></div></div></div></div><div class=\"page-footer with-sidebar p-card p-component\" data-testid=\"page-footer\" data-pc-name=\"card\" data-pc-section=\"root\"><div class=\"p-card-body\" data-pc-section=\"body\"><div class=\"p-card-content\" data-pc-section=\"content\"><div class=\"flex \"></div><div class=\"flex justify-content-end \"><div class=\"footer\"><button aria-label=\"BACK TO ALL PRODUCTS\" class=\"mr-3 primary-button sm-button p-button p-component p-button-sm\" data-pc-name=\"button\" data-pc-section=\"root\"><span class=\"p-button-icon p-c p-button-icon-left pi pi-arrow-left left\" data-pc-section=\"icon\"></span><span class=\"p-button-label p-c\" data-pc-section=\"label\">BACK TO ALL PRODUCTS</span></button></div></div></div></div></div></div>",
+    "rect": {
+      "x": 70,
+      "y": 50,
+      "width": 1850,
+      "height": 884
+    },
+    "computedStyles": {
+      "display": "block",
+      "width": "1850px",
+      "height": "884px",
+      "margin": "50px 0px 0px 70px",
+      "padding": "0px 0px 80px",
+      "box-sizing": "border-box",
+      "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+      "font-family": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+      "font-size": "16px",
+      "text-decoration": "none",
+      "transition": "all"
+    },
+    "cssRules": [
+      {
+        "selector": ".font-normal",
+        "css": "font-weight: 400 !important;"
+      },
+      {
+        "selector": ".pb-8",
+        "css": "padding-bottom: 5rem !important;"
+      },
+      {
+        "selector": ".sidebar-collapsed .main-content",
+        "css": "margin-left: 70px !important; width: calc(100% - 70px) !important;"
+      },
+      {
+        "selector": ".main-content",
+        "css": "margin-left: 224px; margin-top: 50px; width: calc(100% - 224px); min-height: calc(-50px + 100vh);"
+      },
+      {
+        "selector": ".main-content",
+        "css": "width: 1920px; overflow-x: auto;",
+        "media": "(max-width: 1024px)"
+      },
+      {
+        "selector": "*",
+        "css": "box-sizing: border-box;"
+      }
+    ]
+  }
+]

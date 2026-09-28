@@ -1,0 +1,8 @@
+/* Ally UI — global CSS entry point. Consumers link this single file. */
+@import './colors_and_type.css';   /* curated, hand-verified tokens used by every built component */
+@import './components.css';        /* component classes */
+@import './tokens/fig-tokens.css'; /* full Figma variable mirror (1172 of 1173 vars, all 10 collections,
+  all theme modes) — kept for raw kit coverage/reference; components consume the curated tokens above,
+  not these directly. FLOAT tokens are unitless: consume as calc(var(--x) * 1px). */
+/* This .fig publishes no TEXT or EFFECT styles — typography lives in the Semantic/Primitive
+   Typography variable collections above, and in colors_and_type.css. No import needed. */

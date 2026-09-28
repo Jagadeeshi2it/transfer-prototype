@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./_bundle.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/colors_and_type.css">
+<link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/components.css">
+<link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/tokens/fig-tokens.css">
+<link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/styles.css">
+<script src="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/_ds_bundle.js"></script>
+<style>
+  .topnav { height: var(--app-topnav-h, 50px); min-height: var(--app-topnav-h, 50px); }
+</style>
+</helmet>
+<x-import component-from-global-scope="AllyUIDesignSystem_f878db.TopNav" user="{{ user }}" left="{{ chips }}" hint-size="100%,50px" style="position: sticky; top: 0; z-index: 70;"></x-import>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#095192"></rect><rect x="22" y="44" width="26" height="8" rx="4" fill="#ffffff"></rect><rect x="52" y="44" width="16" height="8" rx="4" fill="#7ea8d4"></rect><rect x="72" y="44" width="6" height="8" rx="3" fill="#7ea8d4"></rect></svg></template>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:50},&quot;org&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Onco Demo&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;clinic&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Onco Clinic Center&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;station&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Onco Station&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;user&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;John Doe&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  componentWillUnmount() { if (this._dsWait) clearInterval(this._dsWait); }
+
+  chips() {
+    const NS = window.AllyUIDesignSystem_f878db;
+    if (!NS || !NS.TopNavChip) {
+      if (!this._dsWait) {
+        this._dsWait = setInterval(() => {
+          if (window.AllyUIDesignSystem_f878db) { clearInterval(this._dsWait); this._dsWait = null; this.forceUpdate(); }
+        }, 100);
+      }
+      return null;
+    }
+    const C = NS.TopNavChip, noop = () => {};
+    const rule = k => React.createElement(NS.TopNavDivider, { key: k });
+    const out = [];
+    const push = (key, iconName, text, live) => {
+      if (!text) return;
+      if (out.length) out.push(rule("d" + key));
+      out.push(React.createElement(C, live ? { key, iconName, onClick: noop } : { key, iconName }, text));
+    };
+    push("org", "building", this.props.org ?? "Onco Demo", true);
+    push("clinic", "marker", this.props.clinic ?? "Onco Clinic Center", true);
+    push("station", "box", this.props.station ?? "Onco Station", false);
+    return out;
+  }
+
+  renderVals() {
+    return { user: this.props.user ?? "John Doe", chips: this.chips() };
+  }
+}
+</script>
+</body>
+</html>

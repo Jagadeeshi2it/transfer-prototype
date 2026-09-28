@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./_bundle.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/colors_and_type.css">
+<link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/components.css">
+<link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/tokens/fig-tokens.css">
+<link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/styles.css">
+<script src="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body { font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #095192; text-decoration: none; }
+  a:hover { color: #073f73; text-decoration: underline; }
+  *, *::before, *::after { box-sizing: border-box; }
+  input::placeholder { color: #9aa4b0; }
+</style>
+</helmet>
+<div style="display: flex; align-items: stretch; width: 100%; min-height: 100vh; background: #ffffff; color: #21252b; font-size: 14px; font-weight: 400;">
+
+  <sc-if value="{{ confirmCloseOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ stayAccept }}" style="position: fixed; inset: 0; z-index: 7000; background: rgba(14,36,63,0.45); display: flex; align-items: center; justify-content: center; padding: 24px;">
+      <div role="dialog" aria-modal="true" onClick="{{ stopProp }}" style="width: 600px; max-width: 100%; background: #ffffff; border-radius: 4px; box-shadow: 0 20px 40px rgba(16,24,40,0.2); display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px 0;">
+          <span style="font-size: 18px; line-height: 28px; font-weight: 600; color: #25282a;">Are you sure?</span>
+          <button type="button" onClick="{{ stayAccept }}" aria-label="Close" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: #64748b; cursor: pointer;" style-hover="background: #eff1f3;">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </button>
+        </div>
+        <p style="margin: 0; padding: 16px 24px 48px; font-size: 14px; line-height: 22px; color: #25282a; text-wrap: pretty;">There are some products that still need to be transferred. If you close any remaining products will be ignored.</p>
+        <div style="display: flex; justify-content: flex-end; gap: 16px; padding: 0 24px 24px;">
+          <button type="button" onClick="{{ stayAccept }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">No, stay</button>
+          <button type="button" onClick="{{ confirmClose }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">Yes, continue</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ acc.leaveOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ acc.leaveStay }}" style="position: fixed; inset: 0; z-index: 7000; background: rgba(14,36,63,0.45); display: flex; align-items: center; justify-content: center; padding: 24px;">
+      <div role="dialog" aria-modal="true" onClick="{{ stopProp }}" style="width: 600px; max-width: 100%; background: #ffffff; border-radius: 4px; box-shadow: 0 20px 40px rgba(16,24,40,0.2); display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px 0;">
+          <span style="font-size: 18px; line-height: 28px; font-weight: 600; color: #25282a;">{{ acc.leaveTitle }}</span>
+          <button type="button" onClick="{{ acc.leaveStay }}" aria-label="Close" style="flex: 0 0 32px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: #64748b; cursor: pointer;" style-hover="background: #eff1f3;">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </button>
+        </div>
+        <p style="margin: 0; padding: 16px 24px 48px; font-size: 14px; line-height: 22px; color: #25282a; text-wrap: pretty;">{{ acc.leaveBody }}</p>
+        <div style="display: flex; justify-content: flex-end; gap: 16px; padding: 0 24px 24px;">
+          <button type="button" onClick="{{ acc.leaveDiscard }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; border-radius: 4px; cursor: pointer; color: #095192; background: #ffffff; border: 1px solid #095192;" style-hover="background: rgba(9,81,146,0.06);">Discard</button>
+          <button type="button" onClick="{{ acc.leaveSave }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; border-radius: 4px; cursor: pointer; color: #ffffff; background: #095192; border: 1px solid #095192;" style-hover="background: #073f73;">Save</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ confirmSkipOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ staySkip }}" style="position: fixed; inset: 0; z-index: 7000; background: rgba(14,36,63,0.45); display: flex; align-items: center; justify-content: center; padding: 24px;">
+      <div role="dialog" aria-modal="true" onClick="{{ stopProp }}" style="width: 600px; max-width: 100%; background: #ffffff; border-radius: 4px; box-shadow: 0 20px 40px rgba(16,24,40,0.2); display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px 0;">
+          <span style="font-size: 18px; line-height: 28px; font-weight: 600; color: #25282a;">Are you sure you want to skip this product?</span>
+          <button type="button" onClick="{{ staySkip }}" aria-label="Close" style="flex: 0 0 32px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: #64748b; cursor: pointer;" style-hover="background: #eff1f3;">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </button>
+        </div>
+        <p style="margin: 0; padding: 16px 24px 48px; font-size: 14px; line-height: 22px; color: #25282a; text-wrap: pretty;">If you continue, "{{ acc.name }}" will be skipped from the transfer workflow.</p>
+        <div style="display: flex; justify-content: flex-end; gap: 16px; padding: 0 24px 24px;">
+          <button type="button" onClick="{{ staySkip }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">No, stay</button>
+          <button type="button" onClick="{{ confirmSkip }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">Yes, continue</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toastOpen }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position: fixed; top: 72px; right: 24px; z-index: 8000; width: 400px; max-width: calc(100vw - 48px); display: flex; align-items: {{ toastAlign }}; gap: 12px; padding: 12px 12px 12px 20px; background: {{ toastBg }}; border-radius: 6px; box-shadow: inset 6px 0 0 {{ toastAccent }}, 0 12px 24px rgba(16,24,40,0.12);">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="flex: 0 0 22px; margin-top: {{ toastIconTop }}; color: {{ toastAccent }};"><path d="M19 10.3V11a8 8 0 1 1-4.7-7.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><path d="m19 4-8 8-2.5-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;">
+        <sc-if value="{{ toastHasTitle }}" hint-placeholder-val="{{ true }}">
+          <span style="font-size: 14px; line-height: 20px; font-weight: 600; color: #25282a;">{{ toastTitle }}</span>
+        </sc-if>
+        <span style="font-size: 14px; line-height: 20px; color: #25282a;">{{ toastText }}</span>
+      </div>
+      <button type="button" onClick="{{ closeToast }}" aria-label="Dismiss" style="flex: 0 0 32px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; margin-top: {{ toastBtnTop }}; background: transparent; border: none; border-radius: 4px; color: #2f5d34; cursor: pointer;" style-hover="background: rgba(0,135,116,0.1);">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+      </button>
+    </div>
+  </sc-if>
+
+  <dc-import name="App Side Nav" selected="Transfer" hint-size="70px,100vh"></dc-import>
+
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+
+  <div style="position: sticky; top: 0; z-index: 40;"><dc-import name="App Top Nav" hint-size="100%,50px"></dc-import></div>
+
+  <div style="width: 100%; min-width: 0; padding: 0 0 40px;">
+
+  <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+  <div style="background: #ffffff; border-bottom: 1px solid #e3e7ed; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+    <div style="display: flex; gap: 0;">
+      <div style="padding: 18px 8px; margin-right: 24px; font-size: 14px; font-weight: 600; color: #095192; box-shadow: inset 0 -3px 0 #095192; cursor: pointer;">Incoming Transfers</div>
+      <div style="padding: 18px 8px; margin-right: 24px; font-size: 14px; font-weight: 400; color: #4b5563; cursor: pointer;" style-hover="color: #21252b;">Outgoing Transfers</div>
+      <div onClick="{{ goHistory }}" style="padding: 18px 8px; font-size: 14px; font-weight: 400; color: #4b5563; cursor: pointer;" style-hover="color: #21252b;">History</div>
+    </div>
+    <button type="button" onClick="{{ goNewTransfer }}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer; flex-shrink: 0;" style-hover="background: #073f73; border-color: #073f73;">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5v11M1.5 7h11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+      New transfer
+    </button>
+  </div>
+
+  <div style="padding: 24px; background: #ffffff;">
+    <div>
+
+      <div>
+
+        <div style="background: #f5f5f5; border: 1px solid #d8d8d8; border-radius: 4px; padding: 24px;">
+          <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <input type="text" placeholder="Search by Name or NDC" style="width: 208px; height: 40px; padding: 0 12px; font-size: 14px; font-family: inherit; color: #21252b; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; outline: none;" style-focus="border-color: #095192; box-shadow: 0 0 0 2px rgba(9,81,146,0.15);" />
+
+            <div style="width: 208px; height: 40px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; cursor: pointer;">
+              <span style="font-size: 14px; color: #9aa4b0;">Status</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="color: #6b7480; flex-shrink: 0;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.266Z" fill="currentColor"></path></svg>
+            </div>
+
+
+            <div style="display: flex; align-items: center; gap: 16px; margin-left: auto;">
+            <button type="button" onClick="{{ reset }}" style="height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Reset</button>
+            <button type="button" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73; border-color: #073f73;">Search</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 24px; font-size: 16px; font-weight: 500; line-height: 24px; color: #25282a;">Allocated Products ({{ count }})</div>
+
+        <div style="margin-top: 12px; border: 1px solid #e9ecf1; border-radius: 6px;">
+          <table style="width: 100%; min-width: 1200px; border-collapse: collapse; ">
+            <thead>
+              <tr style="background: #f8fafc;">
+                <th style="width: 52px; padding: 14px 0 14px 16px; text-align: left; border-bottom: 1px solid #e9ecf1;">
+                  <div onClick="{{ toggleAll }}" style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ allBoxBg }}; border: 1px solid {{ allBoxBd }}; cursor: pointer; position: relative;">
+                    <svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; opacity: {{ allTick }}; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    <svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; opacity: {{ allDash }}; position: absolute;"><path d="M2 5h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+                  </div>
+                </th>
+                <th style="width: 28%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
+                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;" onClick="{{ sort_name }}">Product Name
+                    {{ icon_name }}
+                  </span>
+                </th>
+                <th style="width: 16%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
+                  <span style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer;" onClick="{{ sort_ndc }}">
+                    <span style="display: flex; flex-direction: column; gap: 2px;">
+                      <span>NDC/AIC</span>
+                      <span style="font-size: 12px; font-weight: 400; font-style: italic; color: #6b7280;">Inventory Type</span>
+                    </span>
+                    {{ icon_ndc }}
+                  </span>
+                </th>
+                                <th style="width: 13%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
+                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;" onClick="{{ sort_sendLoc }}">Sending Location
+                    {{ icon_sendLoc }}
+                  </span>
+                </th>
+                <th style="width: 13%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
+                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;" onClick="{{ sort_qty }}">Quantity
+                    {{ icon_qty }}
+                  </span>
+                </th>
+                <th style="width: 9%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
+                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;" onClick="{{ sort_created }}">Created On
+                    {{ icon_created }}
+                  </span>
+                </th>
+                <th style="width: 8%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
+                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;" onClick="{{ sort_status }}">Status
+                    {{ icon_status }}
+                  </span>
+                </th>
+                <th style="width: 3%; padding: 14px 16px; border-bottom: 1px solid #e9ecf1;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ rows }}" as="row" hint-placeholder-count="7">
+                <tr onClick="{{ row.rowClick }}" style="background: {{ row.rowBg }}; cursor: {{ row.rowCursor }};" style-hover="background: #f5f9fe;">
+                  <td style="padding: 14px 0 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
+                    <div onClick="{{ row.toggleSel }}" style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ row.boxBg }}; border: 1px solid {{ row.boxBd }}; cursor: pointer;" style-hover="border-color: #095192;">
+                      <svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; opacity: {{ row.tickOpacity }};"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </div>
+                  </td>
+                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
+                    <div onClick="{{ row.nameClick }}" style="display: inline-block; font-size: 14px; font-weight: 500; color: #21252b; cursor: pointer;" style-hover="color: #095192;">{{ row.name }}</div>
+                    <div style="display: block; margin-top: 4px; font-size: 13px; font-style: italic; color: #6b7280; line-height: 1.4;">{{ row.desc }}</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px;">
+                      <sc-for list="{{ row.chips }}" as="chip" hint-placeholder-count="2">
+                        <label style="display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.2px; white-space: nowrap; background: {{ chip.bg }}; color: {{ chip.fg }}; border: 1px solid {{ chip.bd }};">{{ chip.label }}</label>
+                      </sc-for>
+                    </div>
+                  </td>
+                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
+                    <div style="font-size: 14px; color: #21252b;">{{ row.ndc }}</div>
+                    <div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ row.invType }}</div>
+                  </td>
+                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.sendLoc }}</td>
+                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.qtyShort }}</td>
+                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.created }}</td>
+                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
+                    <span style="display: inline-block; padding: 3px 10px; border-radius: 999px; background: {{ row.statusBg }}; color: {{ row.statusFg }}; font-size: 12px; font-weight: 500; white-space: nowrap;">{{ row.status }}</span>
+                  </td>
+                  <td style="padding: 14px 16px; text-align: center; vertical-align: top; border-bottom: 1px solid #eef1f5; cursor: {{ row.rowCursor }};" onClick="{{ row.chevClick }}">
+                    <sc-if value="{{ row.showChevron }}" hint-placeholder-val="{{ true }}">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="color: #095192; cursor: pointer;"><path d="M4.5 2 9.5 7l-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </sc-if>
+                  </td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="margin-top: 32px; font-size: 16px; font-weight: 500; line-height: 24px; color: #25282a;">Unallocated Products ({{ unallocCount }})</div>
+
+        <div style="margin-top: 12px; border: 1px solid #e9ecf1; border-radius: 6px;">
+          <table style="width: 100%; min-width: 1200px; border-collapse: collapse; ">
+            <thead>
+              <tr style="background: #f8fafc;">
+                <th style="width: 52px; padding: 14px 0 14px 16px; text-align: left; border-bottom: 1px solid #e9ecf1;">
+                  <div style="width: 20px; height: 20px; border-radius: 4px; background: #ffffff; border: 1px solid #bcc3cd;"></div>
+                </th>
+                <th style="width: 28%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
+                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">Product Name
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color: #25282a; flex-shrink: 0;"><path d="M3 2v8M3 10 1.5 8.4M3 10l1.5-1.6M9 10V2M9 2 7.5 3.6M9 2l1.5 1.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>
+                  </span>
+                </th>
+                <th style="width: 16%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
+                  <span style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer;">
+                    <span style="display: flex; flex-direction: column; gap: 2px;">
+                      <span>NDC/AIC</span>
+                      <span style="font-size: 12px; font-weight: 400; font-style: italic; color: #6b7280;">Inventory Type</span>
+                    </span>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color: #25282a; flex-shrink: 0;"><path d="M3 2v8M3 10 1.5 8.4M3 10l1.5-1.6M9 10V2M9 2 7.5 3.6M9 2l1.5 1.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>
+                  </span>
+                </th>
+                
+                <th style="width: 13%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
+                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">Sending Location
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color: #25282a; flex-shrink: 0;"><path d="M3 2v8M3 10 1.5 8.4M3 10l1.5-1.6M9 10V2M9 2 7.5 3.6M9 2l1.5 1.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>
+                  </span>
+                </th>
+                <th style="width: 12%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
+                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">Quantity
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color: #25282a; flex-shrink: 0;"><path d="M3 2v8M3 10 1.5 8.4M3 10l1.5-1.6M9 10V2M9 2 7.5 3.6M9 2l1.5 1.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>
+                  </span>
+                </th>
+                <th style="width: 9%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
+                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">Created On
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color: #25282a; flex-shrink: 0;"><path d="M3 2v8M3 10 1.5 8.4M3 10l1.5-1.6M9 10V2M9 2 7.5 3.6M9 2l1.5 1.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>
+                  </span>
+                </th>
+                <th style="width: 8%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
+                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">Status
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color: #25282a; flex-shrink: 0;"><path d="M3 2v8M3 10 1.5 8.4M3 10l1.5-1.6M9 10V2M9 2 7.5 3.6M9 2l1.5 1.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>
+                  </span>
+                </th>
+                <th style="width: 3%; padding: 14px 16px; border-bottom: 1px solid #e9ecf1;"></th>
+                <th style="width: 3%; padding: 14px 16px; border-bottom: 1px solid #e9ecf1;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ unallocRows }}" as="row" hint-placeholder-count="2">
+                <tr style="background: #ffffff;" style-hover="background: #f5f9fe;">
+                  <td style="padding: 14px 0 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
+                    <div style="width: 20px; height: 20px; border-radius: 4px; background: #ececec; border: 1px solid #dadee3; cursor: not-allowed;"></div>
+                  </td>
+                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
+                    <div style="font-size: 14px; font-weight: 500; color: #21252b;">{{ row.name }}</div>
+                    <div style="display: block; margin-top: 4px; font-size: 13px; font-style: italic; color: #6b7280; line-height: 1.4;">{{ row.desc }}</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px;">
+                      <sc-for list="{{ row.chips }}" as="chip" hint-placeholder-count="1">
+                        <label style="display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.2px; white-space: nowrap; background: {{ chip.bg }}; color: {{ chip.fg }}; border: 1px solid {{ chip.bd }};">{{ chip.label }}</label>
+                      </sc-for>
+                    </div>
+                  </td>
+                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
+                    <div style="font-size: 14px; color: #21252b;">{{ row.ndc }}</div>
+                    <div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ row.invType }}</div>
+                  </td>
+                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.sendLoc }}</td>
+                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.qty }}</td>
+                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.created }}</td>
+                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
+                    <span style="display: inline-block; padding: 3px 10px; border-radius: 999px; background: #008774; color: #ffffff; font-size: 12px; font-weight: 500; white-space: nowrap;">{{ row.status }}</span>
+                  </td>
+                  <td style="padding: 14px 8px; text-align: center; vertical-align: top; border-bottom: 1px solid #eef1f5;">
+                    <span onMouseEnter="{{ row.tipShow }}" onMouseLeave="{{ row.tipHide }}" style="position: relative; display: inline-flex; color: #a855f7; cursor: help;">
+                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.3" stroke="currentColor" stroke-width="1.3"></circle><path d="M9 8v4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path><circle cx="9" cy="5.6" r="0.9" fill="currentColor"></circle></svg>
+                      <sc-if value="{{ row.tipOpen }}" hint-placeholder-val="{{ false }}">
+                        <span role="tooltip" style="position: absolute; right: -8px; bottom: calc(100% + 10px); z-index: 60; width: 320px; padding: 8px 12px; background: #465161; color: #F5F5F5; font-size: 14px; line-height: 20px; font-weight: 400; text-align: left; white-space: normal; border-radius: 4px; box-shadow: 0 1px 2px rgba(228,229,231,0.24), 0 12px 24px rgba(136,140,152,0.12); pointer-events: none;">This product is not in formulary and/or not allocated to this station. Please update the formulary and/or allocation to complete the transfer.</span>
+                      </sc-if>
+                    </span>
+                  </td>
+                  <td style="padding: 14px 16px 14px 8px; text-align: center; vertical-align: top; border-bottom: 1px solid #eef1f5;">
+                    <span title="Allocate" style="display: inline-flex; color: #095192; cursor: pointer;" style-hover="color: #073f73;">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4" width="15" height="13" rx="2" stroke="currentColor" stroke-width="1.5"></rect><path d="M6.5 4V2.8M13.5 4V2.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path d="M8 13.2l4.2-4.2a1.3 1.3 0 0 0-1.8-1.8L7.6 10a1.8 1.8 0 0 0 2.6 2.6l2.4-2.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </span>
+                  </td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div style="position: sticky; bottom: 0; z-index: 30; display: flex; align-items: center; justify-content: flex-end; gap: 16px; padding: 14px 24px; background: #ffffff; border-top: 1px solid #e3e7ed; box-shadow: 0 -2px 8px rgba(16,24,40,0.06);">
+    <button type="button" disabled="{{ noneSelected }}" onClick="{{ startTransfer }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: {{ startBg }}; border: 1px solid {{ startBg }}; border-radius: 4px; cursor: {{ startCursor }};">Start transfer</button>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isAccept }}" hint-placeholder-val="{{ false }}">
+  <div style="padding: 0 0 80px;">
+
+    <div style="display: flex; align-items: center; gap: 24px; padding: 20px 24px; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
+      <div style="flex: 1; min-width: 0;">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+          <div style="font-size: 22px; font-weight: 600; line-height: 28px; color: #21252b; min-width: 0;">{{ acc.name }}</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+            <sc-for list="{{ acc.chips }}" as="chip" hint-placeholder-count="2">
+              <label style="display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.2px; white-space: nowrap; background: {{ chip.bg }}; color: {{ chip.fg }}; border: 1px solid {{ chip.bd }};">{{ chip.label }}</label>
+            </sc-for>
+          </div>
+        </div>
+        <div style="margin-top: 6px; font-size: 13px; font-style: italic; color: #6b7280;">{{ acc.desc }}</div>
+      </div>
+      <sc-if value="{{ acc.picked }}" hint-placeholder-val="{{ true }}">
+      <button type="button" onClick="{{ acc.onUnlock }}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer; flex-shrink: 0;" style-hover="background: rgba(9,81,146,0.06);">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.4"></rect><path d="M5.5 7V4.8a2.5 2.5 0 0 1 4.9-.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>
+        <span>Unlock door</span>
+      </button>
+      </sc-if>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px 32px; padding: 16px 24px; background: #e9eef4; border-bottom: 1px solid #e3e7ed;">
+      <div style="display: grid; grid-template-columns: 120px 1fr; gap: 4px 8px; align-content: start;">
+        <span style="font-size: 14px; color: #6b7480;">NDC</span><span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ acc.ndc }}</span>
+        <span style="font-size: 14px; color: #6b7480;">Inventory Type</span><span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ acc.invType }}</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 130px 1fr; gap: 4px 8px; align-content: start;">
+        <span style="font-size: 14px; color: #6b7480;">Sending Location</span><span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ acc.sendLoc }}</span>
+        <span style="font-size: 14px; color: #6b7480;">Transfer Status</span><span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ acc.status }}</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 100px 1fr; gap: 4px 8px; align-content: start;">
+        <span style="font-size: 14px; color: #6b7480;">Created On</span><span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ acc.created }}</span>
+        <span style="font-size: 14px; color: #6b7480;">Created By</span><span style="font-size: 14px; font-weight: 500; color: #21252b;">User Super</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 16px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 14px; color: #6b7480;">Door</span>
+            <span style="display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; color: #21252b;">
+              <sc-if value="{{ acc.picked }}" hint-placeholder-val="{{ true }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6B7B" stroke-width="1.6" stroke-linecap="round" style="flex: 0 0 16px;"><path d="M4 3h16v18H4z M4 9h16 M4 15h16 M9.5 6h2 M9.5 12h2 M9.5 18h2"></path></svg></sc-if>
+              <span>{{ acc.hdrDoor }}</span>
+            </span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 14px; color: #6b7480;">Bin</span>
+            <span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ acc.hdrBin }}</span>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 14px; color: #6b7480;">Inventory</span>
+          <span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ acc.hdrInv }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 24px; padding: 20px 24px; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
+      <div style="display: flex; align-items: stretch;">
+        <div style="display: flex; align-items: center; gap: 10px; width: 320px; height: 40px; padding: 0 12px; background: {{ acc.scanBg }}; border: 1px solid #ced4da; border-right: none; border-radius: 4px 0 0 4px; cursor: {{ acc.scanCursor }};">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="color: {{ acc.scanGlyph }}; flex-shrink: 0;"><rect x="2" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="11" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="2" y="11" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><path d="M11 11h2v2h-2zM14 14h2v2h-2zM14 11h2M11 15v1" stroke="currentColor" stroke-width="1.3"></path></svg>
+          <input type="text" placeholder="Scan or type serial number" readOnly="{{ acc.scanLocked }}" onFocus="{{ acc.onScanFocus }}" style="flex: 1; min-width: 0; height: 100%; border: none; outline: none; font-family: inherit; font-size: 14px; color: #21252b; background: transparent; cursor: {{ acc.scanCursor }};" />
+        </div>
+        <button type="button" onClick="{{ acc.onScan }}" style="width: 44px; height: 40px; display: flex; align-items: center; justify-content: center; background: {{ acc.scanBtn }}; border: 1px solid {{ acc.scanBtn }}; border-radius: 0 4px 4px 0; color: #ffffff; cursor: {{ acc.scanCursor }};">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.8" stroke="currentColor" stroke-width="1.5"></circle><path d="m10.6 10.6 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+        </button>
+      </div>
+      <div style="display: flex; align-items: stretch; margin-left: auto;">
+      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; padding: 0 24px; border-right: 1px solid #e3e7ed;">
+        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Transfer Quantity ({{ acc.unitLabel }})</span>
+        <span style="font-size: 32px; line-height: 40px; font-weight: 400; color: #21252b;">{{ acc.total }}</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; padding: 0 24px; border-right: 1px solid #e3e7ed;">
+        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Accepted ({{ acc.unitLabel }})</span>
+        <span style="font-size: 32px; line-height: 40px; font-weight: 400; color: #21252b;">{{ acc.accepted }}</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; padding: 0 24px; border-right: 1px solid #e3e7ed;">
+        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Damaged ({{ acc.unitLabel }})</span>
+        <span style="font-size: 32px; line-height: 40px; font-weight: 400; color: #21252b;">{{ acc.damaged }}</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; padding: 0 24px;">
+        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Not Received ({{ acc.unitLabel }})</span>
+        <span style="font-size: 32px; line-height: 40px; font-weight: 400; color: #21252b;">{{ acc.notReceived }}</span>
+      </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ acc.notPicked }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 24px; background: #ffffff;">
+        <div style="padding: 56px 24px; border: 1px dashed #D8D8D8; border-radius: 4px; text-align: center; font-size: 16px; line-height: 24px; color: #9FA9B7;">Select a bin location to load its inventory to transfer</div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ acc.picked }}" hint-placeholder-val="{{ true }}">
+    <div style="padding: 16px 24px 24px; background: #ffffff; display: flex; flex-direction: column; gap: 16px;">
+      <div style="display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 16px;">
+        <button type="button" onClick="{{ acc.acceptSelected }}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: {{ acc.acceptSelCursor }}; opacity: {{ acc.acceptSelOpacity }};" style-hover="background: rgba(9,81,146,0.06);">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.3" stroke="currentColor" stroke-width="1.4"></circle><path d="m5.3 8.2 1.9 1.9 3.6-3.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <span>Accept selected</span>
+        </button>
+        <button type="button" onClick="{{ acc.resetSelected }}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: {{ acc.resetCursor }}; opacity: {{ acc.resetOpacity }};" style-hover="background: rgba(9,81,146,0.06);">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.2 8a4.8 4.8 0 1 0 1.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path><path d="M4.4 2v2.7h2.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <span>Reset selected</span>
+        </button>
+      </div>
+      <div style="border: 1px solid #e9ecf1; border-radius: 6px; background: #ffffff; overflow-x: auto;">
+        <table style="width: 100%; min-width: 1140px; border-collapse: collapse;">
+          <thead>
+            <tr style="background: #f7f8fa;">
+              <th style="width: 52px; padding: 14px 0 14px 16px; text-align: left; border-bottom: 1px solid #e9ecf1;">
+                <div onClick="{{ acc.toggleAllSel }}" style="position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ acc.allBoxBg }}; border: 1px solid {{ acc.allBoxBd }}; cursor: {{ acc.allCursor }};">
+                  <sc-if value="{{ acc.allChecked }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                </div>
+              </th>
+              <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Serial</th>
+              <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Lot</th>
+              <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Expiration</th>
+              <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Source</th>
+              <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Quantity</th>
+              <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Location accepted</th>
+              <th style="width: 240px; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{ acc.rows }}" as="s" hint-placeholder-count="3">
+              <tr style="background: #ffffff;">
+                <td style="padding: 16px 0 16px 16px; border-bottom: 1px solid #eef1f5; vertical-align: middle;">
+                  <sc-if value="{{ s.pending }}" hint-placeholder-val="{{ true }}">
+                    <div onClick="{{ s.onToggleSel }}" style="position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ s.boxBg }}; border: 1px solid {{ s.boxBd }}; cursor: pointer;">
+                      <sc-if value="{{ s.checked }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ s.isCommitted }}" hint-placeholder-val="{{ false }}">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="display: block; color: #008774;"><path d="m4 10.5 4 4 8-9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </sc-if>
+                </td>
+                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; vertical-align: middle;">{{ s.serial }}</td>
+                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; vertical-align: middle;">{{ s.lot }}</td>
+                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; vertical-align: middle;"><span style="white-space: nowrap;">{{ s.expiration }}</span></td>
+                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; vertical-align: middle;">{{ s.source }}</td>
+                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; vertical-align: middle;"><span style="white-space: nowrap;">{{ s.qty }}</span></td>
+                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; vertical-align: middle; line-height: 21px; white-space: nowrap;">
+                  <div style="min-height: 42px; display: flex; flex-direction: column; justify-content: center;">
+                    <sc-if value="{{ s.hasLoc }}" hint-placeholder-val="{{ false }}">
+                      <div>Door: {{ s.locDoor }}</div>
+                      <div>Bin: {{ s.locBin }}</div>
+                    </sc-if>
+                    <sc-if value="{{ s.noLoc }}" hint-placeholder-val="{{ true }}"><div>--</div></sc-if>
+                  </div>
+                </td>
+                <td style="padding: 8px 16px; border-bottom: 1px solid #eef1f5; vertical-align: middle;">
+                  <sc-if value="{{ s.pending }}" hint-placeholder-val="{{ true }}">
+                    <div style="position: relative; width: 100%;">
+                      <select value="{{ s.status }}" onChange="{{ s.onChange }}" style="width: 100%; height: 40px; padding: 0 36px 0 12px; font-family: inherit; font-size: 14px; color: #21252b; background: #ffffff; border: 1px solid {{ s.selBd }}; border-radius: 4px; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer;" style-focus="border-color: #095192; box-shadow: 0 0 0 2px rgba(9,81,146,0.15);">
+                        <option value="--">--</option>
+                        <option value="Accept">Accept</option>
+                        <option value="Damaged">Damaged</option>
+                        <option value="Not Received">Not Received</option>
+                      </select>
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="position: absolute; right: 12px; top: 13px; color: #6b7480; pointer-events: none;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.266Z" fill="currentColor"></path></svg>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ s.isCommitted }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-size: 14px; font-weight: 500; color: {{ s.doneColor }};">{{ s.doneLabel }}</span>
+                  </sc-if>
+                </td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </sc-if>
+
+    <div style="position: fixed; bottom: 0; left: 70px; right: 0; z-index: {{ barZ }}; display: flex; flex-wrap: wrap; align-items: stretch; gap: 0 16px; padding: 0 24px 0 0; background: #ffffff; border-top: 1px solid #e3e7ed; box-shadow: 0 -2px 8px rgba(16,24,40,0.06);">
+      <dc-import name="Product Switcher" products="{{ acc.queueProducts }}" current-id="{{ acc.curId }}" on-select="{{ acc.onProductSelect }}" flow-label="Transfer" done-label="Transferred" on-open-change="{{ onPanelOpen }}" hint-size="170px,66px"></dc-import>
+      <dc-import name="Bin Location Switcher" locations="{{ acc.locations }}" current-key="{{ acc.locKey }}" open="{{ acc.locOpen }}" on-select="{{ acc.onLocSelect }}" product-name="{{ acc.name }}" product-sub="{{ acc.desc }}" stats="{{ acc.locStats }}" unit="{{ acc.unitWord }}" moved-unit="{{ acc.unitWord }}" title="Select a Location to Transfer" verb="accept" moved-label="Transferred" issue-label="Damaged / Not received" on-open-change="{{ acc.onLocOpen }}" hint-size="200px,66px"></dc-import>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-right: 1px solid #e3e7ed;">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="color: #008774;"><path d="M19 10.3V11a8 8 0 1 1-4.7-7.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path d="m19 4-8 8-2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        <div style="display: flex; flex-direction: column;">
+          <span style="font-size: 13px; color: #6b7480;">Transferred</span>
+          <span style="font-size: 18px; font-weight: 500; color: #21252b;">{{ acc.transferred }}</span>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; margin-left: auto; padding: 12px 0;">
+        <button type="button" onClick="{{ acc.onCancel }}" aria-disabled="{{ acc.cancelDisabled }}" style="white-space: nowrap; flex-shrink: 0; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ acc.cancelFg }}; background: #ffffff; border: 1px solid {{ acc.cancelBd }}; border-radius: 4px; cursor: {{ acc.cancelCursor }};" style-hover="background: {{ acc.cancelHover }};">Cancel</button>
+        <button type="button" onClick="{{ acc.onSkip }}" aria-disabled="{{ acc.skipDisabled }}" style="white-space: nowrap; flex-shrink: 0; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ acc.skipFg }}; background: #ffffff; border: 1px solid {{ acc.skipBd }}; border-radius: 4px; cursor: {{ acc.skipCursor }};" style-hover="background: {{ acc.skipHover }};">{{ acc.skipLabel }}</button>
+        <button type="button" onClick="{{ acc.onAccept }}" aria-disabled="{{ acc.acceptDisabled }}" style="white-space: nowrap; flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ acc.accFg }}; background: {{ acc.accBg }}; border: 1px solid {{ acc.accBd }}; border-radius: 4px; cursor: {{ acc.accCursor }};" style-hover="background: {{ acc.accHover }};">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.3" stroke="currentColor" stroke-width="1.4"></circle><path d="m5.3 8.2 1.9 1.9 3.6-3.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          {{ acc.acceptLabel }}
+        </button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+  <div style="padding: 0 0 96px;">
+
+    <div style="padding: 20px 24px 16px; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+        <div style="font-size: 18px; font-weight: 400; line-height: 28px; color: #25282a; min-width: 0;">{{ product.name }}</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+          <sc-for list="{{ product.chips }}" as="chip" hint-placeholder-count="1">
+            <label style="display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.2px; white-space: nowrap; background: {{ chip.bg }}; color: {{ chip.fg }}; border: 1px solid {{ chip.bd }};">{{ chip.label }}</label>
+          </sc-for>
+        </div>
+      </div>
+      <div style="margin-top: 4px; font-size: 13px; font-style: italic; color: #6b7280;">({{ product.desc }})</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px 32px; padding: 20px 24px; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
+        <div style="display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 12px 8px; align-content: start;">
+          <span style="font-size: 14px; font-weight: 500; color: #64748b;">NDC</span>
+          <span style="font-size: 14px; font-weight: 500; color: #25282a; min-width: 0;">{{ product.ndc }}</span>
+          <span style="font-size: 14px; font-weight: 500; color: #64748b;">Inventory Type</span>
+          <span style="font-size: 14px; font-weight: 500; color: #25282a; min-width: 0;">{{ product.invType }}</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 12px 8px; align-content: start;">
+          <span style="font-size: 14px; font-weight: 500; color: #64748b;">Sending Location</span>
+          <span style="font-size: 14px; font-weight: 500; color: #25282a; min-width: 0;">{{ product.sendLocFull }}</span>
+          <span style="font-size: 14px; font-weight: 500; color: #64748b;">Transfer Status</span>
+          <span style="font-size: 14px; font-weight: 500; color: #25282a; min-width: 0;">{{ product.status }}</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 12px 8px; align-content: start;">
+          <span style="font-size: 14px; font-weight: 500; color: #64748b;">Created On</span>
+          <span style="font-size: 14px; font-weight: 500; color: #25282a; min-width: 0;">{{ product.created }}</span>
+          <span style="font-size: 14px; font-weight: 500; color: #64748b;">Created By</span>
+          <span style="font-size: 14px; font-weight: 500; color: #25282a; min-width: 0;">{{ product.createdBy }}</span>
+        </div>
+    </div>
+
+    <div style="display: flex; align-items: stretch; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding: 0 24px; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
+      <div style="display: flex; align-items: flex-end; gap: 24px;">
+        <sc-for list="{{ product.tabs }}" as="tab" hint-placeholder-count="3">
+          <div onClick="{{ tab.select }}" style="display: flex; align-items: center; gap: 8px; padding: 18px 8px; font-size: 14px; font-weight: {{ tab.weight }}; color: {{ tab.color }}; box-shadow: {{ tab.shadow }}; cursor: pointer;">
+            <span>{{ tab.label }}</span>
+            <sc-if value="{{ tab.hasCount }}" hint-placeholder-val="{{ false }}">
+              <span style="min-width: 20px; height: 20px; padding: 0 6px; display: inline-flex; align-items: center; justify-content: center; border-radius: 20px; background: #095192; color: #ffffff; font-size: 12px; font-weight: 500;">{{ tab.count }}</span>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: flex; align-items: stretch;">
+        <div style="padding: 10px 24px; border-left: 1px solid #e3e7ed; display: flex; flex-direction: column; gap: 4px;">
+          <div style="font-size: 14px; font-weight: 500; color: #64748b; white-space: nowrap;">Transfer Quantity ({{ product.qtyUnit }})</div>
+          <div style="font-size: 24px; line-height: 32px; font-weight: 400; color: #25282a; text-align: right;">{{ product.transferQty }}</div>
+        </div>
+        <div style="padding: 10px 24px; border-left: 1px solid #e3e7ed; display: flex; flex-direction: column; gap: 4px;">
+          <div style="font-size: 14px; font-weight: 500; color: #64748b; white-space: nowrap;">Verified Quantity ({{ product.qtyUnit }})</div>
+          <div style="font-size: 24px; line-height: 32px; font-weight: 400; color: #25282a; text-align: right;">{{ product.verifiedQty }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding: 24px; background: #ffffff;">
+      <div style="border: 1px solid #e9ecf1; border-radius: 6px; background: #ffffff; overflow-x: auto;">
+        <table style="width: 100%; min-width: 720px; border-collapse: collapse;">
+          <thead>
+            <tr style="background: #f7f8fa;">
+              <th style="width: 22%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1;">Serial</th>
+              <th style="width: 14%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1;">Lot</th>
+              <th style="width: 14%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1;">Expiration</th>
+              <th style="width: 14%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1;">Source</th>
+              <th style="width: 18%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1;">Location</th>
+              <th style="width: 22%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1;">Quantity</th>
+              <sc-if value="{{ product.showReason }}" hint-placeholder-val="{{ false }}">
+                <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1;">Reason</th>
+              </sc-if>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{ product.tabRows }}" as="lot" hint-placeholder-count="2">
+              <tr style="background: #ffffff;" style-hover="background: #f5f9fe;">
+                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">
+                  {{ lot.serial }}
+                </td>
+                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ lot.lot }}</td>
+                <td style="padding: 16px; border-bottom: 1px solid #eef1f5;">
+                  <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px;">
+                    <span style="font-size: 14px; color: #21252b; white-space: nowrap;">{{ lot.expiration }}</span>
+                    <sc-if value="{{ lot.expired }}" hint-placeholder-val="{{ false }}">
+                      <span style="padding: 3px 10px; border-radius: 999px; background: #dc2626; color: #ffffff; font-size: 11px; font-weight: 500; white-space: nowrap;">Expired</span>
+                    </sc-if>
+                  </div>
+                </td>
+                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ lot.source }}</td>
+                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; line-height: 1.5; white-space: nowrap;">
+                  <div>Door: {{ lot.door }}</div>
+                  <div>Bin: {{ lot.bin }}</div>
+                </td>
+                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; white-space: nowrap;">{{ lot.qtyLabel }}</td>
+                <sc-if value="{{ product.showReason }}" hint-placeholder-val="{{ false }}">
+                  <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ lot.reason }}</td>
+                </sc-if>
+              </tr>
+            </sc-for>
+            <sc-if value="{{ product.tabEmpty }}" hint-placeholder-val="{{ false }}">
+              <tr style="background: #ffffff;">
+                <td colSpan="6" style="padding: 34px 16px; text-align: center; font-size: 14px; color: #6b7480; border-bottom: 1px solid #eef1f5;">{{ product.tabEmptyText }}</td>
+              </tr>
+            </sc-if>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 30; padding: 14px 24px; background: #ffffff; border-top: 1px solid #e3e7ed; box-shadow: 0 -2px 8px rgba(16,24,40,0.06); display: flex; justify-content: flex-end;">
+      <button type="button" onClick="{{ backToList }}" style="display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 18px; font-family: inherit; font-size: 13px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7H2.5M6 3L2 7l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        Back to transfers
+      </button>
+    </div>
+  </div>
+
+    <sc-if value="{{ unallocOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position: fixed; inset: 0; z-index: 80; background: rgba(16,24,40,0.45); display: flex; align-items: center; justify-content: center; padding: 24px;">
+        <div style="width: 480px; max-width: 100%; background: #ffffff; border-radius: 6px; box-shadow: 0 20px 50px rgba(16,24,40,0.28); overflow: hidden;">
+
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px;">
+            <div style="font-size: 20px; font-weight: 700; color: #21252b;">Unallocate Product</div>
+            <div onClick="{{ closeUnalloc }}" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; color: #21252b; cursor: pointer;" style-hover="color: #6b7480;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 2.5l11 11M13.5 2.5l-11 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+            </div>
+          </div>
+
+          <div style="padding: 20px 24px 22px; border-top: 1px solid #e9ecf1;">
+            <div style="font-size: 15px; font-weight: 600; color: #095192;">Select Locations to unallocate from</div>
+            <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 18px;">
+              <sc-for list="{{ product.locations }}" as="loc" hint-placeholder-count="3">
+                <div onClick="{{ loc.toggle }}" style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                  <div style="width: 20px; height: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 3px; background: {{ loc.boxBg }}; border: 1px solid {{ loc.boxBd }};">
+                    <svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; opacity: {{ loc.tickOpacity }};"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </div>
+                  <div style="display: flex; align-items: baseline; gap: 6px; font-size: 15px; white-space: nowrap;">
+                    <span style="color: #6b7480;">Door:</span>
+                    <span style="font-weight: 600; color: #21252b;">{{ loc.door }}</span>
+                    <span style="color: #9aa4b0; padding: 0 6px;">-</span>
+                    <span style="color: #6b7480;">Bin:</span>
+                    <span style="font-weight: 600; color: #21252b;">{{ loc.bin }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 12px; padding: 16px 24px; border-top: 1px solid #e9ecf1;">
+            <button type="button" onClick="{{ closeUnalloc }}" style="height: 38px; padding: 0 20px; font-family: inherit; font-size: 13px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Cancel</button>
+            <button type="button" onClick="{{ confirmUnalloc }}" style="height: 38px; padding: 0 20px; font-family: inherit; font-size: 13px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: #ffffff; background: {{ product.unallocBg }}; border: 1px solid {{ product.unallocBg }}; border-radius: 4px; cursor: {{ product.unallocCursor }};">Unallocate</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </sc-if>
+  </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;guidedWorkflow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;Guided Workflow&quot;}}">
+class Component extends DCLogic {
+  chip(label) {
+    const map = {
+      SDV: { bg: "#282e38", fg: "#ffffff", bd: "#282e38" },
+      MDV: { bg: "#282e38", fg: "#ffffff", bd: "#282e38" },
+      CLIMATE: { bg: "#06b6d4", fg: "#ffffff", bd: "#06b6d4" },
+      PACK: { bg: "#465161", fg: "#ffffff", bd: "#465161" },
+      CIV: { bg: "#eec038", fg: "#25282a", bd: "#eec038" },
+      "NON SERIALIZED": { bg: "#fe4603", fg: "#ffffff", bd: "#fe4603" }
+    };
+    return Object.assign({ label }, map[label] || { bg: "#465161", fg: "#ffffff", bd: "#465161" });
+  }
+  state = { belowPar: false, parFlip: false, parMaxH: 0, sortKey: "name", sortDir: "asc", openPar: null, view: "list", selected: null, unalloc: false, checkedLocs: {}, queue: [], qIdx: 0, serialStatus: {}, done: {}, transferred: 0 };
+
+  showToast(n) { this.toast(n + " number of item(s) have been transferred.", "All set!", "success"); }
+
+  toast(text, title, tone) {
+    clearTimeout(this._toastT);
+    this.setState({ toast: text, toastTitle: title || null, toastTone: tone || "success" });
+    this._toastT = setTimeout(() => this.setState({ toast: null }), 5000);
+  }
+
+  componentWillUnmount() { clearTimeout(this._toastT); }
+
+  componentDidMount() {
+    try { const m = sessionStorage.getItem("nt_toast"); if (m) { sessionStorage.removeItem("nt_toast"); this.toast(m, "All set!", "success"); } } catch (e) {}
+  }
+
+  advance(accept) {
+    this.setState(s => {
+      const key = s.queue[s.qIdx];
+      const done = accept ? Object.assign({}, s.done, { [key]: true }) : s.done;
+      const skipped = Object.assign({}, s.skipped, { [key]: !accept });
+      const transferred = s.transferred + (accept ? 1 : 0);
+      let next = -1;
+      for (let i = s.qIdx + 1; i < s.queue.length; i++) if (!done[s.queue[i]]) { next = i; break; }
+      if (next < 0) return { done, skipped: {}, transferred, view: "list", queue: [], qIdx: 0, picked: {}, locOpen: false, panelOpen: false };
+      return { done, skipped, transferred, qIdx: next, accBin: 0, serialStatus: {}, accSel: {}, locPicked: false, locOpen: true, panelOpen: true };
+    });
+    window.scrollTo(0, 0);
+  }
+
+  layoutFor(r, total, count) {
+    // Demo scenario: ALIMTA is stored across 3 doors (Door 1: 2 bins, Door 3: 1 bin, Door 8: 4 bins)
+    if (/^ALIMTA/.test(r.name)) return [["1", "A1", 1], ["1", "A2", 1], ["3", "C1", 1], ["8", "H1", 1], ["8", "H1", 1], ["8", "H2", 1], ["8", "H2", 1]];
+    const locs = [["10", "AB 5"], ["13", "AB 1"], ["13", "AB 1"], ["10", "AB 5"], ["10", "AB 5"]];
+    return Array.from({ length: count }, (_, i) => locs[i % locs.length]).map(l => [l[0], l[1], total / count]);
+  }
+
+  layoutOf(r) {
+    const n = parseFloat(String(r.remainingQty || r.qty)) || 0;
+    const c = n >= 1 ? Math.min(Math.floor(n), 10) : 1;
+    return this.layoutFor(r, n, c);
+  }
+
+  outcome(r, cm) {
+    const L = this.layoutOf(r);
+    let total = 0, got = 0, acc = 0, dmg = 0, nr = 0, all = true;
+    L.forEach((l, i) => {
+      total += l[2];
+      const c = cm[r.key + "-" + i];
+      if (!c) { all = false; return; }
+      got += l[2];
+      if (c.status === "Accept") acc += l[2];
+      else if (c.status === "Not Received") nr += l[2];
+      else dmg += l[2];
+    });
+    const status = !got ? null : (all && acc >= total ? "Transferred" : !all ? "Partial" : dmg ? "Damaged" : nr ? "Not Received" : "Partial");
+    return { status, complete: all };
+  }
+
+  // Leave the current product: snapshot walk position, record outcome, enter target (or next not-done product).
+  leaveTo(r, cmAll, walkPos, targetIdx, opts) {
+    const o = this.outcome(r, cmAll);
+    if (opts.toast) {
+      if (o.status === "Transferred") this.toast(r.name + " product successfully transferred.", "All set!", "success");
+      else if (o.status) this.toast(r.name + " is partially transferred", null, "warning");
+    }
+    this.setState(s => {
+      const key = s.queue[s.qIdx];
+      const walk = Object.assign({}, s.walk, { [key]: walkPos });
+      const pStatus = Object.assign({}, s.pStatus);
+      if (o.status) pStatus[key] = o.status; else if (opts.finalize) pStatus[key] = "Skipped";
+      const done = o.complete ? Object.assign({}, s.done, { [key]: true }) : s.done;
+      const transferred = (s.transferred || 0) + (o.status === "Transferred" && !(s.done || {})[key] ? 1 : 0);
+      let next = targetIdx;
+      if (next == null) { next = -1; for (let i = s.qIdx + 1; i < s.queue.length; i++) if (!done[s.queue[i]]) { next = i; break; } }
+      const base = { committed: cmAll, done, pStatus, walk, transferred, serialStatus: {}, accSel: {}, leave: null };
+      if (next < 0) return Object.assign(base, { view: "list", queue: [], qIdx: 0, picked: {}, locOpen: false, panelOpen: false });
+      const w = walk[s.queue[next]];
+      return Object.assign(base, { qIdx: next, accBin: w ? w.bin : 0, locPicked: !!(w && w.picked), locOpen: !(w && w.picked), panelOpen: !(w && w.picked) });
+    });
+    window.scrollTo(0, 0);
+  }
+
+  acceptBinCount(rows) {
+    const r = rows[(this.state.queue || [])[this.state.qIdx]] || rows[0];
+    if (!r) return 0;
+    const n = parseFloat(String(r.remainingQty || r.qty)) || 0;
+    const c = n >= 1 ? Math.min(Math.floor(n), 10) : 1;
+    const base = this.state.sessionBase || {};
+    const all = this.layoutFor(r, n, c);
+    return new Set(all.map(l => l[0] + "-" + l[1])).size;
+  }
+
+  acceptProduct(rows) {
+    const q = this.state.queue || [];
+    const r = rows[q[this.state.qIdx]] || rows[0];
+    const parts = String(r.remainingQty || r.qty).split(" / ").map(p => { const m = p.match(/^([\d.]+)\s*(.*)$/); return m ? { n: parseFloat(m[1]), u: m[2] } : { n: 0, u: p }; });
+    const total = parts[0].n;
+    const count = total >= 1 ? Math.min(Math.floor(total), 10) : 1;
+    const fmt = x => String(Math.round(x * 100) / 100);
+    const unit0 = parts[0].u;
+    const qtyOf = n => parts.map((p, j) => { const v = total ? p.n * n / total : 0; return fmt(v) + " " + (j === 0 && v === 1 ? unit0.replace(/s$/, "") : p.u); }).join(" / ");
+    const layoutAll = this.layoutFor(r, total, count)
+      .map((l, i) => ({ door: l[0], bin: l[1], n: l[2], i }))
+      .sort((a, b) => Number(a.door) - Number(b.door) || String(a.bin).localeCompare(String(b.bin)) || a.i - b.i);
+    const baseCm = this.state.sessionBase || {};
+    const layoutRem = layoutAll.filter(l => !baseCm[r.key + "-" + l.i]);
+    const layout = layoutRem.length ? layoutRem : layoutAll;
+    const remTotal = layout.reduce((a, l) => a + l.n, 0);
+    const doors = Array.from(new Set(layoutAll.map(l => l.door)));
+    const bins = [];
+    layoutAll.forEach(l => { const k = l.door + "-" + l.bin; if (!bins.some(b => b.key === k)) bins.push({ key: k, door: l.door, bin: l.bin }); });
+    const binIdx = Math.min(Math.max(this.state.accBin || 0, 0), bins.length - 1);
+    const curBin = bins[binIdx];
+    const activeDoor = curBin.door;
+    const single = bins.length <= 1;
+    const picked = single || !!this.state.locPicked;
+    const locOpen = !single && !!this.state.locOpen;
+    const goBin = i => this.setState({ accBin: i, serialStatus: {}, accSel: {} });
+    const exps = ["01/30/2026", "06/11/2026", "08/14/2026", "05/23/2026", "11/07/2026"];
+    const st = this.state.serialStatus || {};
+    const cm = this.state.committed || {};
+    const sel = this.state.accSel || {};
+    const tally = { "--": 0, Accept: 0, Damaged: 0, "Damaged - Replacement Required": 0, "Not Received": 0, prior: 0 };
+    const base = this.state.sessionBase || {};
+    const doneStyle = { Accept: ["Accepted", "#008774"], Damaged: ["Damaged", "#D9342B"], "Damaged - Replacement Required": ["Damaged - Replacement Required", "#D9342B"], "Not Received": ["Not Received", "#64748B"] };
+    const serials = layout.slice().sort((a, b) => a.i - b.i).map(l => {
+      const i = l.i, id = r.key + "-" + i;
+      const c = cm[id];
+      const status = c ? c.status : (st[id] || "--");
+      tally[base[id] ? "prior" : status] += l.n;
+      const seed = String(parseInt(String(r.ndc).slice(-6), 10) * 7919 + i * 104729 + r.key * 31);
+      const loc = c ? c : (status !== "--" ? curBin : null);
+      return {
+        serial: (seed + "8392017465820391").slice(0, 16),
+        lot: (seed.split("").reverse().join("") + "293586344").slice(0, 9),
+        expiration: exps[(i + r.key) % 5],
+        source: r.source, n: l.n, qty: qtyOf(l.n),
+        id, status, pending: !c, isCommitted: !!c,
+        commitBin: c ? c.door + "-" + c.bin : null,
+        hasLoc: !!loc, noLoc: !loc, locDoor: loc ? loc.door : "", locBin: loc ? loc.bin : "",
+        doneLabel: c ? doneStyle[c.status][0] : "", doneColor: c ? doneStyle[c.status][1] : "#21252b",
+        checked: !c && !!sel[id],
+        boxBg: sel[id] ? "#095192" : "#ffffff",
+        boxBd: sel[id] ? "#095192" : "#bcc3cd",
+        selBd: status !== "--" ? "#095192" : "#ced4da",
+        onToggleSel: () => this.setState(s => ({ accSel: Object.assign({}, s.accSel, { [id]: !(s.accSel || {})[id] }) })),
+        onChange: e => { const v = e.target.value; this.setState(s => ({ serialStatus: Object.assign({}, s.serialStatus, { [id]: v }) })); }
+      };
+    });
+    const pendingRows = serials.filter(s => s.pending), doneRows = serials.filter(s => s.isCommitted);
+    const unitWord = unit0.replace(/s$/, "");
+    const locations = bins.map(b => {
+      const here = serials.filter(s => s.status !== "--" && (s.commitBin === b.key || (s.pending && b.key === curBin.key)));
+      const moved = here.filter(s => s.status === "Accept").reduce((a, s) => a + s.n, 0);
+      const issue = here.filter(s => s.status !== "Accept").reduce((a, s) => a + s.n, 0);
+      const inv = layout.filter(l => l.door + "-" + l.bin === b.key).reduce((a, l) => a + l.n, 0);
+      return { door: b.door, bin: b.bin, size: "1×1", expiration: exps[bins.indexOf(b) % 5], inventory: Math.round(inv * 100) / 100, moved: Math.round(moved * 100) / 100, issue: Math.round(issue * 100) / 100, doorType: "physical" };
+    });
+    const selKey = picked ? curBin.key : null;
+    const curLoc = locations[binIdx];
+    const needLoc = () => this.toast("Select a transfer location first", null, "warning");
+    const isLastBin = binIdx >= bins.length - 1;
+    const commitNow = () => {
+      const add = {};
+      pendingRows.forEach(s => { if (s.status !== "--") add[s.id] = { status: s.status, door: curBin.door, bin: curBin.bin }; });
+      return Object.assign({}, cm, add);
+    };
+    const hasUncommitted = pendingRows.some(s => s.status !== "--");
+    const productComplete = pendingRows.length === 0;
+    const allCommitted = c => serials.every(s => c[s.id]);
+    const walkHere = { bin: binIdx, picked };
+    const finalize = c => this.leaveTo(r, c, walkHere, null, { toast: true, finalize: true });
+    const onAccept = () => {
+      if (!hasUncommitted) return;
+      const c = commitNow();
+      if (isLastBin || allCommitted(c)) { finalize(c); return; }
+      const accN = pendingRows.filter(s => s.status === "Accept").reduce((a, s) => a + s.n, 0);
+      if (accN > 0) this.toast(fmt(accN) + " " + (accN === 1 ? unitWord : unitPl) + " accepted from the transfer.", null, "success");
+      this.setState({ committed: c, accBin: binIdx + 1, serialStatus: {}, accSel: {} });
+      window.scrollTo(0, 0);
+    };
+    const skipOk = picked && !productComplete && !hasUncommitted;
+    const onSkip = () => {
+      if (!skipOk) return;
+      if (isLastBin) { finalize(cm); return; }
+      goBin(binIdx + 1); window.scrollTo(0, 0);
+    };
+    const doBin = (i, c) => { this.setState({ committed: c, accBin: i, serialStatus: {}, accSel: {}, locPicked: true, locOpen: false, panelOpen: false, leave: null }); this.toast("Door " + bins[i].door + " is unlocked now", null, "success"); };
+    const doProduct = (i, c) => this.leaveTo(r, c, walkHere, i, { toast: false });
+    const leave = this.state.leave;
+    const runLeave = c => { if (!leave) return; if (leave.kind === "bin") doBin(leave.idx, c); else doProduct(leave.idx, c); };
+    const unitPl = unitWord === "each" ? "each" : unitWord + "s";
+    const isLast = !q.slice(this.state.qIdx + 1).some(k => !(this.state.done || {})[k]);
+    return {
+      name: r.name, desc: r.desc, chips: r.chips, ndc: r.ndc, invType: r.invType,
+      sendLoc: r.sendLoc, source: r.source, status: r.status, created: r.created,
+      unitLabel: unitWord.charAt(0).toUpperCase() + unitWord.slice(1) + (unitWord === "each" ? "" : "s"),
+      total: fmt(remTotal), accepted: fmt(tally.Accept), damaged: fmt(tally.Damaged + tally["Damaged - Replacement Required"]), notReceived: fmt(tally["Not Received"]),
+      rows: pendingRows.concat(doneRows),
+      picked, notPicked: !picked, locOpen,
+      onLocOpen: v => this.setState({ locOpen: !!v, panelOpen: !!v }),
+      hdrDoor: picked ? curBin.door : "--",
+      hdrBin: picked ? curBin.bin : "--",
+      hdrInv: picked && curLoc ? curLoc.inventory + " " + (curLoc.inventory === 1 ? unitWord : unitPl) : "--",
+      onUnlock: () => this.toast("Door " + curBin.door + " is unlocked now", null, "success"),
+      scanLocked: !picked,
+      scanBg: picked ? "#ffffff" : "#F3F5F7",
+      scanGlyph: picked ? "#6b7480" : "#BCC3CD",
+      scanBtn: picked ? "#095192" : "#9FA9B7",
+      scanCursor: picked ? "text" : "not-allowed",
+      onScanFocus: e => { if (!picked) { e.target.blur(); needLoc(); } },
+      onScan: () => { if (!picked) needLoc(); },
+      activeDoor,
+      onSkip,
+      skipDisabled: !skipOk,
+      cancelDisabled: hasUncommitted,
+      cancelFg: hasUncommitted ? "#BCC3CD" : "#095192",
+      cancelBd: hasUncommitted ? "#DADEE3" : "#095192",
+      cancelCursor: hasUncommitted ? "not-allowed" : "pointer",
+      cancelHover: hasUncommitted ? "#ffffff" : "rgba(9,81,146,0.06)",
+      onCancel: () => { if (!hasUncommitted) this.setState({ confirmClose: true }); },
+      skipFg: skipOk ? "#095192" : "#BCC3CD",
+      skipBd: skipOk ? "#095192" : "#DADEE3",
+      skipCursor: skipOk ? "pointer" : "not-allowed",
+      skipHover: skipOk ? "rgba(9,81,146,0.06)" : "#ffffff",
+      acceptDisabled: !hasUncommitted,
+      accFg: hasUncommitted ? "#ffffff" : "#BCC3CD",
+      accBg: hasUncommitted ? "#095192" : "#F3F5F7",
+      accBd: hasUncommitted ? "#095192" : "#DADEE3",
+      accCursor: hasUncommitted ? "pointer" : "not-allowed",
+      accHover: hasUncommitted ? "#073f73" : "#F3F5F7",
+      leaveOpen: !!leave,
+      leaveTitle: leave && leave.kind === "product" ? "Save changes to this product?" : "Save changes to this bin?",
+      leaveBody: leave && leave.kind === "product" ? "You've made some changes to this product. Do you want to save them before switching, or discard them?" : "You've made some changes in the current bin. Do you want to save them before switching, or discard them?",
+      leaveStay: () => this.setState({ leave: null }),
+      leaveDiscard: () => runLeave(cm),
+      leaveSave: () => runLeave(commitNow()),
+      ...(() => {
+        const openIds = pendingRows.map(s => s.id);
+        const selIds = openIds.filter(id => sel[id]);
+        const all = openIds.length > 0 && selIds.length === openIds.length;
+        const resetOk = selIds.some(id => (st[id] || "--") !== "--");
+        const acceptOk = selIds.some(id => st[id] !== "Accept");
+        const bulk = v => () => { if (!selIds.length || (v === "--" && !resetOk) || (v === "Accept" && !acceptOk)) return; this.setState(s => { const ns = Object.assign({}, s.serialStatus); selIds.forEach(id => { ns[id] = v; }); return { serialStatus: ns, accSel: {} }; }); };
+        return {
+          allChecked: all,
+          allBoxBg: all ? "#095192" : "#ffffff",
+          allBoxBd: all ? "#095192" : "#bcc3cd",
+          allCursor: openIds.length ? "pointer" : "default",
+          toggleAllSel: () => this.setState(s => { const n = Object.assign({}, s.accSel); openIds.forEach(id => { n[id] = !all; }); return { accSel: n }; }),
+          bulkOpacity: selIds.length ? 1 : 0.5,
+          bulkCursor: selIds.length ? "pointer" : "not-allowed",
+          resetOpacity: resetOk ? 1 : 0.5,
+          acceptSelOpacity: acceptOk ? 1 : 0.5,
+          acceptSelCursor: acceptOk ? "pointer" : "not-allowed",
+          resetCursor: resetOk ? "pointer" : "not-allowed",
+          acceptSelected: bulk("Accept"),
+          resetSelected: bulk("--")
+        };
+      })(),
+      multiDoor: doors.length > 1,
+      doorNote: "This product is stored in " + doors.length + " doors. Only the open door's bins can be accepted — switch doors to accept items stored elsewhere.",
+      locations,
+      locKey: selKey,
+      onLocSelect: l => { const i = bins.findIndex(b => b.key === l.door + "-" + l.bin); if (i < 0) return; if (hasUncommitted && i !== binIdx) this.setState({ leave: { kind: "bin", idx: i }, locOpen: false, panelOpen: false }); else doBin(i, cm); },
+      onAccept: picked ? onAccept : needLoc,
+      unitWord: unitPl,
+      locStats: [
+        { label: "NDC", value: r.ndc },
+        { label: "Inventory type", value: r.invType },
+        { label: "Transfer quantity", value: fmt(remTotal) + " " + (Number(fmt(remTotal)) === 1 ? unitWord : unitPl) },
+        { label: "Verified Qty", value: fmt(remTotal - tally["--"] - tally.prior) + " " + (Number(fmt(remTotal - tally["--"] - tally.prior)) === 1 ? unitWord : unitPl) }
+      ],
+      queueProducts: q.map(k => {
+        const p = rows[k];
+        const pn = parseFloat(String(p.qty)) || 0;
+        const c = pn >= 1 ? Math.min(Math.floor(pn), 10) : 1;
+        const doors = Array.from(new Set(this.layoutFor(p, pn, c).map(x => Number(x[0])))).sort((a, b) => a - b);
+        const ps = (this.state.pStatus || {})[k];
+        return { id: String(k), name: p.name, ndc: p.ndc, tag: (p.chips[0] || {}).label, doors,
+          status: ps || ((this.state.done || {})[k] ? "Transferred" : "Pending") };
+      }),
+      curId: String(q[this.state.qIdx]),
+      onProductSelect: p => { const i = q.indexOf(Number(p.id)); if (i < 0 || i === this.state.qIdx) return; if (hasUncommitted) this.setState({ leave: { kind: "product", idx: i }, panelOpen: false }); else doProduct(i, cm); },
+      position: (this.state.qIdx + 1) + "/" + (q.length || 1),
+      transferred: this.state.transferred || 0,
+      acceptLabel: isLastBin && isLast ? "Accept and finish" : "Accept and continue",
+      skipLabel: isLastBin && isLast ? "Skip & finish" : "Skip & continue"
+    };
+  }
+
+  dsChips() {
+    const NS = window.AllyUIDesignSystem_f878db;
+    if (!NS || !NS.TopNavChip) {
+      if (!this._dsWait) {
+        this._dsWait = setInterval(() => {
+          if (window.AllyUIDesignSystem_f878db) { clearInterval(this._dsWait); this._dsWait = null; this.forceUpdate(); }
+        }, 100);
+      }
+      return null;
+    }
+    const C = NS.TopNavChip, noop = () => {};
+    const rule = k => React.createElement(NS.TopNavDivider, { key: k });
+    return [
+      React.createElement(C, { key: "org", iconName: "building", onClick: noop }, "Onco Demo"),
+      rule("d1"),
+      React.createElement(C, { key: "clinic", iconName: "marker", onClick: noop }, "Onco Clinic Center"),
+      rule("d2"),
+      React.createElement(C, { key: "station", iconName: "box" }, "Onco Station")
+    ];
+  }
+
+
+  sortIcon(key) {
+    const active = this.state.sortKey === key;
+    const dir = this.state.sortDir;
+    const e = React.createElement;
+    const stroke = { stroke: "currentColor", strokeWidth: 1.2, strokeLinecap: "round" };
+    const props = { width: 12, height: 12, viewBox: "0 0 12 12", fill: "none", style: { color: active ? "#095192" : "#25282a", flexShrink: 0 } };
+    if (key === "name") {
+      const up = active && dir === "desc" ? "M9 1.5V10M9 10 7.2 8.2M9 10l1.8-1.8" : "M9 10.5V2M9 2 7.2 3.8M9 2l1.8 1.8";
+      return e("span", {
+        style: { display: "inline-flex", alignItems: "center", gap: "2px", color: active ? "#095192" : "#25282a", flexShrink: 0 }
+      }, [
+        e("svg", Object.assign({ key: "s" }, props, { style: { color: "inherit", flexShrink: 0 } }), e("path", Object.assign({ key: "p", d: up }, stroke))),
+        e("span", { key: "t", style: { fontSize: "11px", fontWeight: 600, letterSpacing: "0.2px", lineHeight: 1 } }, active && dir === "desc" ? "Z-A" : "A-Z")
+      ]);
+    }
+    if (!active) {
+      return e("svg", props, e("path", Object.assign({ key: "p", d: "M3 2v8M3 10 1.5 8.4M3 10l1.5-1.6M9 10V2M9 2 7.5 3.6M9 2l1.5 1.6" }, stroke)));
+    }
+    const arrow = dir === "asc" ? "M3.5 10.5V2M3.5 2 1.5 4M3.5 2l2 2" : "M3.5 1.5V10M3.5 10 1.5 8M3.5 10l2-2";
+    const bars = dir === "asc" ? ["M7 3.5h2", "M7 6h3", "M7 8.5h4"] : ["M7 3.5h4", "M7 6h3", "M7 8.5h2"];
+    return e("svg", props, [
+      e("path", Object.assign({ key: "a", d: arrow }, stroke)),
+      bars.map((d, i) => e("path", Object.assign({ key: "b" + i, d: d }, stroke)))
+    ]);
+  }
+
+  detailProduct(rows) {
+    const p = this.state.selected === null ? rows[0] : rows[this.state.selected];
+    const num = v => { const m = String(v).match(/-?\d+(\.\d+)?/); return m ? parseFloat(m[0]) : 0; };
+    const empty = num(p.inventory) === 0;
+    const unit = String(p.inventory).replace(/[\d.\s-]+/g, "") || p.unit || "vials";
+    const total = empty ? 0 : num(p.inventory);
+    const dashStrength = String(p.strength || "").replace(/[\d.]+/g, "--");
+    const plan = p.plan || [];
+    const planTotal = plan.reduce((a, x) => a + x.n, 0) || 1;
+
+    // distribute the product's on-hand quantity across its locations
+    const alloc = [];
+    let left = total;
+    plan.forEach((x, i) => {
+      const share = i === plan.length - 1 ? left : (total < 1 ? (i ? 0 : total) : Math.round(total * x.n / planTotal));
+      left = Math.round((left - share) * 100) / 100;
+      alloc.push(Object.assign({}, x, { qtyNum: Math.max(0, Math.round(share * 100) / 100) }));
+    });
+
+    const lots = [];
+    alloc.forEach((a, ai) => {
+      const whole = a.qtyNum >= 1 ? Math.floor(a.qtyNum) : (a.qtyNum > 0 ? 1 : 0);
+      for (let i = 0; i < whole; i++) {
+        const q = a.qtyNum >= 1 ? 1 : a.qtyNum;
+        lots.push({
+          serial: String((p.serial || 10000000) + ai * 100 + i),
+          lot: String(p.lot),
+          expiration: p.expiration,
+          expired: p.expired && ai === 0 && i === 0,
+          restocked: p.restocked,
+          source: a.source,
+          door: a.door,
+          bin: a.bin,
+          qtyLabel: q + " " + (q === 1 ? unit.replace(/s$/, "") : unit) + " / " + p.strength
+        });
+      }
+    });
+
+    const derivedLocs = (empty ? plan : alloc.filter(a => a.qtyNum > 0)).map((a, i) => ({
+      id: "l" + i, door: a.door, bin: a.bin,
+      qty: empty ? "-- " + unit : a.qtyNum + " " + (a.qtyNum === 1 ? unit.replace(/s$/, "") : unit)
+    }));
+
+    const checked = this.state.checkedLocs;
+    const on = id => checked[id] !== false;
+    const locs = derivedLocs.map(l => Object.assign({}, l, {
+      checked: on(l.id),
+      boxBg: on(l.id) ? "#095192" : "#ffffff",
+      boxBd: on(l.id) ? "#095192" : "#ced4da",
+      tickOpacity: on(l.id) ? 1 : 0,
+      toggle: () => this.setState(s => ({ checkedLocs: Object.assign({}, s.checkedLocs, { [l.id]: s.checkedLocs[l.id] === false }) }))
+    }));
+    const picked = locs.filter(l => l.checked).length;
+    const multi = locs.length > 1;
+    const isAlimta = /^ALIMTA/.test(p.name);
+    const ids = i => {
+      const seed = String(parseInt(String(p.ndc).slice(-6), 10) * 7919 + i * 104729 + p.key * 31);
+      return { serial: (seed + "8392017465820391").slice(0, 16), lot: (seed.split("").reverse().join("") + "293586344").slice(0, 9) };
+    };
+    const exps = ["01/30/2026", "06/11/2026", "08/14/2026", "05/23/2026", "11/07/2026"];
+    const perVial = "1 vial / 500 mg / 50 mL";
+    const allRows = isAlimta
+      ? this.layoutFor(p).map((l, i) => Object.assign(ids(i), { expiration: exps[(i + p.key) % 5], expired: false, door: l[0], bin: l[1], qtyLabel: perVial }))
+      : lots.map((l, i) => Object.assign(ids(i), { expiration: l.expiration, expired: l.expired, door: l.door, bin: l.bin, qtyLabel: l.qtyLabel }));
+    const cmAll = this.state.committed || {};
+    const reasonTone = { Damaged: "#D9342B", "Damaged - Replacement Required": "#D9342B", "Not Received": "#64748B" };
+    const withCm = allRows.map((x, i) => { const c = cmAll[p.key + "-" + i]; return c ? Object.assign({}, x, { door: c.door, bin: c.bin, cmStatus: c.status, reason: c.status === "Accept" ? "" : c.status, reasonBg: reasonTone[c.status] || "#64748B" }) : x; });
+    const remaining = withCm.filter(x => !x.cmStatus);
+    const transferredRows = (isAlimta ? [Object.assign(ids(7), { expiration: "10/30/2025", expired: true, door: "1", bin: "A1", qtyLabel: perVial })] : [])
+      .concat(withCm.filter(x => x.cmStatus === "Accept"));
+    const notRows = withCm.filter(x => x.cmStatus && x.cmStatus !== "Accept");
+    const dTab = this.state.detailTab || "remaining";
+    const tabDefs = [["remaining", "Remaining", remaining.length], ["transferred", "Transferred", transferredRows.length], ["not", "Not Transferred", notRows.length]];
+    const tabs = tabDefs.map(([id, label, count]) => ({
+      label, count, hasCount: count > 0,
+      weight: dTab === id ? 600 : 400,
+      color: dTab === id ? "#095192" : "#4b5563",
+      shadow: dTab === id ? "inset 0 -3px 0 #095192" : "none",
+      select: () => this.setState({ detailTab: id })
+    }));
+    const tabRows = (dTab === "remaining" ? remaining : dTab === "transferred" ? transferredRows : notRows).map(x => Object.assign({ source: p.source }, x));
+    const plan0 = plan[0] || {};
+    return Object.assign({}, p, {
+      door: plan0.door || "--",
+      bin: plan0.bin || "--",
+      sendLocFull: p.sendLoc,
+      createdBy: "User Super",
+      tabs, tabRows, showReason: dTab === "not",
+      tabEmpty: tabRows.length === 0,
+      tabEmptyText: dTab === "transferred" ? "No products transferred yet." : dTab === "not" ? "No products marked as not transferred." : "No remaining products.",
+      transferQty: isAlimta ? 8 : Math.round(total),
+      verifiedQty: transferredRows.length,
+      qtyUnit: /vial/.test(p.qty) ? "vials" : "each",
+      isEmpty: empty,
+      hasStock: !empty,
+      qty: empty ? "-- " + unit + " / " + dashStrength : p.inventory + " / " + p.strength,
+      received: "-- " + unit + " / " + dashStrength,
+      lots: lots,
+      hasLots: lots.length > 0,
+      noLots: lots.length === 0,
+      locations: locs,
+      locCount: locs.length,
+      multiLocation: multi,
+      singleLocation: !multi,
+      singleLocLabel: locs.length ? "Door " + locs[0].door + " · " + locs[0].bin : "--",
+      unallocLabel: multi
+        ? (picked ? "Unallocate " + picked + (picked === 1 ? " location" : " locations") : "Unallocate")
+        : "Unallocate",
+      unallocReady: picked > 0,
+      unallocBg: picked > 0 ? "#095192" : "#b9c6d5",
+      unallocCursor: picked > 0 ? "pointer" : "default"
+    });
+  }
+
+  sorter(key) {
+    return () => this.setState(s => ({
+      sortKey: key,
+      sortDir: s.sortKey === key && s.sortDir === "asc" ? "desc" : "asc"
+    }));
+  }
+
+  compare(a, b, key) {
+    const num = v => {
+      const m = String(v).match(/-?\d+(\.\d+)?/);
+      return m ? parseFloat(m[0]) : null;
+    };
+    const na = num(a[key]), nb = num(b[key]);
+    const numericKeys = { inventory: 1, qty: 1, ndc: 1 };
+    if (key === "created") { const d = s => { const p = String(s).split("/"); return p[2] + p[0] + p[1]; }; return d(a[key]).localeCompare(d(b[key])); }
+    if (numericKeys[key] && na !== null && nb !== null) return na - nb;
+    if (numericKeys[key] && (na === null) !== (nb === null)) return na === null ? 1 : -1;
+    return String(a[key]).localeCompare(String(b[key]));
+  }
+  renderVals() {
+    const data = [["ALIMTA 500 MG VIAL","pemetrexed disodium 500 mg intravenous powder for solution",["SDV"],"00002762301","Poly Medicure Ltd","8 vials / 4000 mg / 400 mL","02/14/2025","In-Progress"],["GAMMAGARD LIQUID 10% VIAL 2.5 g 25 mL","immune glob,gamma (IgG) 10 %-gly-IgA over 50 mcg/mL injection solution",["MDV","CLIMATE","PACK","NON SERIALIZED"],"00944270003","Poly Medicure Ltd","6 vials / 15000 mg / 150 mL","02/11/2025","Submitted"],["AVASTIN 400 MG/16 ML VIAL","bevacizumab 400 mg/16 mL intravenous solution",["SDV"],"50242006001","Genentech","3 vials / 1200 mg / 48 mL","02/10/2025","Submitted"],["CARBOPLATIN 450 MG/45 ML VIAL","carboplatin 10 mg/mL intravenous solution",["MDV"],"00703424901","Teva","10 vials / 4500 mg / 450 mL","02/09/2025","Submitted"],["BOTOX 100 UNIT VIAL","onabotulinumtoxinA 100 unit solution for injection",["MDV-WNB","CLIMATE","CIV"],"00023114501","CuraScript SD","4 vials / 400 unit","02/07/2025","Submitted"],["EYLEA 2 MG/0.05 ML SYRINGE","aflibercept 2 mg/0.05 mL intravitreal syringe",["SDV"],"61755000501","Hercules","5 each / 10 mg / 0.25 mL","02/06/2025","Submitted"]];
+    const num = v => { const m = String(v).match(/-?\d+(\.\d+)?/); return m ? parseFloat(m[0]) : 0; };
+    const detailBy = {
+      ALIMTA: { strength: "500 mg/ 50 mL", unit: "vials", remainingQty: "7 vials / 3500 mg / 350 mL", transferredN: 1, serial: 91240377, lot: "884120", expiration: "10/30/2025", expired: true, restocked: "02/14/2025", plan: [{ door: "1", bin: "MyBin 1", n: 1, source: "Poly Medicure Ltd" }] },
+      GAMMAGARD: { strength: "2500 mg/ 25 mL", unit: "vials", serial: 70345518, lot: "551377", expiration: "09/30/2026", expired: false, restocked: "02/07/2025", plan: [{ door: "3", bin: "My Bin 2", n: 1, source: "Poly Medicure Ltd" }] },
+      BOTOX: { strength: "100 unit", unit: "vials", serial: 44190822, lot: "119827", expiration: "07/31/2026", expired: false, restocked: "02/07/2025", plan: [{ door: "2", bin: "My Bin 4", n: 1, source: "CuraScript SD" }] },
+      AVASTIN: { strength: "400 mg/ 16 mL", unit: "vials", serial: 52180344, lot: "730915", expiration: "12/31/2026", expired: false, restocked: "02/10/2025", plan: [{ door: "4", bin: "My Bin 5", n: 1, source: "Genentech" }] },
+      CARBOPLATIN: { strength: "450 mg/ 45 mL", unit: "vials", serial: 61407729, lot: "318264", expiration: "03/31/2027", expired: false, restocked: "02/09/2025", plan: [{ door: "5", bin: "My Bin 6", n: 1, source: "Teva" }] },
+      EYLEA: { strength: "2 mg/ 0.05 mL", unit: "each", serial: 38220144, lot: "402118", expiration: "01/31/2027", expired: false, restocked: "02/06/2025", plan: [{ door: "1", bin: "My Bin 3", n: 1, source: "Hercules" }] }
+    };
+    const rows = data.map((r, idx) => Object.assign({}, detailBy[r[0].split(" ")[0]], {
+      key: idx, name: r[0], desc: r[1], chips: r[2].map(c => this.chip(c)),
+      ndc: r[3], source: r[4], invType: "Purchased", sendLoc: "Onco Station",
+      qty: r[5], qtyShort: r[5].split(" / ")[0], inventory: r[5], created: r[6], status: r[7],
+      statusBg: r[7] === "Submitted" ? "#008774" : r[7] === "In-Progress" ? "#EEC038" : "#3b83f7",
+      statusFg: r[7] === "In-Progress" ? "#25282A" : "#ffffff",
+      itemType: "Medication", hcpcs: "", parMin: "--", parMax: "--", isBelowPar: false,
+      received: "-- each / -- mg",
+      hasInfo: r[7] === "In-Progress" || idx % 3 === 1,
+      infoText: r[7] === "In-Progress" ? "Transfer partially completed" : "Quantity differs from the original allocation",
+      open: e => { if (e) e.stopPropagation(); this.setState({ view: "detail", selected: idx, openPar: null, detailTab: "remaining" }); }
+    }));
+
+    const byCode = {};
+    rows.forEach(r => {
+      const g = byCode[r.hcpcs] || (byCode[r.hcpcs] = { code: r.hcpcs, total: 0, unit: "vials", min: 0, max: 0, items: [] });
+      g.total += num(r.inventory);
+      g.unit = String(r.inventory).replace(/[\d.\s-]+/g, "") || g.unit;
+      if (r.parMin !== "--") g.min = Math.max(g.min, num(r.parMin));
+      if (r.parMax !== "--") g.max = Math.max(g.max, num(r.parMax));
+      g.items.push({ name: r.name, desc: r.desc, chips: r.chips, inventory: r.inventory, isBelowPar: r.isBelowPar });
+    });
+    rows.forEach(r => {
+      const g = byCode[r.hcpcs];
+      const short = Math.max(0, g.min - g.total);
+      r.parRangeShort = (g.min || "--") + " - " + (g.max || "--");
+      r.statusLabel = short > 0 ? "Below PAR" : "In PAR";
+      r.isBelowPar = short > 0;
+      r.parOpen = this.state.openPar === r.key;
+      r.onBelowPar = e => {
+        e.stopPropagation();
+        let flip = false, maxH = Math.round(window.innerHeight * 0.62);
+        const t = e.currentTarget;
+        if (t && t.getBoundingClientRect) {
+          const bar = [].slice.call(document.querySelectorAll("*")).find(el => {
+            const cs = getComputedStyle(el);
+            const b = el.getBoundingClientRect();
+            return cs.position === "sticky" && b.width > 200 && b.height > 0 && b.height < 120;
+          });
+          const navBottom = (bar ? bar.getBoundingClientRect().bottom : 60) + 16;
+          const rect = t.getBoundingClientRect();
+          const est = Math.min(window.innerHeight * 0.62, 150 + g.items.length * 92);
+          const availAbove = rect.top - navBottom - 20;
+          const availBelow = window.innerHeight - rect.bottom - 40;
+          flip = availBelow < est && availAbove > availBelow;
+          maxH = Math.max(160, Math.round(Math.min(est, flip ? availAbove : availBelow)));
+        }
+        this.setState(s => ({ openPar: s.openPar === r.key ? null : r.key, parFlip: flip, parMaxH: maxH }));
+      };
+      r.popShift = this.state.parFlip ? "translateY(calc(-100% - 46px))" : "none";
+      r.popMaxH = (this.state.parMaxH || Math.round(window.innerHeight * 0.62)) + "px";
+      r.arrowTop = this.state.parFlip ? "auto" : "-7px";
+      r.arrowBottom = this.state.parFlip ? "-7px" : "auto";
+      r.arrowShadow = this.state.parFlip ? "1px 1px 0 rgba(16,24,40,0.06)" : "-1px -1px 0 rgba(16,24,40,0.06)";
+      r.closePar = e => { e.stopPropagation(); this.setState({ openPar: null }); };
+      r.pop = {
+        code: g.code,
+        total: g.total + " " + g.unit,
+        parRange: g.min + " – " + g.max + " " + g.unit,
+        minLabel: g.min || "--",
+        maxLabel: g.max || "--",
+        count: g.items.length,
+        items: g.items.map(it => Object.assign({}, it, it.isBelowPar
+          ? { pillLabel: "Below PAR", pillBg: "#ffffff", pillFg: "#6b7480", pillBd: "#d6dbe1" }
+          : { pillLabel: "In PAR", pillBg: "#10967b", pillFg: "#ffffff", pillBd: "#10967b" })),
+        shortfall: short > 0 ? short + " " + g.unit + " below HCPCS PAR minimum" : "At or above HCPCS PAR minimum",
+        shortColor: short > 0 ? "#d32f2f" : "#2e7d32"
+      };
+    });
+    const live = rows.filter(r => !(this.state.done || {})[r.key]);
+    const shown = this.state.belowPar ? live.filter(r => r.isBelowPar) : live;
+    const key = this.state.sortKey;
+    const sorted = shown.slice().sort((a, b) => this.compare(a, b, key) * (this.state.sortDir === "desc" ? -1 : 1));
+    const unallocRows = [
+      { name: "ONDANSETRON HCL 4 MG/2 ML VIAL", desc: "ondansetron HCl (PF) 4 mg/2 mL injection solution", chips: ["SDV", "PACK"].map(c => this.chip(c)), ndc: "60505613005", source: "AmerisourceBergen", invType: "Purchased", sendLoc: "Onco Station", qty: "1 vials / 4 mg / 2 mL", created: "10/22/2025", status: "Submitted" },
+      { name: "RUXIENCE 500 MG/50 ML VIAL", desc: "rituximab-pvvr 10 mg/mL intravenous solution", chips: ["SDV"].map(c => this.chip(c)), ndc: "00069024901", source: "McKesson Corporation", invType: "Purchased", sendLoc: "Badri Station-Virtual", qty: "1 vials / 500 mg / 50 mL", created: "08/06/2025", status: "Submitted" }
+    ].map((u, i) => Object.assign(u, { tipOpen: this.state.tipIdx === i, tipShow: () => this.setState({ tipIdx: i }), tipHide: () => this.setState({ tipIdx: null }) }));
+    const pk = this.state.picked || {};
+    const guided = this.props.guidedWorkflow ?? false;
+    const noop = () => {};
+    sorted.forEach(r => {
+      const on = !!pk[r.key];
+      r.showChevron = !guided;
+      r.rowCursor = guided ? "pointer" : "default";
+      r.nameCursor = "pointer";
+      r.rowBg = on ? "#f5f9fe" : "#ffffff";
+      r.boxBg = on ? "#095192" : "#ffffff";
+      r.boxBd = on ? "#095192" : "#bcc3cd";
+      r.tickOpacity = on ? 1 : 0;
+      r.toggleSel = e => { if (e) e.stopPropagation(); this.setState(s => ({ picked: Object.assign({}, s.picked, { [r.key]: !(s.picked || {})[r.key] }) })); };
+      r.rowClick = guided ? r.toggleSel : noop;
+      r.nameClick = guided ? r.toggleSel : r.open;
+      r.chevClick = guided ? noop : r.open;
+    });
+    const nSel = sorted.filter(r => pk[r.key]).length;
+    const all = nSel > 0 && nSel === sorted.length;
+    const sel = {
+      allBoxBg: nSel ? "#095192" : "#ffffff",
+      allBoxBd: nSel ? "#095192" : "#bcc3cd",
+      allTick: all ? 1 : 0,
+      allDash: nSel && !all ? 1 : 0,
+      toggleAll: () => this.setState(() => {
+        const next = {};
+        if (!all) sorted.forEach(r => { next[r.key] = true; });
+        return { picked: next };
+      }),
+      noneSelected: nSel === 0,
+      selectedLabel: nSel ? nSel + (nSel === 1 ? " product selected" : " products selected") : "",
+      startBg: nSel ? "#095192" : "#b9c6d5",
+      startCursor: nSel ? "pointer" : "default"
+    };
+    const sortKeys = ["name", "ndc", "source", "invType", "sendLoc", "qty", "created", "status"];
+    const icons = {}, handlers = {};
+    sortKeys.forEach(k => {
+      icons["icon_" + k] = this.sortIcon(k);
+      handlers["sort_" + k] = this.sorter(k);
+    });
+    return Object.assign(icons, handlers, sel, {
+      unallocRows: unallocRows,
+      unallocCount: unallocRows.length,
+      rows: sorted,
+      belowPar: this.state.belowPar,
+      count: shown.length,
+      showingLabel: "Showing 1 to " + shown.length + " of " + shown.length + " items",
+      topChips: this.dsChips(),
+      isList: this.state.view === "list",
+      isDetail: this.state.view === "detail",
+      isAccept: this.state.view === "accept",
+      barZ: this.state.panelOpen && (this.state.view !== "accept" || this.acceptBinCount(rows) > 1 || !this.state.locOpen) ? 5000 : 30,
+      onPanelOpen: v => this.setState({ panelOpen: !!v }),
+      acc: this.acceptProduct(rows),
+      toastOpen: !!this.state.toast,
+      toastText: this.state.toast,
+      toastTitle: this.state.toastTitle,
+      toastHasTitle: !!this.state.toastTitle,
+      toastIconTop: this.state.toastTitle ? "9px" : "0px",
+      toastAlign: this.state.toastTitle ? "flex-start" : "center",
+      toastBtnTop: this.state.toastTitle ? "4px" : "0px",
+      toastBg: this.state.toastTone === "warning" ? "#EFDABB" : "#dff3ef",
+      toastAccent: this.state.toastTone === "warning" ? "#A36E1E" : "#008774",
+      closeToast: () => { clearTimeout(this._toastT); this.setState({ toast: null }); },
+      startTransfer: () => { if (!nSel) return; this.setState({ view: "accept", queue: sorted.filter(r => pk[r.key]).map(r => r.key), qIdx: 0, serialStatus: {}, sessionBase: Object.assign({}, this.state.committed), accBin: 0, accSel: {}, transferred: 0, skipped: {}, pStatus: {}, walk: {}, leave: null, locPicked: false, locOpen: true, panelOpen: true }); window.scrollTo(0, 0); },
+      skipProduct: () => this.setState({ confirmSkip: true }),
+      goNewTransfer: () => { window.location.href = "New Transfer.dc.html"; },
+      goHistory: () => { window.location.href = "Transfer History.dc.html"; },
+      confirmSkipOpen: !!this.state.confirmSkip,
+      staySkip: () => this.setState({ confirmSkip: false }),
+      confirmSkip: () => { this.setState({ confirmSkip: false }); this.advance(false); },
+      acceptProduct: () => this.advance(true),
+      closeAccept: () => this.setState({ confirmClose: true }),
+      confirmCloseOpen: !!this.state.confirmClose,
+      stayAccept: () => this.setState({ confirmClose: false }),
+      stopProp: e => e.stopPropagation(),
+      confirmClose: () => { this.setState({ confirmClose: false, view: "list", queue: [], qIdx: 0, picked: {}, serialStatus: {}, accSel: {}, leave: null, locOpen: false, panelOpen: false });
+        const base = this.state.sessionBase || {}, cmNow = this.state.committed || {};
+        const savedKeys = Array.from(new Set(Object.keys(cmNow).filter(id => !base[id]).map(id => Number(id.split("-")[0]))));
+        if (savedKeys.length) this.toast(savedKeys.map(k => rows[k].name).join(", ") + " transfer saved successfully.", null, "success");
+        else this.toast("Transfer process cancelled", null, "warning"); },
+      product: this.detailProduct(rows),
+      unallocOpen: this.state.unalloc,
+      openUnalloc: () => this.setState({ unalloc: true, openPar: null }),
+      closeUnalloc: () => this.setState({ unalloc: false, checkedLocs: {} }),
+      confirmUnalloc: () => this.setState({ unalloc: false, checkedLocs: {} }),
+      backToList: () => this.setState({ view: "list", selected: null, unalloc: false, checkedLocs: {} }),
+      toggleBelowPar: () => this.setState(s => ({ belowPar: !s.belowPar })),
+      reset: () => this.setState({ belowPar: false, sortKey: "name", sortDir: "asc", openPar: null })
+    });
+  }
+}
+</script>
+</body>
+</html>

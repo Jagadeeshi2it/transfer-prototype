@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./_bundle.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/colors_and_type.css">
+<link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/components.css">
+<link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/tokens/fig-tokens.css">
+<link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/styles.css">
+<script src="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/_ds_bundle.js"></script>
+</helmet>
+<x-import component-from-global-scope="AllyUIDesignSystem_f878db.SideNav" version="{{ version }}" hint-size="70px,100vh" style="position: sticky; top: 0; align-self: flex-start; height: 100vh; z-index: 80;">
+  <sc-for list="{{ items }}" as="it" hint-placeholder-count="11">
+    <x-import component-from-global-scope="AllyUIDesignSystem_f878db.SideNavItem" label="{{ it.label }}" icon-name="{{ it.icon }}" selected="{{ it.selected }}" expandable="{{ it.expandable }}" hint-size="70px,50px"></x-import>
+  </sc-for>
+</x-import>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0e243f"></rect><rect x="30" y="24" width="40" height="6" rx="3" fill="#ffffff"></rect><rect x="30" y="38" width="40" height="6" rx="3" fill="#6b87a8"></rect><rect x="30" y="52" width="40" height="6" rx="3" fill="#6b87a8"></rect><rect x="30" y="66" width="40" height="6" rx="3" fill="#6b87a8"></rect></svg></template>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:70,&quot;height&quot;:760},&quot;selected&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Inventory&quot;,&quot;options&quot;:[&quot;Dispense&quot;,&quot;Order&quot;,&quot;Restock&quot;,&quot;Audit&quot;,&quot;Inventory&quot;,&quot;Formulary&quot;,&quot;Patient&quot;,&quot;Transfer&quot;,&quot;Reporting&quot;,&quot;Station&quot;,&quot;User&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;version&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;V 1.0&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const sel = this.props.selected ?? "Inventory";
+    const defs = [
+      ["Dispense"], ["Order"], ["Restock"], ["Audit"],
+      ["Inventory", true], ["Formulary"], ["Patient"], ["Transfer"],
+      ["Reporting"], ["Station"], ["User", true]
+    ];
+    return {
+      version: this.props.version ?? "V 1.0",
+      items: defs.map(([label, expandable]) => ({
+        label, icon: label, expandable: !!expandable, selected: label === sel
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

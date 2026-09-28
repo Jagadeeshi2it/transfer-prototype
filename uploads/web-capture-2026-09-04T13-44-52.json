@@ -1,0 +1,55 @@
+[
+  {
+    "id": "cap_mtn09ay9_9vt36g",
+    "selector": "div.flex",
+    "label": "Preferred External Order Required NDC To…",
+    "tag": "div",
+    "url": "https://app.dev.allygpo.com/new-orders/product-catalog?stationId=252",
+    "title": "AllyIQ",
+    "timestamp": "2026-09-04T13:44:14.002Z",
+    "innerText": "Preferred\nExternal Order Required\nNDC Total: 19 vials\nIn Draft Order: 25 vials\nView More",
+    "outerHTML": "<div class=\"flex justify-content-between align-items-center py-3\"><div class=\"pl-3\"><div class=\"flex gap-2\"><span class=\"p-tag-steel-200 text-small-regular px-2 py-1 p-tag p-component\" data-pc-name=\"tag\" data-pc-section=\"root\"><span class=\"p-tag-value\" data-pc-section=\"value\">Preferred</span><span></span></span><span class=\"p-tag-steel-200 text-small-regular px-2 py-1 p-tag p-component\" data-pc-name=\"tag\" data-pc-section=\"root\"><span class=\"p-tag-value\" data-pc-section=\"value\">External Order Required</span><span></span></span><span class=\"p-tag-steel-200 text-small-regular px-2 py-1 p-tag p-component\" data-pc-name=\"tag\" data-pc-section=\"root\"><span class=\"p-tag-value\" data-pc-section=\"value\">NDC Total: 19 vials</span><span></span></span><span class=\"p-tag-steel-200 text-small-regular px-2 py-1 p-tag p-component\" data-pc-name=\"tag\" data-pc-section=\"root\"><span class=\"p-tag-value\" data-pc-section=\"value\">In Draft Order: 25 vials</span><span></span></span></div></div><button aria-label=\"View More\" class=\"font-bold link-button text-small-light pr-3 p-button p-component p-button-link\" data-testid=\"\" data-pc-name=\"button\" data-pc-section=\"root\"><span class=\"p-button-icon p-c p-button-icon-right pi pi pi-chevron-right xs-icon mt-1\" data-pc-section=\"icon\"></span><span class=\"p-button-label p-c\" data-pc-section=\"label\">View More</span></button></div>",
+    "rect": {
+      "x": 95,
+      "y": 251,
+      "width": 1377,
+      "height": 65
+    },
+    "computedStyles": {
+      "display": "flex",
+      "width": "1377px",
+      "height": "65px",
+      "padding": "16px 0px",
+      "box-sizing": "border-box",
+      "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+      "font-family": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+      "font-size": "16px",
+      "text-decoration": "none",
+      "justify-content": "space-between",
+      "align-items": "center",
+      "transition": "all"
+    },
+    "cssRules": [
+      {
+        "selector": ".flex",
+        "css": "display: flex !important;"
+      },
+      {
+        "selector": ".justify-content-between",
+        "css": "justify-content: space-between !important;"
+      },
+      {
+        "selector": ".align-items-center",
+        "css": "align-items: center !important;"
+      },
+      {
+        "selector": ".py-3",
+        "css": "padding-top: 1rem !important; padding-bottom: 1rem !important;"
+      },
+      {
+        "selector": "*",
+        "css": "box-sizing: border-box;"
+      }
+    ]
+  }
+]

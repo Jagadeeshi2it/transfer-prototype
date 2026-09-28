@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./_bundle.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  @keyframes blsSheetIn { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+</style>
+</helmet>
+<div style="display: flex; align-items: stretch; height: 100%; font-family: Inter, system-ui, sans-serif; color: #25282A">
+
+  <div onClick="{{ onOpen }}" role="button" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-right: 1px solid #E3E7ED; cursor: {{ tileCursor }}" style-hover="background: {{ tileHover }}">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B6B7B" stroke-width="1.6" style="flex: 0 0 22px"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z M12 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"></path></svg>
+    <div style="display: flex; flex-direction: column">
+      <span style="font-size: 13px; color: #6B7480">Location</span>
+      <span style="font-size: 18px; font-weight: {{ tileWeight }}; color: {{ tileValueColor }}; white-space: nowrap">{{ tileLabel }}</span>
+    </div>
+    <sc-if value="{{ interactive }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; align-items: center; justify-content: center; width: 24px; height: 32px; color: #095192">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4.5 2 9.5 7l-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </div>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{ open }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onClose }}" style="position: fixed; inset: 0; background: rgba(11,42,74,0.28); z-index: 1000"></div>
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; width: min(900px, 62vw); min-width: 440px; background: #FFFFFF; z-index: 1001; display: flex; flex-direction: column; box-shadow: 0 20px 48px rgba(11,42,74,0.24); animation: blsSheetIn 160ms cubic-bezier(0.2,0,0,1); font-family: Inter, system-ui, sans-serif; color: #25282A; text-align: left">
+      <div style="padding: 22px 24px 16px; flex: 0 0 auto">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px">
+          <div style="font-size: 24px; font-weight: 600; letter-spacing: -0.3px">{{ title }}</div>
+          <svg onClick="{{ onClose }}" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B6B7B" stroke-width="1.6" style="cursor: pointer; flex: 0 0 22px"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+        </div>
+        <div style="font-size: 18px; font-weight: 600; margin-top: 14px">{{ productName }}</div>
+        <div style="font-size: 15px; color: #5B6B7B; font-style: italic; margin-top: 2px">{{ productSub }}</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; padding: 16px 24px 18px; border-top: 1px solid #E3E8ED; flex: 0 0 auto">
+        <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+          <div><div style="font-size: 13px; color: #757575">{{ s.label }}</div><div style="font-size: 15px; font-weight: 600; margin-top: 4px">{{ s.value }}</div></div>
+        </sc-for>
+      </div>
+
+      <div style="flex: 1; min-height: 0; overflow: auto">
+        <div style="margin: 0 24px; background: #F3E4FD; border: 1px solid #E0C6F5; border-radius: 4px; display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#8B3FD9" stroke-width="1.7" style="flex: 0 0 17px; margin-top: 1px"><path d="M12 21a9 9 0 100-18 9 9 0 000 18M12 8v.1M12 11.5v5"></path></svg>
+          <span style="font-size: 14px; line-height: 1.5">{{ bannerText }}</span>
+        </div>
+        <div style="padding: 20px 24px 8px; font-size: 17px; font-weight: 600">Available at ({{ locationCount }})</div>
+        <div style="margin: 4px 24px 24px; border: 1px solid #E3E8ED; border-radius: 8px; overflow: hidden">
+          <div style="overflow-x: auto">
+            <div style="min-width: 760px">
+              <div style="display: grid; grid-template-columns: {{ gridCols }}; background: #EEF1F6; border-bottom: 1px solid #E3E8ED; font-size: 13px; font-weight: 600; color: #5B6B7B; white-space: nowrap">
+                <div style="padding: 12px 18px">Door</div>
+                <div style="padding: 12px 8px">Bin</div>
+                <div style="padding: 12px 8px">Size</div>
+                <div style="padding: 12px 8px">Latest expiration</div>
+                <div style="padding: 12px 8px">{{ movedLabel }}</div>
+                <sc-if value="{{ hasIssue }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding: 12px 8px">{{ issueLabel }}</div>
+                </sc-if>
+                <div style="padding: 12px 18px"></div>
+              </div>
+              <sc-for list="{{ rows }}" as="l" hint-placeholder-count="4">
+                <div style="display: grid; grid-template-columns: {{ gridCols }}; border-bottom: 1px solid #E3E8ED; align-items: center; font-size: 15px; background: {{ l.bg }}">
+                  <div style="padding: 16px 18px; display: flex; align-items: center; gap: 8px">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="{{ l.doorTint }}" stroke-width="1.6" stroke-linecap="round" style="flex: 0 0 17px"><path d="{{ l.doorIconD }}"></path></svg>
+                    <span>{{ l.door }}</span>
+                  </div>
+                  <div style="padding: 16px 8px">{{ l.bin }}</div>
+                  <div style="padding: 16px 8px">{{ l.size }}</div>
+                  <div style="padding: 16px 8px">{{ l.expiration }}</div>
+                  <div style="padding: 16px 8px">{{ l.moved }}</div>
+                  <sc-if value="{{ hasIssue }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding: 16px 8px">{{ l.issue }}</div>
+                  </sc-if>
+                  <div onClick="{{ l.onSelect }}" style="padding: 16px 18px; text-align: right; font-size: 15px; font-weight: 600; color: {{ l.actionColor }}; cursor: {{ l.actionCursor }}">{{ l.action }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid #E3E8ED; padding: 16px 24px; display: flex; justify-content: flex-end; flex: 0 0 auto">
+        <div onClick="{{ onClose }}" style="padding: 13px 22px; border: 1px solid #095192; color: #095192; border-radius: 4px; font-size: 15px; font-weight: 600; cursor: pointer">Close</div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;720px&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Select a Location to Transfer&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Copy&quot;},&quot;verb&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;transfer&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Copy&quot;},&quot;movedLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Transferred&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Copy&quot;},&quot;unit&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;vials&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Copy&quot;},&quot;movedUnit&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;vials&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Copy&quot;},&quot;productName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Leucovorin calcium 200 mg vial&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Product&quot;},&quot;productSub&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;leucovorin calcium 200 mg solution for injection&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Product&quot;},&quot;stats&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{ label: string; value: string }[]&quot;,&quot;section&quot;:&quot;Product&quot;},&quot;locations&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{ door: number; bin: number; size: string; expiration: string; inventory: number; moved?: number; doorType: 'physical' | 'virtual' }[]&quot;,&quot;section&quot;:&quot;Data&quot;},&quot;currentKey&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string | null&quot;,&quot;section&quot;:&quot;Data&quot;},&quot;defaultKey&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string | null&quot;,&quot;section&quot;:&quot;Data&quot;},&quot;open&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;State&quot;},&quot;defaultOpen&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;State&quot;},&quot;onSelect&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(loc) =&gt; void&quot;,&quot;section&quot;:&quot;Events&quot;},&quot;onOpenChange&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(open: boolean) =&gt; void&quot;,&quot;section&quot;:&quot;Events&quot;},&quot;currentDoor&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string | number | null&quot;,&quot;section&quot;:&quot;Data&quot;}}">
+class Component extends DCLogic {
+  static DEMO = [
+    { door: 1, bin: 32, size: '1×1', expiration: '03/2026', inventory: 10, moved: 0, doorType: 'physical' },
+    { door: 2, bin: 10, size: '1×1', expiration: '04/2026', inventory: 12, moved: 0, doorType: 'physical' },
+    { door: 2, bin: 22, size: '2×2', expiration: '05/2026', inventory: 8, moved: 0, doorType: 'physical' },
+    { door: 3, bin: 10, size: '1×1', expiration: '05/2026', inventory: 10, moved: 0, doorType: 'virtual' }
+  ];
+
+  state = { open: !!this.props.defaultOpen, cur: this.props.defaultKey ?? null };
+
+  keyOf(l) { return l.door + '-' + l.bin; }
+  get locs() { return this.props.locations ?? Component.DEMO; }
+  get controlledKey() { return this.props.currentKey !== undefined; }
+  get curKey() { return this.controlledKey ? this.props.currentKey : this.state.cur; }
+  get isOpen() { return this.props.open !== undefined ? !!this.props.open : this.state.open; }
+
+  setOpen(v) {
+    if (this.props.open === undefined) this.setState({ open: v });
+    if (this.props.onOpenChange) this.props.onOpenChange(v);
+  }
+
+  pick(l) {
+    if (!this.controlledKey) this.setState({ cur: this.keyOf(l) });
+    this.setOpen(false);
+    if (this.props.onSelect) this.props.onSelect(l);
+  }
+
+  doorMeta(l) {
+    const virtual = l.doorType === 'virtual';
+    return {
+      tint: virtual ? '#8B3FD9' : '#5B6B7B',
+      d: virtual ? 'M5 3h14v18H5z M15.6 12.5h.01' : 'M4 3h16v18H4z M4 9h16 M4 15h16 M9.5 6h2 M9.5 12h2 M9.5 18h2'
+    };
+  }
+
+  renderVals() {
+    const p = this.props;
+    const locs = this.locs;
+    const unit = p.unit ?? 'vials';
+    const movedUnit = p.movedUnit ?? unit;
+    const qty = (n, u) => { const one = Number(n) === 1; return n + ' ' + (one && u !== 'each' ? String(u).replace(/s$/, '') : u); };
+    const cur = this.curKey;
+    const picked = cur != null && locs.some(l => this.keyOf(l) === cur);
+    const multiBin = locs.length > 1;
+    const interactive = multiBin || !picked;
+    const pos = locs.findIndex(l => this.keyOf(l) === cur);
+    const highlightKey = picked ? cur : (locs[0] ? this.keyOf(locs[0]) : null);
+    const doorMode = p.currentDoor !== undefined && p.currentDoor !== null;
+    const doorList = Array.from(new Set(locs.map(l => String(l.door))));
+    const curDoor = doorMode ? String(p.currentDoor) : null;
+
+    const rows = locs.map(l => {
+      const k = this.keyOf(l);
+      const isCur = picked && k === cur;
+      const m = this.doorMeta(l);
+      return {
+        door: l.door, bin: l.bin, size: l.size, expiration: l.expiration,
+        inventory: qty(l.inventory, unit),
+        moved: l.moved ? qty(l.moved, movedUnit) : '—',
+        issue: l.issue ? qty(l.issue, movedUnit) : '—',
+        doorTint: m.tint, doorIconD: m.d,
+        bg: isCur ? '#F8FAFC' : '#FFFFFF',
+        action: isCur ? 'Current bin' : 'Select',
+        actionColor: isCur ? '#9FA9B7' : '#095192',
+        actionCursor: isCur ? 'default' : 'pointer',
+        onSelect: isCur ? () => {} : () => this.pick(l)
+      };
+    });
+
+    return {
+      tileLabel: picked ? (pos + 1) + '/' + locs.length : 'Select location',
+      tileValueColor: !picked ? '#8B3FD9' : (multiBin ? '#095192' : '#5B6B7B'),
+      tileWeight: picked ? 500 : 700,
+      tileCursor: interactive ? 'pointer' : 'default',
+      tileHover: interactive ? '#F4F8FC' : 'transparent',
+      interactive,
+      multiBin,
+      onOpen: () => { if (interactive) this.setOpen(true); },
+      onClose: () => this.setOpen(false),
+      open: this.isOpen,
+      title: p.title ?? 'Select a Location to Transfer',
+      productName: p.productName ?? 'Leucovorin calcium 200 mg vial',
+      productSub: p.productSub ?? 'leucovorin calcium 200 mg solution for injection',
+      stats: p.stats ?? [
+        { label: 'NDC', value: '2502181430' },
+        { label: 'Inventory type', value: 'Purchased' },
+        { label: 'Transfer quantity', value: '12 vials' },
+        { label: 'Transferred', value: qty(locs.reduce((a, l) => a + (l.moved || 0), 0), movedUnit) }
+      ],
+      bannerText: doorMode && doorList.length > 1
+        ? 'This product is in ' + doorList.length + ' doors. You can ' + (p.verb ?? 'transfer') + ' from every bin in the open door; switch doors to reach the rest.'
+        : 'Select a bin to ' + (p.verb ?? 'transfer') + ' from as the product is at multiple locations.',
+      movedLabel: p.movedLabel ?? 'Transferred',
+      issueLabel: p.issueLabel,
+      hasIssue: !!p.issueLabel,
+      gridCols: p.issueLabel ? '0.8fr 0.5fr 0.5fr 1.1fr 0.9fr 1.4fr 0.7fr' : '1.1fr 0.5fr 0.5fr 1fr 0.9fr 1fr',
+      locationCount: locs.length,
+      rows
+    };
+  }
+}
+</script>
+</body>
+</html>

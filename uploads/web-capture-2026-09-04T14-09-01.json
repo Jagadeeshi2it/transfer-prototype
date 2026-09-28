@@ -1,0 +1,55 @@
+[
+  {
+    "id": "cap_mtn152j1_sgo445",
+    "selector": "div.p-card-body",
+    "label": "Disclaimer Prices are estimated and subj…",
+    "tag": "div",
+    "url": "https://app.dev.allygpo.com/new-orders/product-catalog?stationId=252",
+    "title": "AllyIQ",
+    "timestamp": "2026-09-04T14:08:56.077Z",
+    "innerText": "Disclaimer\nPrices are estimated and subject to change based on factors including but not limited to invoice date, contract eligibility, and changes in WAC.\nDELETE DRAFT\nCANCEL\nGO TO DRAFT",
+    "outerHTML": "<div class=\"p-card-body\" data-pc-section=\"body\"><div class=\"p-card-content\" data-pc-section=\"content\"><div class=\"flex w-6\"><div class=\"flex flex-column m-0 p-0 w-12 pl-4\"><div class=\"text-small-bold\">Disclaimer</div><div class=\"text-small-medium m-0 p-0\">Prices are estimated and subject to change based on factors including but not limited to invoice date, contract eligibility, and changes in WAC.</div></div></div><div class=\"flex justify-content-end w-10\"><div class=\"flex align-items-center gap-4 mr-4\"><button aria-label=\"DELETE DRAFT\" class=\"font-semibold undefined p-button p-component p-button-outlined p-button-danger\" type=\"button\" data-pc-name=\"button\" data-pc-section=\"root\"><span class=\"p-button-icon p-c p-button-icon-left pi pi-trash\" data-pc-section=\"icon\"></span><span class=\"p-button-label p-c\" data-pc-section=\"label\">DELETE DRAFT</span></button><div class=\"p-divider p-component p-divider-vertical p-divider-solid p-divider-center m-0\" aria-orientation=\"vertical\" role=\"separator\" data-pc-name=\"divider\" data-pc-section=\"root\" style=\"align-items: center;\"><div class=\"p-divider-content\" data-pc-section=\"content\"></div></div><button aria-label=\"CANCEL\" class=\"outlined-button sm-button p-button p-component p-button-outlined\" data-pc-name=\"button\" data-pc-section=\"root\"><span class=\"p-button-label p-c\" data-pc-section=\"label\">CANCEL</span></button><button aria-label=\"GO TO DRAFT\" class=\"uppercase border-2  font-bold primary-button disabled-button sm-button p-button p-component p-button-rounded\" type=\"button\" data-pc-name=\"button\" data-pc-section=\"root\"><span class=\"p-button-icon p-c p-button-icon-right pi pi-arrow-right\" data-pc-section=\"icon\"></span><span class=\"p-button-label p-c\" data-pc-section=\"label\">GO TO DRAFT</span></button></div></div></div></div>",
+    "rect": {
+      "x": 70,
+      "y": 745,
+      "width": 1427,
+      "height": 78
+    },
+    "computedStyles": {
+      "display": "block",
+      "width": "1427px",
+      "height": "78px",
+      "padding": "15px 0px 12px",
+      "border": "0px none rgb(37, 40, 42)",
+      "box-sizing": "border-box",
+      "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+      "color": "rgb(37, 40, 42)",
+      "font-family": "Inter, opensans, Arial",
+      "font-size": "16px",
+      "text-decoration": "none",
+      "transition": "all"
+    },
+    "cssRules": [
+      {
+        "selector": ".page-footer .p-card-body",
+        "css": "padding: 0px; width: 100%;"
+      },
+      {
+        "selector": ".main-content > div > .p-card-body",
+        "css": "padding-bottom: 12px; padding-top: 15px; color: rgb(37, 40, 42);"
+      },
+      {
+        "selector": "*",
+        "css": "box-sizing: border-box;"
+      },
+      {
+        "selector": ".p-card .p-card-body",
+        "css": "padding: 1rem;"
+      },
+      {
+        "selector": ".p-component, .p-component *",
+        "css": "box-sizing: border-box;"
+      }
+    ]
+  }
+]

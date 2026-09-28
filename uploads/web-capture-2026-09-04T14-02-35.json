@@ -1,0 +1,47 @@
+[
+  {
+    "id": "cap_mtn0w374_c1ctcy",
+    "selector": "div.selectable-card",
+    "label": "AVASTIN 400 MG/16 ML VIAL MDVCLIMATE bev…",
+    "tag": "div",
+    "url": "https://app.dev.allygpo.com/new-orders/product-catalog?stationId=252",
+    "title": "AllyIQ",
+    "timestamp": "2026-09-04T14:01:57.041Z",
+    "innerText": "AVASTIN 400 MG/16 ML VIAL\nMDVCLIMATE\nbevacizumab 25 mg/mL intravenous solution\n--\n$-- per packs\nPreferred\nNDC Total: 5 vials\nView More\nNDC\n50242006110\nSource\nBioCareSD\nAssociated ID\nSAP1\nHCPCS\n--\nInventory\n-- vials\nLow Stock\nLimit 20\npacks",
+    "outerHTML": "<div role=\"button\" tabindex=\"0\" class=\"selectable-card mb-3 \"><div class=\"flex flex-column justify-content-center align-content-center header  bg-primary-blue-25\"><div class=\"flex justify-content-between align-content-center p-3\"><div class=\"flex justify-content-between gap-2\"><span style=\"width: 6px; border-radius: 10px; background-color: rgb(142, 58, 128);\"></span><div class=\"flex flex-column justify-content-center\"><div class=\"h5-regular\"><div class=\"logo-container flex\"><div class=\"flex align-items-center\"><span class=\"flex \"><span class=\"flex flex-column\"><span class=\"flex flex-wrap align-items-center\"><span class=\"mr-2\">AVASTIN 400 MG/16 ML VIAL</span><div class=\"flex-nowrap\"><span class=\"flex-no-wrap\"><label class=\"dose-type-container mr-1 \">MDV</label></span><span class=\"flex-no-wrap\"><label class=\"dose-type-container mr-1 align-self-center bg-chip-blue \">CLIMATE</label></span></div></span></span></span></div></div></div><div class=\"mt-1 font-italic-small-grey\">bevacizumab 25 mg/mL intravenous solution</div></div></div><div class=\"flex flex-column align-items-end \"><div class=\"h5-regular\">--</div><div class=\"mt-1 text-regular text-gray\"><span class=\"false\">$-- per packs</span></div></div></div><div class=\"p-divider p-component p-divider-horizontal p-divider-solid p-divider-left border-line-light m-0\" aria-orientation=\"horizontal\" role=\"separator\" data-pc-name=\"divider\" data-pc-section=\"root\" style=\"justify-content: center;\"><div class=\"p-divider-content\" data-pc-section=\"content\"></div></div><div class=\"flex justify-content-between align-items-center py-3\"><div class=\"pl-3\"><div class=\"flex gap-2\"><span class=\"p-tag-steel-200 text-small-regular px-2 py-1 p-tag p-component\" data-pc-name=\"tag\" data-pc-section=\"root\"><span class=\"p-tag-value\" data-pc-section=\"value\">Preferred</span><span></span></span><span class=\"p-tag-steel-200 text-small-regular px-2 py-1 p-tag p-component\" data-pc-name=\"tag\" data-pc-section=\"root\"><span class=\"p-tag-value\" data-pc-section=\"value\">NDC Total: 5 vials</span><span></span></span></div></div><button aria-label=\"View More\" class=\"font-bold link-button text-small-light pr-3 p-button p-component p-button-link\" data-testid=\"\" data-pc-name=\"button\" data-pc-section=\"root\"><span class=\"p-button-icon p-c p-button-icon-right pi pi pi-chevron-right xs-icon mt-1\" data-pc-section=\"icon\"></span><span class=\"p-button-label p-c\" data-pc-section=\"label\">View More</span></button></div></div><div class=\"flex justify-content-between align-content-center py-2 px-3\"><div class=\"flex align-content-center gap-3 w-9\"><div class=\"flex justify-content-between align-items-center w-full\"><div class=\"flex col-2 flex-column justify-content-center\"><div class=\"flex flex-column\"><div class=\"text-medium text-steel mb-1\">NDC</div><div class=\"text-medium-regular text-dark undefined\">50242006110</div></div></div><div class=\"flex flex-column col-2 justify-content-center\"><div class=\"flex flex-column\"><div class=\"text-medium text-steel mb-1\">Source</div><div class=\"text-medium-regular  undefined\" style=\"color: rgb(142, 58, 128);\">BioCareSD</div></div></div><div class=\"flex flex-column col-2 justify-content-center\"><div class=\"flex flex-column\"><div class=\"text-medium text-steel mb-1\">Associated ID</div><div class=\"text-medium-regular text-dark undefined\">SAP1</div></div></div><div class=\"flex flex-column col-2 justify-content-center\"><div class=\"flex flex-column\"><div class=\"text-medium text-steel mb-1\">HCPCS</div><div class=\"text-medium-regular text-dark undefined\"><div><span class=\"text-steel\">--</span></div></div></div></div><div class=\"flex flex-column col-2 justify-content-center\"><div class=\"flex flex-column\"><div class=\"text-medium text-steel mb-1\">Inventory</div><div class=\"text-medium-regular text-dark undefined\">-- vials</div></div></div></div></div><div class=\"w-3 m-auto\"><div class=\"flex w-full justify-content-end align-items-center gap-4\"><div class=\"flex flex-column align-items-center\"><div class=\"text-small-regular text-warning-500 mb-1\">Low Stock</div><div class=\"text-small-light text-dark font-italic\">Limit 20</div></div><div class=\"flex flex-column w-auto justify-content-end align-items-start w-5\"><div class=\"flex justify-content-center align-items-center gap-1 mt-2\n          \"><div class=\"packs w-12\"><div class=\"flex flex-column\"><div class=\"p-inputgroup flex-1\"><span class=\"unit-input-number border-round flex-1 min-w-0 order-quantity-input p-inputnumber p-component p-inputwrapper p-inputwrapper-filled\" data-pc-name=\"inputnumber\" data-pc-section=\"root\"><input class=\"p-inputnumber-input p-inputtext p-component p-filled\" role=\"spinbutton\" inputmode=\"decimal\" maxlength=\"3\" min=\"0\" aria-valuemin=\"0\" aria-valuenow=\"0\" data-pc-name=\"inputtext\" data-pc-section=\"root\" type=\"text\" value=\"0\" autocomplete=\"off\"></span><span class=\"p-inputgroup-addon w-6\">packs</span></div><div class=\"h-2 min-w-max\"></div></div></div><button class=\"text-button p-0 p-button p-component p-button-icon-only p-disabled p-button-text p-button-danger\" disabled=\"\" data-pc-name=\"button\" data-pc-section=\"root\"><span class=\"p-button-icon p-c pi pi-trash\" data-pc-section=\"icon\"></span><span class=\"p-button-label p-c\" data-pc-section=\"label\">&nbsp;</span></button></div></div></div></div></div></div>",
+    "rect": {
+      "x": 94,
+      "y": 270,
+      "width": 1379,
+      "height": 221
+    },
+    "computedStyles": {
+      "display": "block",
+      "width": "1379px",
+      "height": "220.773px",
+      "margin": "0px 0px 16px",
+      "border": "1px solid rgb(189, 189, 189)",
+      "border-radius": "4px",
+      "box-sizing": "border-box",
+      "background": "rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box",
+      "font-family": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+      "font-size": "16px",
+      "text-decoration": "none",
+      "transition": "all"
+    },
+    "cssRules": [
+      {
+        "selector": ".mb-3",
+        "css": "margin-bottom: 1rem !important;"
+      },
+      {
+        "selector": ".selectable-card",
+        "css": "background-color: rgb(255, 255, 255); border: 1px solid rgb(189, 189, 189); border-radius: 4px;"
+      },
+      {
+        "selector": "*",
+        "css": "box-sizing: border-box;"
+      }
+    ]
+  }
+]
