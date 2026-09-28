@@ -2,6 +2,8 @@
 
 Clickable Ally transfer-flow prototype built from plain `.dc.html` pages.
 
+**Live preview:** https://jagadeeshi2it.github.io/transfer-prototype/
+
 ## Preview
 
 - **Double-click `index.html`.** It opens on the Incoming Transfers landing page (`Inventory Products.dc.html`). No server is needed.
