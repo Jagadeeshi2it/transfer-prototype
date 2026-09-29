@@ -831,20 +831,24 @@ class Component extends DCLogic {
     const serials = layout.slice().sort((a, b) => a.i - b.i).map(l => {
       const i = l.i, id = r.key + "-" + i;
       const c = cm[id];
-      const status = c ? c.status : (st[id] || "--");
+      // Rows committed in the bin you're in stay editable when you come back to it.
+      const editable = !c || (picked && c.door + "-" + c.bin === curBin.key);
+      const saved = c ? c.status : "--";
+      const status = editable && st[id] !== undefined ? st[id] : saved;
+      const dirty = editable && status !== saved;
       tally[base[id] ? "prior" : status] += l.n;
       const seed = String(parseInt(String(r.ndc).slice(-6), 10) * 7919 + i * 104729 + r.key * 31);
-      const loc = c ? c : (status !== "--" ? curBin : null);
+      const loc = status === "--" ? null : (c && !dirty ? c : curBin);
       return {
         serial: (seed + "8392017465820391").slice(0, 16),
         lot: (seed.split("").reverse().join("") + "293586344").slice(0, 9),
         expiration: exps[(i + r.key) % 5],
         source: r.source, n: l.n, qty: qtyOf(l.n),
-        id, status, pending: !c, isCommitted: !!c,
+        id, status, dirty, saved, pending: editable, isCommitted: !editable,
         commitBin: c ? c.door + "-" + c.bin : null,
         hasLoc: !!loc, noLoc: !loc, locDoor: loc ? loc.door : "", locBin: loc ? loc.bin : "",
         doneLabel: c ? doneStyle[c.status][0] : "", doneColor: c ? doneStyle[c.status][1] : "#21252b",
-        checked: !c && !!sel[id],
+        checked: editable && !!sel[id],
         boxBg: sel[id] ? "#095192" : "#ffffff",
         boxBd: sel[id] ? "#095192" : "#bcc3cd",
         selBd: status !== "--" ? "#095192" : "#ced4da",
@@ -853,6 +857,7 @@ class Component extends DCLogic {
       };
     });
     const pendingRows = serials.filter(s => s.pending), doneRows = serials.filter(s => s.isCommitted);
+    const statusOf = {}; serials.forEach(s => { statusOf[s.id] = s.status; });
     const unitWord = unit0.replace(/s$/, "");
     const locations = bins.map(b => {
       const here = serials.filter(s => s.status !== "--" && (s.commitBin === b.key || (s.pending && b.key === curBin.key)));
@@ -867,19 +872,20 @@ class Component extends DCLogic {
     const isLastBin = binIdx >= bins.length - 1;
     const commitNow = () => {
       const add = {};
-      pendingRows.forEach(s => { if (s.status !== "--") add[s.id] = { status: s.status, door: curBin.door, bin: curBin.bin }; });
-      return Object.assign({}, cm, add);
+      const next = Object.assign({}, cm);
+      pendingRows.forEach(s => { if (!s.dirty) return; if (s.status === "--") delete next[s.id]; else next[s.id] = { status: s.status, door: curBin.door, bin: curBin.bin }; });
+      return next;
     };
-    const hasUncommitted = pendingRows.some(s => s.status !== "--");
-    const productComplete = pendingRows.length === 0;
+    const hasUncommitted = pendingRows.some(s => s.dirty);
     const allCommitted = c => serials.every(s => c[s.id]);
+    const productComplete = allCommitted(cm);
     const walkHere = { bin: binIdx, picked };
     const finalize = c => this.leaveTo(r, c, walkHere, null, { toast: true, finalize: true });
     const onAccept = () => {
       if (!hasUncommitted) return;
       const c = commitNow();
       if (isLastBin || allCommitted(c)) { finalize(c); return; }
-      const accN = pendingRows.filter(s => s.status === "Accept").reduce((a, s) => a + s.n, 0);
+      const accN = pendingRows.filter(s => s.dirty && s.status === "Accept").reduce((a, s) => a + s.n, 0);
       if (accN > 0) this.toast(fmt(accN) + " " + (accN === 1 ? unitWord : unitPl) + " accepted from the transfer.", null, "success");
       this.setState({ committed: c, accBin: binIdx + 1, serialStatus: {}, accSel: {} });
       window.scrollTo(0, 0);
@@ -944,8 +950,8 @@ class Component extends DCLogic {
         const openIds = pendingRows.map(s => s.id);
         const selIds = openIds.filter(id => sel[id]);
         const all = openIds.length > 0 && selIds.length === openIds.length;
-        const resetOk = selIds.some(id => (st[id] || "--") !== "--");
-        const acceptOk = selIds.some(id => st[id] !== "Accept");
+        const resetOk = selIds.some(id => statusOf[id] !== "--");
+        const acceptOk = selIds.some(id => statusOf[id] !== "Accept");
         const bulk = v => () => { if (!selIds.length || (v === "--" && !resetOk) || (v === "Accept" && !acceptOk)) return; this.setState(s => { const ns = Object.assign({}, s.serialStatus); selIds.forEach(id => { ns[id] = v; }); return { serialStatus: ns, accSel: {} }; }); };
         return {
           allChecked: all,

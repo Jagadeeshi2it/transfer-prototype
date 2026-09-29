@@ -6,7 +6,7 @@ Clickable Ally transfer-flow prototype built from plain `.dc.html` pages.
 
 - **Double-click `index.html`.** It opens on the Incoming Transfers landing page (`Inventory Products.dc.html`). No server is needed.
 - **Claude Code / Claude desktop:** run the preview named `transfer-prototype` (defined in `.claude/launch.json`). It serves the folder at http://localhost:8765, and `index.html` sends you to the landing page.
-- **Any static server:** `python3 -m http.server 8765`, then open http://localhost:8765
+- **Local server:** `python3 serve.py`, then open http://localhost:8765 (caching is off, so edits show on reload)
 
 The pages load React from a CDN, so you need an internet connection.
 
