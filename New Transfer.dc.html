@@ -855,7 +855,10 @@ class Component extends DCLogic {
     const p = P[s.queue[s.cur]] || P[0];
     const bins = p.bins.map(([door, bin, count]) => ({ key: door + "-" + bin, door, bin, count }));
     const doors = this.doorsOf(p).map(d => { const bs = bins.filter(b => b.door === d); return { door: d, bins: bs, count: bs.reduce((a, b) => a + b.count, 0) }; });
-    const di = Math.min(s.bin[p.id] || 0, doors.length - 1);
+    // Walk bins door by door, so Skip / Transfer & continue go to the next bin, even within the same door.
+    const walk = doors.flatMap(d => d.bins);
+    const bi = Math.min(s.bin[p.id] || 0, walk.length - 1);
+    const di = Math.max(0, doors.findIndex(d => d.door === walk[bi].door));
     const cd = doors[di], multi = cd.bins.length > 1;
     const all = this.serialsOf(p);
     const ids = s.scanned[p.id] || [];
@@ -882,14 +885,14 @@ class Component extends DCLogic {
     const savedIds = (s.saved || {})[p.id] || [];
     const pendingN = ids.filter(id => !savedIds.includes(id)).length;
     const commit = () => this.setState(st => ({ saved: Object.assign({}, st.saved, { [p.id]: (st.scanned[p.id] || []).slice() }) }));
-    const isLastBin = di >= doors.length - 1, isLastProd = s.cur >= s.queue.length - 1, final = isLastBin && isLastProd;
+    const isLastBin = bi >= walk.length - 1, isLastProd = s.cur >= s.queue.length - 1, final = isLastBin && isLastProd;
     const finish = () => {
       const tot = Object.values(this.state.scanned).reduce((a, l) => a + l.length, 0);
       if (tot) { this.setState({ step: 3, collapsed: {}, note: "", noteOpen: false, scanText: "", lastAdded: null, locOpen: false }); window.scrollTo(0, 0); }
       else this.goHome();
     };
     const advance = () => {
-      if (!isLastBin) { this.setState(st => ({ bin: Object.assign({}, st.bin, { [p.id]: di + 1 }), scanText: "", lastAdded: null, invPop: false })); this.toast("Door " + doors[di + 1].door + " is unlocked now"); }
+      if (!isLastBin) { this.setState(st => ({ bin: Object.assign({}, st.bin, { [p.id]: bi + 1 }), scanText: "", lastAdded: null, invPop: false })); if (walk[bi + 1].door !== cd.door) this.toast("Door " + walk[bi + 1].door + " is unlocked now"); }
       else if (!isLastProd) { this.setState({ cur: s.cur + 1, scanText: "", lastAdded: null, locOpen: this.needsPick(s.queue[s.cur + 1], s.locPicked) }); }
       else { finish(); return; }
       window.scrollTo(0, 0);
@@ -924,9 +927,9 @@ class Component extends DCLogic {
           remove: () => { if (!canRm) { this.toast("Switch to Door " + x.door + " to remove this serial.", "warning"); return; } setScanned(l => l.filter(v => v !== id)); this.setState(st => ({ saved: Object.assign({}, st.saved, { [p.id]: ((st.saved || {})[p.id] || []).filter(v => v !== id) }) })); } }); }),
         empty: n === 0,
         locations: bins.map((b, i) => ({ door: b.door, bin: b.bin, size: "1×1", expiration: Component.EXPS[i % 5], inventory: b.count, moved: b.count, issue: inBin(b.key), doorType: "physical" })),
-        locKey: picked ? cd.bins[0].key : null,
+        locKey: picked ? walk[bi].key : null,
         curDoor: picked ? cd.door : null,
-        onLocSelect: l => { const i = doors.findIndex(d => d.door === String(l.door)); if (i >= 0) { if (picked && i === di) { this.setState({ locOpen: false }); return; } commit(); this.setState(st => ({ bin: Object.assign({}, st.bin, { [p.id]: i }), locPicked: Object.assign({}, st.locPicked, { [p.id]: true }), locOpen: false, invPop: false })); this.toast("Door " + l.door + " is unlocked now"); } },
+        onLocSelect: l => { const i = walk.findIndex(b => b.key === l.door + "-" + l.bin); if (i >= 0) { if (picked && i === bi) { this.setState({ locOpen: false }); return; } commit(); this.setState(st => ({ bin: Object.assign({}, st.bin, { [p.id]: i }), locPicked: Object.assign({}, st.locPicked, { [p.id]: true }), locOpen: false, invPop: false })); if (!picked || walk[i].door !== cd.door) this.toast("Door " + l.door + " is unlocked now"); } },
         locStats: [
           { label: "NDC", value: p.ndc },
           { label: "Inventory type", value: p.invType },
