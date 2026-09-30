@@ -96,7 +96,7 @@
 
   <dc-import name="App Side Nav" selected="Transfer" hint-size="70px,100vh"></dc-import>
 
-  <div onClick="{{ toggleGuided }}" role="switch" aria-checked="{{ guidedOn }}" aria-label="Guided workflow" title="Guided workflow: row click selects, chevron hidden" style="position: fixed; left: 0; bottom: 34px; width: 70px; z-index: 90; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; cursor: pointer; user-select: none;">
+  <div onClick="{{ toggleGuided }}" role="switch" aria-checked="{{ guidedOn }}" aria-label="Guided workflow" title="Guided workflow: open one product at a time to accept" style="position: fixed; left: 0; bottom: 34px; width: 70px; z-index: 90; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; cursor: pointer; user-select: none;">
     <span style="font-size: 9px; font-weight: 500; letter-spacing: 0.02em; color: #ffffff; opacity: 0.85;">Guided</span>
     <span style="position: relative; width: 30px; height: 16px; border-radius: 999px; background: {{ guidedTrack }}; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.45); transition: background-color 150ms ease;">
       <span style="position: absolute; top: 2px; left: {{ guidedKnob }}; width: 12px; height: 12px; border-radius: 50%; background: #ffffff; transition: left 150ms ease;"></span>
@@ -150,7 +150,7 @@
           <table style="width: 100%; min-width: 1200px; border-collapse: collapse; ">
             <thead>
               <tr style="background: #f8fafc;">
-                <th style="width: 52px; padding: 14px 0 14px 16px; text-align: left; border-bottom: 1px solid #e9ecf1;">
+                <th style="display: {{ boxCol }}; width: 52px; padding: 14px 0 14px 16px; text-align: left; border-bottom: 1px solid #e9ecf1;">
                   <div onClick="{{ toggleAll }}" style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ allBoxBg }}; border: 1px solid {{ allBoxBd }}; cursor: pointer; position: relative;">
                     <svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; opacity: {{ allTick }}; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     <svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; opacity: {{ allDash }}; position: absolute;"><path d="M2 5h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
@@ -196,7 +196,7 @@
             <tbody>
               <sc-for list="{{ rows }}" as="row" hint-placeholder-count="7">
                 <tr onClick="{{ row.rowClick }}" style="background: {{ row.rowBg }}; cursor: {{ row.rowCursor }};" style-hover="background: #f5f9fe;">
-                  <td style="padding: 14px 0 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
+                  <td style="display: {{ boxCol }}; padding: 14px 0 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
                     <div onClick="{{ row.toggleSel }}" style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ row.boxBg }}; border: 1px solid {{ row.boxBd }}; cursor: pointer;" style-hover="border-color: #095192;">
                       <svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; opacity: {{ row.tickOpacity }};"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     </div>
@@ -237,7 +237,7 @@
           <table style="width: 100%; min-width: 1200px; border-collapse: collapse; ">
             <thead>
               <tr style="background: #f8fafc;">
-                <th style="width: 52px; padding: 14px 0 14px 16px; text-align: left; border-bottom: 1px solid #e9ecf1;">
+                <th style="display: {{ boxCol }}; width: 52px; padding: 14px 0 14px 16px; text-align: left; border-bottom: 1px solid #e9ecf1;">
                   <div style="width: 20px; height: 20px; border-radius: 4px; background: #ffffff; border: 1px solid #bcc3cd;"></div>
                 </th>
                 <th style="width: 28%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
@@ -282,7 +282,7 @@
             <tbody>
               <sc-for list="{{ unallocRows }}" as="row" hint-placeholder-count="2">
                 <tr style="background: #ffffff;" style-hover="background: #f5f9fe;">
-                  <td style="padding: 14px 0 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
+                  <td style="display: {{ boxCol }}; padding: 14px 0 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
                     <div style="width: 20px; height: 20px; border-radius: 4px; background: #ececec; border: 1px solid #dadee3; cursor: not-allowed;"></div>
                   </td>
                   <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
@@ -326,9 +326,11 @@
       </div>
     </div>
   </div>
+  <sc-if value="{{ showStartBar }}" hint-placeholder-val="{{ true }}">
   <div style="position: sticky; bottom: 0; z-index: 30; display: flex; align-items: center; justify-content: flex-end; gap: 16px; padding: 14px 24px; background: #ffffff; border-top: 1px solid #e3e7ed; box-shadow: 0 -2px 8px rgba(16,24,40,0.06);">
     <button type="button" disabled="{{ noneSelected }}" onClick="{{ startTransfer }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: {{ startBg }}; border: 1px solid {{ startBg }}; border-radius: 4px; cursor: {{ startCursor }};">Start transfer</button>
   </div>
+  </sc-if>
   </sc-if>
 
   <sc-if value="{{ isAccept }}" hint-placeholder-val="{{ false }}">
@@ -506,8 +508,13 @@
     </sc-if>
 
     <div style="position: fixed; bottom: 0; left: 70px; right: 0; z-index: {{ barZ }}; display: flex; flex-wrap: wrap; align-items: stretch; gap: 0 16px; padding: 0 24px 0 0; background: #ffffff; border-top: 1px solid #e3e7ed; box-shadow: 0 -2px 8px rgba(16,24,40,0.06);">
+      <sc-if value="{{ acc.showCounters }}" hint-placeholder-val="{{ true }}">
       <dc-import name="Product Switcher" products="{{ acc.queueProducts }}" current-id="{{ acc.curId }}" on-select="{{ acc.onProductSelect }}" flow-label="Transfer" done-label="Transferred" on-open-change="{{ onPanelOpen }}" hint-size="170px,66px"></dc-import>
+      </sc-if>
+      <sc-if value="{{ acc.showLocTile }}" hint-placeholder-val="{{ true }}">
       <dc-import name="Bin Location Switcher" locations="{{ acc.locations }}" current-key="{{ acc.locKey }}" open="{{ acc.locOpen }}" on-select="{{ acc.onLocSelect }}" product-name="{{ acc.name }}" product-sub="{{ acc.desc }}" stats="{{ acc.locStats }}" unit="{{ acc.unitWord }}" moved-unit="{{ acc.unitWord }}" title="Select a Location to Transfer" verb="accept" moved-label="Transferred" issue-label="Damaged / Not received" on-open-change="{{ acc.onLocOpen }}" hint-size="200px,66px"></dc-import>
+      </sc-if>
+      <sc-if value="{{ acc.showCounters }}" hint-placeholder-val="{{ true }}">
       <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-right: 1px solid #e3e7ed;">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="color: #008774;"><path d="M19 10.3V11a8 8 0 1 1-4.7-7.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path d="m19 4-8 8-2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
         <div style="display: flex; flex-direction: column;">
@@ -515,9 +522,12 @@
           <span style="font-size: 18px; font-weight: 500; color: #21252b;">{{ acc.transferred }}</span>
         </div>
       </div>
+      </sc-if>
       <div style="display: flex; align-items: center; gap: 12px; margin-left: auto; padding: 12px 0;">
         <button type="button" onClick="{{ acc.onCancel }}" aria-disabled="{{ acc.cancelDisabled }}" style="white-space: nowrap; flex-shrink: 0; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ acc.cancelFg }}; background: #ffffff; border: 1px solid {{ acc.cancelBd }}; border-radius: 4px; cursor: {{ acc.cancelCursor }};" style-hover="background: {{ acc.cancelHover }};">Cancel</button>
+        <sc-if value="{{ acc.showSkip }}" hint-placeholder-val="{{ true }}">
         <button type="button" onClick="{{ acc.onSkip }}" aria-disabled="{{ acc.skipDisabled }}" style="white-space: nowrap; flex-shrink: 0; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ acc.skipFg }}; background: #ffffff; border: 1px solid {{ acc.skipBd }}; border-radius: 4px; cursor: {{ acc.skipCursor }};" style-hover="background: {{ acc.skipHover }};">{{ acc.skipLabel }}</button>
+        </sc-if>
         <button type="button" onClick="{{ acc.onAccept }}" aria-disabled="{{ acc.acceptDisabled }}" style="white-space: nowrap; flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ acc.accFg }}; background: {{ acc.accBg }}; border: 1px solid {{ acc.accBd }}; border-radius: 4px; cursor: {{ acc.accCursor }};" style-hover="background: {{ acc.accHover }};">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.3" stroke="currentColor" stroke-width="1.4"></circle><path d="m5.3 8.2 1.9 1.9 3.6-3.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
           {{ acc.acceptLabel }}
@@ -734,6 +744,8 @@ class Component extends DCLogic {
   }
 
   layoutFor(r, total, count) {
+    // Demo scenario: AVASTIN sits in a single bin (Door 10 · AB 5)
+    if (/^AVASTIN/.test(r.name)) return Array.from({ length: count }, () => ["10", "AB 5", total / count]);
     // Demo scenario: ALIMTA is stored across 3 doors (Door 1: 2 bins, Door 3: 1 bin, Door 8: 4 bins)
     if (/^ALIMTA/.test(r.name)) return [["1", "A1", 1], ["1", "A2", 1], ["3", "C1", 1], ["8", "H1", 1], ["8", "H1", 1], ["8", "H2", 1], ["8", "H2", 1]];
     const locs = [["10", "AB 5"], ["13", "AB 1"], ["13", "AB 1"], ["10", "AB 5"], ["10", "AB 5"]];
@@ -891,10 +903,11 @@ class Component extends DCLogic {
       this.setState({ committed: c, accBin: binIdx + 1, serialStatus: {}, accSel: {} });
       window.scrollTo(0, 0);
     };
+    const solo = !!this.state.singleMode;
     const skipOk = picked && !productComplete && !hasUncommitted;
     const onSkip = () => {
       if (!skipOk) return;
-      if (isLastBin || isLast) { finalize(cm); return; }
+      if (isLastBin || (isLast && !solo)) { finalize(cm); return; }
       goBin(binIdx + 1); window.scrollTo(0, 0);
     };
     const doBin = (i, c) => { this.setState({ committed: c, accBin: i, serialStatus: {}, accSel: {}, locPicked: true, locOpen: false, panelOpen: false, leave: null }); this.toast("Door " + bins[i].door + " is unlocked now", null, "success"); };
@@ -997,8 +1010,13 @@ class Component extends DCLogic {
       position: (this.state.qIdx + 1) + "/" + (q.length || 1),
       transferred: this.state.transferred || 0,
       // Final product: Accept completes on its last bin, or as soon as every serial has a status; Skip always completes.
-      acceptLabel: isLast && (isLastBin || serials.every(s => s.status !== "--")) ? "Accept and complete" : "Accept and continue",
-      skipLabel: isLast ? "Skip and complete" : "Skip & continue"
+      acceptLabel: solo ? (single ? "Accept and save" : "Accept and continue")
+        : isLast && (isLastBin || serials.every(s => s.status !== "--")) ? "Accept and complete" : "Accept and continue",
+      skipLabel: solo ? "Skip and continue" : isLast ? "Skip and complete" : "Skip & continue",
+      // Guided single-product flow: no product / transferred counters; location tile and Skip only when there are several bins.
+      showCounters: !solo,
+      showLocTile: !solo || !single,
+      showSkip: !solo || !single
     };
   }
 
@@ -1276,17 +1294,19 @@ class Component extends DCLogic {
     const noop = () => {};
     sorted.forEach(r => {
       const on = !!pk[r.key];
-      r.showChevron = !guided;
+      r.showChevron = true;
       r.rowCursor = guided ? "pointer" : "default";
+      // Guided workflow: open the accept flow for just this product.
+      r.startSingle = e => { if (e) e.stopPropagation(); this.setState({ view: "accept", singleMode: true, queue: [r.key], qIdx: 0, serialStatus: {}, sessionBase: Object.assign({}, this.state.committed), accBin: 0, accSel: {}, transferred: 0, skipped: {}, pStatus: {}, walk: {}, leave: null, locPicked: false, locOpen: true, panelOpen: true }); window.scrollTo(0, 0); };
       r.nameCursor = "pointer";
       r.rowBg = on ? "#f5f9fe" : "#ffffff";
       r.boxBg = on ? "#095192" : "#ffffff";
       r.boxBd = on ? "#095192" : "#bcc3cd";
       r.tickOpacity = on ? 1 : 0;
       r.toggleSel = e => { if (e) e.stopPropagation(); this.setState(s => ({ picked: Object.assign({}, s.picked, { [r.key]: !(s.picked || {})[r.key] }) })); };
-      r.rowClick = guided ? r.toggleSel : noop;
-      r.nameClick = guided ? r.toggleSel : r.open;
-      r.chevClick = guided ? noop : r.open;
+      r.rowClick = guided ? r.startSingle : noop;
+      r.nameClick = guided ? r.startSingle : r.open;
+      r.chevClick = guided ? r.startSingle : r.open;
     });
     const nSel = sorted.filter(r => pk[r.key]).length;
     const all = nSel > 0 && nSel === sorted.length;
@@ -1314,6 +1334,8 @@ class Component extends DCLogic {
     return Object.assign(icons, handlers, sel, {
       unallocRows: unallocRows,
       guidedOn: guided,
+      boxCol: guided ? "none" : "table-cell",
+      showStartBar: !guided,
       guidedTrack: guided ? "#2f9e6e" : "rgba(255,255,255,0.18)",
       guidedKnob: guided ? "16px" : "2px",
       toggleGuided: () => { const next = !guided; this.setState({ guided: next }); try { localStorage.setItem("ip_guided", next ? "1" : "0"); } catch (e) {} },
@@ -1339,7 +1361,7 @@ class Component extends DCLogic {
       toastBg: this.state.toastTone === "warning" ? "#EFDABB" : "#dff3ef",
       toastAccent: this.state.toastTone === "warning" ? "#A36E1E" : "#008774",
       closeToast: () => { clearTimeout(this._toastT); this.setState({ toast: null }); },
-      startTransfer: () => { if (!nSel) return; this.setState({ view: "accept", queue: sorted.filter(r => pk[r.key]).map(r => r.key), qIdx: 0, serialStatus: {}, sessionBase: Object.assign({}, this.state.committed), accBin: 0, accSel: {}, transferred: 0, skipped: {}, pStatus: {}, walk: {}, leave: null, locPicked: false, locOpen: true, panelOpen: true }); window.scrollTo(0, 0); },
+      startTransfer: () => { if (!nSel) return; this.setState({ view: "accept", singleMode: false, queue: sorted.filter(r => pk[r.key]).map(r => r.key), qIdx: 0, serialStatus: {}, sessionBase: Object.assign({}, this.state.committed), accBin: 0, accSel: {}, transferred: 0, skipped: {}, pStatus: {}, walk: {}, leave: null, locPicked: false, locOpen: true, panelOpen: true }); window.scrollTo(0, 0); },
       skipProduct: () => this.setState({ confirmSkip: true }),
       goNewTransfer: () => { window.location.href = "New Transfer.dc.html"; },
       goHistory: () => { window.location.href = "Transfer History.dc.html"; },
