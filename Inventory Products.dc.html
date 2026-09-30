@@ -96,7 +96,7 @@
 
   <dc-import name="App Side Nav" selected="Transfer" hint-size="70px,100vh"></dc-import>
 
-  <div onClick="{{ toggleGuided }}" role="switch" aria-checked="{{ guidedOn }}" aria-label="Guided workflow" title="Guided workflow: open one product at a time to accept" style="position: fixed; left: 0; bottom: 34px; width: 70px; z-index: 90; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; cursor: pointer; user-select: none;">
+  <div onClick="{{ toggleGuided }}" role="switch" aria-checked="{{ guidedOn }}" aria-label="Guided workflow" title="Guided workflow: select products with checkboxes and start one transfer" style="position: fixed; left: 0; bottom: 34px; width: 70px; z-index: 90; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; cursor: pointer; user-select: none;">
     <span style="font-size: 9px; font-weight: 500; letter-spacing: 0.02em; color: #ffffff; opacity: 0.85;">Guided</span>
     <span style="position: relative; width: 30px; height: 16px; border-radius: 999px; background: {{ guidedTrack }}; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.45); transition: background-color 150ms ease;">
       <span style="position: absolute; top: 2px; left: {{ guidedKnob }}; width: 12px; height: 12px; border-radius: 50%; background: #ffffff; transition: left 150ms ease;"></span>
@@ -1010,9 +1010,9 @@ class Component extends DCLogic {
       position: (this.state.qIdx + 1) + "/" + (q.length || 1),
       transferred: this.state.transferred || 0,
       // Final product: Accept completes on its last bin, or as soon as every serial has a status; Skip always completes.
-      acceptLabel: solo ? (single ? "Accept and save" : "Accept and continue")
+      acceptLabel: solo ? (single ? "Accept and save" : isLastBin || serials.every(s => s.status !== "--") ? "Accept and finish" : "Accept and continue")
         : isLast && (isLastBin || serials.every(s => s.status !== "--")) ? "Accept and complete" : "Accept and continue",
-      skipLabel: solo ? "Skip and continue" : isLast ? "Skip and complete" : "Skip & continue",
+      skipLabel: solo ? (isLastBin ? "Skip and finish" : "Skip and continue") : isLast ? "Skip and complete" : "Skip & continue",
       // Guided single-product flow: no product / transferred counters; location tile and Skip only when there are several bins.
       showCounters: !solo,
       showLocTile: !solo || !single,
@@ -1294,9 +1294,9 @@ class Component extends DCLogic {
     const noop = () => {};
     sorted.forEach(r => {
       const on = !!pk[r.key];
-      r.showChevron = true;
-      r.rowCursor = guided ? "pointer" : "default";
-      // Guided workflow: open the accept flow for just this product.
+      r.showChevron = !guided;
+      r.rowCursor = "pointer";
+      // Guided off: the chevron opens the accept flow for just this product.
       r.startSingle = e => { if (e) e.stopPropagation(); this.setState({ view: "accept", singleMode: true, queue: [r.key], qIdx: 0, serialStatus: {}, sessionBase: Object.assign({}, this.state.committed), accBin: 0, accSel: {}, transferred: 0, skipped: {}, pStatus: {}, walk: {}, leave: null, locPicked: false, locOpen: true, panelOpen: true }); window.scrollTo(0, 0); };
       r.nameCursor = "pointer";
       r.rowBg = on ? "#f5f9fe" : "#ffffff";
@@ -1304,9 +1304,9 @@ class Component extends DCLogic {
       r.boxBd = on ? "#095192" : "#bcc3cd";
       r.tickOpacity = on ? 1 : 0;
       r.toggleSel = e => { if (e) e.stopPropagation(); this.setState(s => ({ picked: Object.assign({}, s.picked, { [r.key]: !(s.picked || {})[r.key] }) })); };
-      r.rowClick = guided ? r.startSingle : noop;
-      r.nameClick = guided ? r.startSingle : r.open;
-      r.chevClick = guided ? r.startSingle : r.open;
+      r.rowClick = guided ? r.toggleSel : r.startSingle;
+      r.nameClick = guided ? r.toggleSel : r.startSingle;
+      r.chevClick = guided ? noop : r.startSingle;
     });
     const nSel = sorted.filter(r => pk[r.key]).length;
     const all = nSel > 0 && nSel === sorted.length;
@@ -1334,8 +1334,8 @@ class Component extends DCLogic {
     return Object.assign(icons, handlers, sel, {
       unallocRows: unallocRows,
       guidedOn: guided,
-      boxCol: guided ? "none" : "table-cell",
-      showStartBar: !guided,
+      boxCol: guided ? "table-cell" : "none",
+      showStartBar: guided,
       guidedTrack: guided ? "#2f9e6e" : "rgba(255,255,255,0.18)",
       guidedKnob: guided ? "16px" : "2px",
       toggleGuided: () => { const next = !guided; this.setState({ guided: next }); try { localStorage.setItem("ip_guided", next ? "1" : "0"); } catch (e) {} },
