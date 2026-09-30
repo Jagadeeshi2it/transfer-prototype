@@ -330,6 +330,13 @@
         <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">NDC</span><span style="font-size: 14px; font-weight: 500; color: #21252b; min-width: 0; overflow-wrap: anywhere;">{{ p.ndc }}</span>
         <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Inventory Type</span><span style="font-size: 14px; font-weight: 500; color: {{ p.invColor }};">{{ p.invType }}</span>
       </div>
+      <div style="display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; align-content: start; min-width: 0;">
+        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Sending Location</span><span style="font-size: 14px; font-weight: 500; color: #21252b; min-width: 0; overflow-wrap: anywhere;">Onco Clinic Center / Onco Station</span>
+      </div>
+      <div style="display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; align-content: start; min-width: 0;">
+        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Created On</span><span style="font-size: 14px; font-weight: 500; color: #21252b; min-width: 0; overflow-wrap: anywhere;">{{ today }}</span>
+        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Created By</span><span style="font-size: 14px; font-weight: 500; color: #21252b; min-width: 0; overflow-wrap: anywhere;">User Super</span>
+      </div>
       <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0;">
         <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 4px 24px;">
           <span style="display: inline-flex; align-items: center; gap: 8px;">
@@ -366,14 +373,6 @@
             </sc-if>
           </div>
         </div>
-      </div>
-      <div style="display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; align-content: start; min-width: 0;">
-        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Sending Location</span><span style="font-size: 14px; font-weight: 500; color: #21252b; min-width: 0; overflow-wrap: anywhere;">Onco Clinic Center / Onco Station</span>
-        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Transfer Status</span><span style="font-size: 14px; font-weight: 500; color: #21252b; min-width: 0; overflow-wrap: anywhere;">Draft</span>
-      </div>
-      <div style="display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; align-content: start; min-width: 0;">
-        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Created On</span><span style="font-size: 14px; font-weight: 500; color: #21252b; min-width: 0; overflow-wrap: anywhere;">{{ today }}</span>
-        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Created By</span><span style="font-size: 14px; font-weight: 500; color: #21252b; min-width: 0; overflow-wrap: anywhere;">User Super</span>
       </div>
     </div>
 

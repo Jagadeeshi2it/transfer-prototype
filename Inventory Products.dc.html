@@ -847,7 +847,8 @@ class Component extends DCLogic {
       // Rows committed in the bin you're in stay editable when you come back to it.
       const editable = !c || (picked && c.door + "-" + c.bin === curBin.key);
       const saved = c ? c.status : "--";
-      const status = editable && st[id] !== undefined ? st[id] : saved;
+      // A product in a single bin starts with every open serial set to Accept, ready to bulk accept.
+      const status = editable && st[id] !== undefined ? st[id] : (!c && single ? "Accept" : saved);
       const dirty = editable && status !== saved;
       tally[base[id] ? "prior" : status] += l.n;
       const seed = String(parseInt(String(r.ndc).slice(-6), 10) * 7919 + i * 104729 + r.key * 31);
