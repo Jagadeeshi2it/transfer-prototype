@@ -850,6 +850,7 @@ class Component extends DCLogic {
       // A product in a single bin starts with every open serial set to Accept, ready to bulk accept.
       const status = editable && st[id] !== undefined ? st[id] : (!c && single ? "Accept" : saved);
       const dirty = editable && status !== saved;
+      const edited = editable && st[id] !== undefined && st[id] !== saved;
       tally[base[id] ? "prior" : status] += l.n;
       const seed = String(parseInt(String(r.ndc).slice(-6), 10) * 7919 + i * 104729 + r.key * 31);
       const loc = status === "--" || status === "Not Received" ? null : (c && !dirty ? c : curBin);
@@ -858,7 +859,7 @@ class Component extends DCLogic {
         lot: (seed.split("").reverse().join("") + "293586344").slice(0, 9),
         expiration: exps[(i + r.key) % 5],
         source: r.source, n: l.n, qty: qtyOf(l.n),
-        id, status, dirty, saved, pending: editable, isCommitted: !editable,
+        id, status, dirty, edited, saved, pending: editable, isCommitted: !editable,
         commitBin: c ? c.door + "-" + c.bin : null,
         hasLoc: !!loc, noLoc: !loc, locDoor: loc ? loc.door : "", locBin: loc ? loc.bin : "",
         doneLabel: c ? doneStyle[c.status][0] : "", doneColor: c ? doneStyle[c.status][1] : "#21252b",
@@ -891,6 +892,8 @@ class Component extends DCLogic {
       return next;
     };
     const hasUncommitted = pendingRows.some(s => s.dirty);
+    // Only the user's own edits (not the single-bin Accept pre-fill) block Skip / Cancel and prompt on leaving.
+    const hasEdits = pendingRows.some(s => s.edited);
     const allCommitted = c => serials.every(s => c[s.id]);
     const productComplete = allCommitted(cm);
     const walkHere = { bin: binIdx, picked };
@@ -905,10 +908,10 @@ class Component extends DCLogic {
       window.scrollTo(0, 0);
     };
     const solo = !!this.state.singleMode;
-    const skipOk = picked && !productComplete && !hasUncommitted;
+    const skipOk = picked && !productComplete && !hasEdits;
     const onSkip = () => {
       if (!skipOk) return;
-      if (isLastBin || (isLast && !solo)) { finalize(cm); return; }
+      if (isLastBin) { finalize(cm); return; }
       goBin(binIdx + 1); window.scrollTo(0, 0);
     };
     const doBin = (i, c) => { this.setState({ committed: c, accBin: i, serialStatus: {}, accSel: {}, locPicked: true, locOpen: false, panelOpen: false, leave: null }); this.toast("Door " + bins[i].door + " is unlocked now", null, "success"); };
@@ -939,12 +942,12 @@ class Component extends DCLogic {
       activeDoor,
       onSkip,
       skipDisabled: !skipOk,
-      cancelDisabled: hasUncommitted,
-      cancelFg: hasUncommitted ? "#BCC3CD" : "#095192",
-      cancelBd: hasUncommitted ? "#DADEE3" : "#095192",
-      cancelCursor: hasUncommitted ? "not-allowed" : "pointer",
-      cancelHover: hasUncommitted ? "#ffffff" : "rgba(9,81,146,0.06)",
-      onCancel: () => { if (!hasUncommitted) this.setState({ confirmClose: true }); },
+      cancelDisabled: hasEdits,
+      cancelFg: hasEdits ? "#BCC3CD" : "#095192",
+      cancelBd: hasEdits ? "#DADEE3" : "#095192",
+      cancelCursor: hasEdits ? "not-allowed" : "pointer",
+      cancelHover: hasEdits ? "#ffffff" : "rgba(9,81,146,0.06)",
+      onCancel: () => { if (!hasEdits) this.setState({ confirmClose: true }); },
       skipFg: skipOk ? "#095192" : "#BCC3CD",
       skipBd: skipOk ? "#095192" : "#DADEE3",
       skipCursor: skipOk ? "pointer" : "not-allowed",
@@ -988,7 +991,7 @@ class Component extends DCLogic {
       doorNote: "This product is stored in " + doors.length + " doors. Only the open door's bins can be accepted — switch doors to accept items stored elsewhere.",
       locations,
       locKey: selKey,
-      onLocSelect: l => { const i = bins.findIndex(b => b.key === l.door + "-" + l.bin); if (i < 0) return; if (hasUncommitted && i !== binIdx) this.setState({ leave: { kind: "bin", idx: i }, locOpen: false, panelOpen: false }); else doBin(i, cm); },
+      onLocSelect: l => { const i = bins.findIndex(b => b.key === l.door + "-" + l.bin); if (i < 0) return; if (hasEdits && i !== binIdx) this.setState({ leave: { kind: "bin", idx: i }, locOpen: false, panelOpen: false }); else doBin(i, cm); },
       onAccept: picked ? onAccept : needLoc,
       unitWord: unitPl,
       locStats: [
@@ -1007,13 +1010,13 @@ class Component extends DCLogic {
           status: ps || ((this.state.done || {})[k] ? "Transferred" : "Pending") };
       }),
       curId: String(q[this.state.qIdx]),
-      onProductSelect: p => { const i = q.indexOf(Number(p.id)); if (i < 0 || i === this.state.qIdx) return; if (hasUncommitted) this.setState({ leave: { kind: "product", idx: i }, panelOpen: false }); else doProduct(i, cm); },
+      onProductSelect: p => { const i = q.indexOf(Number(p.id)); if (i < 0 || i === this.state.qIdx) return; if (hasEdits) this.setState({ leave: { kind: "product", idx: i }, panelOpen: false }); else doProduct(i, cm); },
       position: (this.state.qIdx + 1) + "/" + (q.length || 1),
       transferred: this.state.transferred || 0,
-      // Final product: Accept completes on its last bin, or as soon as every serial has a status; Skip always completes.
+      // Final product: Accept completes on its last bin, or as soon as every serial has a status; Skip completes only on its last bin.
       acceptLabel: solo ? (single ? "Accept and save" : isLastBin || serials.every(s => s.status !== "--") ? "Accept and finish" : "Accept and continue")
         : isLast && (isLastBin || serials.every(s => s.status !== "--")) ? "Accept and complete" : "Accept and continue",
-      skipLabel: solo ? (isLastBin ? "Skip and finish" : "Skip and continue") : isLast ? "Skip and complete" : "Skip & continue",
+      skipLabel: solo ? (isLastBin ? "Skip and finish" : "Skip and continue") : isLast && isLastBin ? "Skip and complete" : "Skip and continue",
       // Guided single-product flow: no product / transferred counters; location tile and Skip only when there are several bins.
       showCounters: !solo,
       showLocTile: !solo || !single,
