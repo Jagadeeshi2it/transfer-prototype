@@ -21,6 +21,9 @@
   a:hover { color: #073f73; text-decoration: underline; }
   *, *::before, *::after { box-sizing: border-box; }
   input::placeholder { color: #9aa4b0; }
+  /* Two identical keyframes so switching names restarts the highlight on every bin change. */
+  @keyframes binFlash0 { 0%, 35% { background: #fde68a; } 100% { background: transparent; } }
+  @keyframes binFlash1 { 0%, 35% { background: #fde68a; } 100% { background: transparent; } }
 </style>
 </helmet>
 <div style="display: flex; align-items: stretch; width: 100%; min-height: 100vh; background: #ffffff; color: #21252b; font-size: 14px; font-weight: 400;">
@@ -380,7 +383,7 @@
           </div>
           <div style="display: flex; align-items: center; gap: 8px;">
             <span style="font-size: 14px; color: #6b7480;">Bin</span>
-            <span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ acc.hdrBin }}</span>
+            <span style="font-size: 14px; font-weight: 500; color: #21252b; padding: 1px 6px; margin: -1px -6px; border-radius: 4px; animation: {{ acc.binFlash }};">{{ acc.hdrBin }}</span>
           </div>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
@@ -833,7 +836,9 @@ class Component extends DCLogic {
     const single = bins.length <= 1;
     const picked = single || !!this.state.locPicked;
     const locOpen = !single && !!this.state.locOpen;
-    const goBin = i => this.setState({ accBin: i, serialStatus: {}, accSel: {} });
+    const moveNote = i => (this.state.locPicked || single) && bins[i].door === curBin.door ? "Now at Bin " + bins[i].bin + " in Door " + bins[i].door : "Door " + bins[i].door + " is unlocked now";
+    const flash = () => ({ binFlash: (this.state.binFlash || 0) + 1 });
+    const goBin = (i, pre) => { this.setState(Object.assign({ accBin: i, serialStatus: {}, accSel: {} }, flash())); this.toast((pre ? pre + " " : "") + moveNote(i) + ".", null, "success"); };
     const exps = ["01/30/2026", "06/11/2026", "08/14/2026", "05/23/2026", "11/07/2026"];
     const st = this.state.serialStatus || {};
     const cm = this.state.committed || {};
@@ -903,8 +908,8 @@ class Component extends DCLogic {
       const c = commitNow();
       if (isLastBin || allCommitted(c)) { finalize(c); return; }
       const accN = pendingRows.filter(s => s.dirty && s.status === "Accept").reduce((a, s) => a + s.n, 0);
-      if (accN > 0) this.toast(fmt(accN) + " " + (accN === 1 ? unitWord : unitPl) + " accepted from the transfer.", null, "success");
-      this.setState({ committed: c, accBin: binIdx + 1, serialStatus: {}, accSel: {} });
+      this.setState({ committed: c });
+      goBin(binIdx + 1, accN > 0 ? fmt(accN) + " " + (accN === 1 ? unitWord : unitPl) + " accepted from the transfer." : "");
       window.scrollTo(0, 0);
     };
     const solo = !!this.state.singleMode;
@@ -914,7 +919,7 @@ class Component extends DCLogic {
       if (isLastBin) { finalize(cm); return; }
       goBin(binIdx + 1); window.scrollTo(0, 0);
     };
-    const doBin = (i, c) => { this.setState({ committed: c, accBin: i, serialStatus: {}, accSel: {}, locPicked: true, locOpen: false, panelOpen: false, leave: null }); this.toast("Door " + bins[i].door + " is unlocked now", null, "success"); };
+    const doBin = (i, c) => { const note = moveNote(i); this.setState(Object.assign({ committed: c, accBin: i, serialStatus: {}, accSel: {}, locPicked: true, locOpen: false, panelOpen: false, leave: null }, flash())); this.toast(note + ".", null, "success"); };
     const doProduct = (i, c) => this.leaveTo(r, c, walkHere, i, { toast: false });
     const leave = this.state.leave;
     const runLeave = c => { if (!leave) return; if (leave.kind === "bin") doBin(leave.idx, c); else doProduct(leave.idx, c); };
@@ -930,6 +935,7 @@ class Component extends DCLogic {
       onLocOpen: v => this.setState({ locOpen: !!v, panelOpen: !!v }),
       hdrDoor: picked ? curBin.door : "--",
       hdrBin: picked ? curBin.bin : "--",
+      binFlash: this.state.binFlash ? "binFlash" + (this.state.binFlash % 2) + " 1.8s ease-out" : "none",
       hdrInv: picked && curLoc ? curLoc.inventory + " " + (curLoc.inventory === 1 ? unitWord : unitPl) : "--",
       onUnlock: () => this.toast("Door " + curBin.door + " is unlocked now", null, "success"),
       scanLocked: !picked,
@@ -1301,7 +1307,7 @@ class Component extends DCLogic {
       r.showChevron = !guided;
       r.rowCursor = "pointer";
       // Guided off: the chevron opens the accept flow for just this product.
-      r.startSingle = e => { if (e) e.stopPropagation(); this.setState({ view: "accept", singleMode: true, queue: [r.key], qIdx: 0, serialStatus: {}, sessionBase: Object.assign({}, this.state.committed), accBin: 0, accSel: {}, transferred: 0, skipped: {}, pStatus: {}, walk: {}, leave: null, locPicked: false, locOpen: true, panelOpen: true }); window.scrollTo(0, 0); };
+      r.startSingle = e => { if (e) e.stopPropagation(); this.setState({ view: "accept", binFlash: 0, singleMode: true, queue: [r.key], qIdx: 0, serialStatus: {}, sessionBase: Object.assign({}, this.state.committed), accBin: 0, accSel: {}, transferred: 0, skipped: {}, pStatus: {}, walk: {}, leave: null, locPicked: false, locOpen: true, panelOpen: true }); window.scrollTo(0, 0); };
       r.nameCursor = "pointer";
       r.rowBg = on ? "#f5f9fe" : "#ffffff";
       r.boxBg = on ? "#095192" : "#ffffff";
@@ -1365,7 +1371,7 @@ class Component extends DCLogic {
       toastBg: this.state.toastTone === "warning" ? "#EFDABB" : "#dff3ef",
       toastAccent: this.state.toastTone === "warning" ? "#A36E1E" : "#008774",
       closeToast: () => { clearTimeout(this._toastT); this.setState({ toast: null }); },
-      startTransfer: () => { if (!nSel) return; this.setState({ view: "accept", singleMode: false, queue: sorted.filter(r => pk[r.key]).map(r => r.key), qIdx: 0, serialStatus: {}, sessionBase: Object.assign({}, this.state.committed), accBin: 0, accSel: {}, transferred: 0, skipped: {}, pStatus: {}, walk: {}, leave: null, locPicked: false, locOpen: true, panelOpen: true }); window.scrollTo(0, 0); },
+      startTransfer: () => { if (!nSel) return; this.setState({ view: "accept", binFlash: 0, singleMode: false, queue: sorted.filter(r => pk[r.key]).map(r => r.key), qIdx: 0, serialStatus: {}, sessionBase: Object.assign({}, this.state.committed), accBin: 0, accSel: {}, transferred: 0, skipped: {}, pStatus: {}, walk: {}, leave: null, locPicked: false, locOpen: true, panelOpen: true }); window.scrollTo(0, 0); },
       skipProduct: () => this.setState({ confirmSkip: true }),
       goNewTransfer: () => { window.location.href = "New Transfer.dc.html"; },
       goHistory: () => { window.location.href = "Transfer History.dc.html"; },
