@@ -836,9 +836,10 @@ class Component extends DCLogic {
     const single = bins.length <= 1;
     const picked = single || !!this.state.locPicked;
     const locOpen = !single && !!this.state.locOpen;
-    const moveNote = i => (this.state.locPicked || single) && bins[i].door === curBin.door ? "Now at Bin " + bins[i].bin + " in Door " + bins[i].door : "Door " + bins[i].door + " is unlocked now";
+    // Same-door bin moves are shown by the header highlight alone; a door change also gets the unlock toast.
+    const moveNote = i => (this.state.locPicked || single) && bins[i].door === curBin.door ? "" : "Door " + bins[i].door + " is unlocked now.";
     const flash = () => ({ binFlash: (this.state.binFlash || 0) + 1 });
-    const goBin = (i, pre) => { this.setState(Object.assign({ accBin: i, serialStatus: {}, accSel: {} }, flash())); this.toast((pre ? pre + " " : "") + moveNote(i) + ".", null, "success"); };
+    const goBin = (i, pre) => { this.setState(Object.assign({ accBin: i, serialStatus: {}, accSel: {} }, flash())); const msg = [pre, moveNote(i)].filter(Boolean).join(" "); if (msg) this.toast(msg, null, "success"); };
     const exps = ["01/30/2026", "06/11/2026", "08/14/2026", "05/23/2026", "11/07/2026"];
     const st = this.state.serialStatus || {};
     const cm = this.state.committed || {};
@@ -919,7 +920,7 @@ class Component extends DCLogic {
       if (isLastBin) { finalize(cm); return; }
       goBin(binIdx + 1); window.scrollTo(0, 0);
     };
-    const doBin = (i, c) => { const note = moveNote(i); this.setState(Object.assign({ committed: c, accBin: i, serialStatus: {}, accSel: {}, locPicked: true, locOpen: false, panelOpen: false, leave: null }, flash())); this.toast(note + ".", null, "success"); };
+    const doBin = (i, c) => { const note = moveNote(i); this.setState(Object.assign({ committed: c, accBin: i, serialStatus: {}, accSel: {}, locPicked: true, locOpen: false, panelOpen: false, leave: null }, flash())); if (note) this.toast(note, null, "success"); };
     const doProduct = (i, c) => this.leaveTo(r, c, walkHere, i, { toast: false });
     const leave = this.state.leave;
     const runLeave = c => { if (!leave) return; if (leave.kind === "bin") doBin(leave.idx, c); else doProduct(leave.idx, c); };
