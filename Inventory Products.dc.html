@@ -449,7 +449,7 @@
               <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Expiration</th>
               <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Source</th>
               <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Quantity</th>
-              <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Location accepted</th>
+              <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Location</th>
               <th style="width: 240px; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Status</th>
             </tr>
           </thead>
@@ -487,6 +487,7 @@
                         <option value="--">--</option>
                         <option value="Accept">Accept</option>
                         <option value="Damaged">Damaged</option>
+                        <option value="Damaged - Replacement Required">Damaged - Replacement Required</option>
                         <option value="Not Received">Not Received</option>
                       </select>
                       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="position: absolute; right: 12px; top: 13px; color: #6b7480; pointer-events: none;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.266Z" fill="currentColor"></path></svg>
@@ -838,7 +839,7 @@ class Component extends DCLogic {
       const dirty = editable && status !== saved;
       tally[base[id] ? "prior" : status] += l.n;
       const seed = String(parseInt(String(r.ndc).slice(-6), 10) * 7919 + i * 104729 + r.key * 31);
-      const loc = status === "--" ? null : (c && !dirty ? c : curBin);
+      const loc = status === "--" || status === "Not Received" ? null : (c && !dirty ? c : curBin);
       return {
         serial: (seed + "8392017465820391").slice(0, 16),
         lot: (seed.split("").reverse().join("") + "293586344").slice(0, 9),
@@ -893,7 +894,7 @@ class Component extends DCLogic {
     const skipOk = picked && !productComplete && !hasUncommitted;
     const onSkip = () => {
       if (!skipOk) return;
-      if (isLastBin) { finalize(cm); return; }
+      if (isLastBin || isLast) { finalize(cm); return; }
       goBin(binIdx + 1); window.scrollTo(0, 0);
     };
     const doBin = (i, c) => { this.setState({ committed: c, accBin: i, serialStatus: {}, accSel: {}, locPicked: true, locOpen: false, panelOpen: false, leave: null }); this.toast("Door " + bins[i].door + " is unlocked now", null, "success"); };
@@ -995,8 +996,9 @@ class Component extends DCLogic {
       onProductSelect: p => { const i = q.indexOf(Number(p.id)); if (i < 0 || i === this.state.qIdx) return; if (hasUncommitted) this.setState({ leave: { kind: "product", idx: i }, panelOpen: false }); else doProduct(i, cm); },
       position: (this.state.qIdx + 1) + "/" + (q.length || 1),
       transferred: this.state.transferred || 0,
-      acceptLabel: isLastBin && isLast ? "Accept and finish" : "Accept and continue",
-      skipLabel: isLastBin && isLast ? "Skip & finish" : "Skip & continue"
+      // Final product: Accept completes on its last bin, or as soon as every serial has a status; Skip always completes.
+      acceptLabel: isLast && (isLastBin || serials.every(s => s.status !== "--")) ? "Accept and complete" : "Accept and continue",
+      skipLabel: isLast ? "Skip and complete" : "Skip & continue"
     };
   }
 
