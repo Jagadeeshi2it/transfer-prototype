@@ -427,7 +427,7 @@
                 <td style="padding: 14px 16px; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; white-space: nowrap;">{{ s.qty }}</td>
                 <td style="padding: 10px 16px; vertical-align: top; border-bottom: 1px solid #eef1f5;">
                   <button type="button" onClick="{{ s.remove }}" aria-disabled="{{ s.lockedRm }}" aria-label="Remove serial" title="{{ s.rmTitle }}" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: {{ s.rmColor }}; cursor: {{ s.rmCursor }};" style-hover="background: {{ s.rmHoverBg }}; color: {{ s.rmHoverFg }};">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.5 4.5l.6 8.5h5.8l.6-8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"></circle><rect x="2.4" y="6.5" width="11.2" height="3" rx="1.5" fill="#ffffff"></rect></svg>
                   </button>
                 </td>
               </tr>
@@ -924,8 +924,8 @@ class Component extends DCLogic {
         openDoor: () => picked ? this.toast("Door " + cd.door + " is unlocked now") : needLoc(),
         rows: ids.map(id => { const x = byId[id]; const canRm = picked && x.door === cd.door; return Object.assign({}, x, { qty: qtyLabel, bg: id === s.lastAdded ? "#F4F8FC" : "#ffffff",
           lockedRm: !canRm, rmTitle: canRm ? "Remove" : "Open Door " + x.door + " to remove this serial",
-          rmColor: canRm ? "#64748b" : "#BCC3CD", rmCursor: canRm ? "pointer" : "not-allowed",
-          rmHoverBg: canRm ? "#fbe5e4" : "transparent", rmHoverFg: canRm ? "#d9342b" : "#BCC3CD",
+          rmColor: canRm ? "#FF3300" : "#BCC3CD", rmCursor: canRm ? "pointer" : "not-allowed",
+          rmHoverBg: canRm ? "#fbe5e4" : "transparent", rmHoverFg: canRm ? "#FF3300" : "#BCC3CD",
           remove: () => { if (!canRm) { this.toast("Switch to Door " + x.door + " to remove this serial.", "warning"); return; } setScanned(l => l.filter(v => v !== id)); this.setState(st => ({ saved: Object.assign({}, st.saved, { [p.id]: ((st.saved || {})[p.id] || []).filter(v => v !== id) }) })); } }); }),
         empty: n === 0,
         locations: bins.map((b, i) => ({ door: b.door, bin: b.bin, size: "1×1", expiration: Component.EXPS[i % 5], inventory: b.count, moved: b.count, issue: inBin(b.key), doorType: "physical" })),
