@@ -783,7 +783,6 @@
                     <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; white-space: nowrap;">
                       <div>{{ r.expiration }}</div>
                       <sc-if value="{{ r.expired }}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; margin-top: 4px; padding: 1px 8px; font-size: 12px; line-height: 18px; font-weight: 500; color: #ffffff; background: #D9342B; border-radius: 999px;">Expired</span></sc-if>
-                      <sc-if value="{{ r.inTransfer }}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; margin-top: 4px; padding: 1px 8px; font-size: 12px; line-height: 18px; font-weight: 500; color: #095192; background: #e3eef9; border-radius: 999px;">In transfer</span></sc-if>
                     </td>
                     <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5;">{{ r.source }}</td>
                     <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; min-width: 96px;">{{ r.qty }}</td>
@@ -1220,6 +1219,7 @@ class Component extends DCLogic {
       const keys = all.map(ymKey).sort(), k = keys[0];
       return { label: "Expiring " + Component.MONTHS[Number(k.slice(4)) - 1] + " " + k.slice(0, 4) + ": " + keys.filter(x => x === k).length, expired: false };
     };
+    const tickedOf = pid => { const c = {}; (s.scanned[pid] || []).forEach(id => { c[id] = true; }); return c; };
     const clearWork = { vScan: "", vQ: "", vSearched: false, vHit: null, vPick: null, vPickChk: {}, vPickHi: null };
     const search = () => {
       const t = String(s.vScan || "").trim();
@@ -1229,7 +1229,7 @@ class Component extends DCLogic {
         const pid = Number(hit.id.split("-")[0]);
         if ((s.scanned[pid] || []).includes(hit.id)) { this.toast("Serial " + t + " is already in this transfer.", "warning"); return; }
         if (isExpired(hit)) { this.toast("Serial " + t + " is expired and can't be transferred.", "warning"); return; }
-        this.setState({ vQ: "", vSearched: true, vHit: pid, vPick: pid, vPickChk: { [hit.id]: true }, vPickHi: hit.id, vPickClosed: false });
+        this.setState({ vQ: "", vSearched: true, vHit: pid, vPick: pid, vPickChk: Object.assign(tickedOf(pid), { [hit.id]: true }), vPickHi: hit.id, vPickClosed: false });
         return;
       }
       this.setState({ vQ: t, vSearched: true, vHit: null, vPick: null, vPickChk: {}, vPickHi: null });
@@ -1240,24 +1240,26 @@ class Component extends DCLogic {
         inv: this.total(p) + " " + this.unitOf(p, this.total(p)), exp: ex.label, hasExpired: ex.expired, tag: n ? n + " in transfer" : "", hasTag: n > 0, on,
         hdBg: on ? "#0E243F" : "#F8FAFC", hdFg: on ? "#ffffff" : "#21252b", subFg: on ? "rgba(255,255,255,0.85)" : "#6b7280",
         bd: on ? "#0E243F" : "#e3e7ed", hoverBd: on ? "#0E243F" : "#9fb4cc", chipRing: on ? "rgba(255,255,255,0.6)" : "transparent",
-        select: () => { if (id !== pick) this.setState({ vPick: id, vPickChk: {}, vPickHi: null, vPickClosed: false }); } }; });
+        select: () => { if (id !== pick) this.setState({ vPick: id, vPickChk: tickedOf(id), vPickHi: null, vPickClosed: false }); } }; });
     // Pick mode: tick available items of the chosen product, then Save selection adds them to the transfer.
     const pv = {};
     if (pick != null) {
       const p = P[pick], ser = serialized(p), chk = s.vPickChk || {}, inT = s.scanned[pick] || [];
       const items = this.serialsOf(p).filter(x => vsrc === "All" || x.source === vsrc).map(x => {
-        const expired = isExpired(x), inTransfer = inT.includes(x.id), selectable = !expired && !inTransfer, checked = selectable && !!chk[x.id];
+        const expired = isExpired(x), selectable = !expired, checked = selectable && !!chk[x.id];
         return { id: x.id, primary: ser ? x.serial : x.lot, lot: x.lot, hasLot: ser, expiration: x.expiration, source: x.source, qty: "1 " + this.unitOf(p, 1) + " / " + p.strength,
-          expired, inTransfer, selectable, checked,
-          hint: expired ? "Expired on " + x.expiration + ". Expired vials can't be selected for transfer." : inTransfer ? "Already in this transfer." : "",
+          expired, selectable, checked,
+          hint: expired ? "Expired on " + x.expiration + ". Expired vials can't be selected for transfer." : "",
           cursor: selectable ? "default" : "not-allowed",
-          bg: expired ? "#eceef1" : x.id === s.vPickHi ? "#F4F8FC" : checked ? "#f5f9fe" : "#ffffff", fg: expired || inTransfer ? "#6b7480" : "#21252b",
+          bg: expired ? "#eceef1" : x.id === s.vPickHi ? "#F4F8FC" : checked ? "#f5f9fe" : "#ffffff", fg: expired ? "#6b7480" : "#21252b",
           boxBg: checked ? "#095192" : "#ffffff", boxBd: checked ? "#095192" : "#bcc3cd",
           toggle: () => this.setState(st => ({ vPickChk: Object.assign({}, st.vPickChk, { [x.id]: !checked }) })), x };
       });
       // The scanned serial goes to the top so it is easy to confirm.
       items.sort((a, b) => (b.id === s.vPickHi) - (a.id === s.vPickHi));
-      const open = items.filter(r => r.selectable), picked = items.filter(r => r.checked), allOn = open.length > 0 && picked.length === open.length, none = !picked.length;
+      const open = items.filter(r => r.selectable), picked = items.filter(r => r.checked), allOn = open.length > 0 && picked.length === open.length;
+      // Save syncs the product's items in the transfer with the ticked rows (adds new ticks, drops unticked ones).
+      const pickedIds = picked.map(r => r.id), addN = pickedIds.filter(id => !inT.includes(id)).length, dropN = inT.filter(id => !pickedIds.includes(id)).length, none = !addN && !dropN;
       Object.assign(pv, {
         vPickHasExpired: items.some(r => r.expired),
         vPickExpiredNote: (n => n + (n === 1 ? " expired item can't be selected" : " expired items can't be selected"))(items.filter(r => r.expired).length),
@@ -1266,13 +1268,13 @@ class Component extends DCLogic {
         vPickToggle: () => this.setState(st => ({ vPickClosed: !st.vPickClosed })),
         vPickAllOn: allOn, vPickAllBg: allOn ? "#095192" : "#ffffff", vPickAllBd: allOn ? "#095192" : "#bcc3cd",
         vPickAll: () => this.setState(() => { const c = {}; if (!allOn) open.forEach(r => { c[r.id] = true; }); return { vPickChk: c }; }),
-        vPickNone: none, vPickSaveLabel: none ? "Save selection" : "Save selection (" + picked.length + ")",
+        vPickNone: none, vPickSaveLabel: picked.length ? "Save selection (" + picked.length + ")" : "Save selection",
         vPickFg: none ? "#BCC3CD" : "#ffffff", vPickBg: none ? "#F3F5F7" : "#095192", vPickBd: none ? "#DADEE3" : "#095192", vPickCursor: none ? "not-allowed" : "pointer",
         vPickSave: () => {
           if (none) return;
-          this.setState(st => Object.assign({ scanned: Object.assign({}, st.scanned, { [pick]: picked.map(r => r.id).concat(st.scanned[pick] || []) }),
-            queue: st.queue.includes(pick) ? st.queue : st.queue.concat(pick) }, clearWork));
-          this.toast(picked.length + " item(s) of " + p.name + " added to the transfer.");
+          this.setState(st => Object.assign({ scanned: Object.assign({}, st.scanned, { [pick]: pickedIds }),
+            queue: !pickedIds.length ? st.queue.filter(q => q !== pick) : st.queue.includes(pick) ? st.queue : st.queue.concat(pick) }, clearWork));
+          this.toast([addN ? addN + " item(s) added to" : "", dropN ? dropN + " item(s) removed from" : ""].filter(Boolean).join(" and ") + " the transfer for " + p.name + ".", dropN && !addN ? "warning" : undefined);
         },
         vPickCancel: () => this.setState(s.vHit != null ? clearWork : { vPick: null, vPickChk: {}, vPickHi: null })
       });
