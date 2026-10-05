@@ -646,11 +646,21 @@
           <div style="display: flex; align-items: center; gap: 10px; flex: 1 1 200px; max-width: 280px; height: 40px; padding: 0 12px; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px;">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="color: #6b7480; flex-shrink: 0;"><rect x="2" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="11" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="2" y="11" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><path d="M11 11h2v2h-2zM14 14h2v2h-2zM14 11h2M11 15v1" stroke="currentColor" stroke-width="1.3"></path></svg>
             <input type="text" value="{{ vScan }}" onChange="{{ vOnScan }}" onKeyDown="{{ vOnScanKey }}" placeholder="Scan vial or Name/NDC/AID" style="flex: 1; min-width: 0; height: 100%; border: none; outline: none; font-family: inherit; font-size: 14px; color: #21252b; background: transparent;" />
+            <sc-if value="{{ vHasQuery }}" hint-placeholder-val="{{ false }}">
+              <button type="button" onClick="{{ vClearQuery }}" aria-label="Clear search" title="Clear" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; padding: 0; background: transparent; border: none; color: #465161; cursor: pointer;"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></button>
+            </sc-if>
           </div>
           <div style="position: relative; flex: 0 1 200px;">
             <select value="{{ vInv }}" onChange="{{ vOnInv }}" style="width: 100%; height: 40px; padding: 0 36px 0 12px; font-family: inherit; font-size: 14px; color: #21252b; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer;">
               <option value="All">Inventory Type</option>
               <sc-for list="{{ invOptions }}" as="o" hint-placeholder-count="9"><option value="{{ o }}">{{ o }}</option></sc-for>
+            </select>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="position: absolute; right: 12px; top: 13px; color: #6b7480; pointer-events: none;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.234Z" fill="currentColor"></path></svg>
+          </div>
+          <div style="position: relative; flex: 0 1 180px;">
+            <select value="{{ vSrc }}" onChange="{{ vOnSrc }}" style="width: 100%; height: 40px; padding: 0 36px 0 12px; font-family: inherit; font-size: 14px; color: #21252b; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer;">
+              <option value="All">Source</option>
+              <sc-for list="{{ vSrcOptions }}" as="o" hint-placeholder-count="4"><option value="{{ o }}">{{ o }}</option></sc-for>
             </select>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="position: absolute; right: 12px; top: 13px; color: #6b7480; pointer-events: none;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.234Z" fill="currentColor"></path></svg>
           </div>
@@ -665,6 +675,12 @@
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 16px; padding: 20px 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 14px; color: #6b7480;">
+            <span>{{ vListTitle }}</span>
+            <sc-if value="{{ vHasQuery }}" hint-placeholder-val="{{ false }}">
+              <button type="button" onClick="{{ vClearQuery }}" style="padding: 0; font-family: inherit; font-size: 14px; font-weight: 500; color: #095192; background: transparent; border: none; cursor: pointer; text-decoration: underline;">Back to transfer list</button>
+            </sc-if>
+          </div>
           <sc-for list="{{ vCards }}" as="c" hint-placeholder-count="1">
             <div onClick="{{ c.select }}" role="button" aria-pressed="{{ c.on }}" style="border: 2px solid {{ c.bd }}; border-radius: 4px; overflow: hidden; background: #ffffff; cursor: pointer;" style-hover="border-color: {{ c.hoverBd }};">
               <div style="display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: {{ c.hdBg }}; color: {{ c.hdFg }};">
@@ -680,15 +696,22 @@
                 <svg width="16" height="16" viewBox="0 0 14 14" fill="none" style="flex-shrink: 0;"><path d="M4.5 2 9.5 7l-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
               </div>
               <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 20px; border-bottom: 1px solid #e3e7ed;">
-                <span style="display: inline-block; padding: 3px 10px; font-size: 14px; color: #25282a; border: 1px solid #c4cad2; border-radius: 3px;">{{ c.exp }}</span>
-                <span style="display: inline-block; padding: 3px 10px; font-size: 14px; color: #095192; background: #eef4fa; border-radius: 3px;">{{ c.countLabel }} scanned</span>
+                <span style="display: inline-flex; align-items: center; gap: 8px; padding: 3px 10px; font-size: 14px; color: #25282a; border: 1px solid #c4cad2; border-radius: 3px;">
+                  <sc-if value="{{ c.hasExpired }}" hint-placeholder-val="{{ false }}"><span style="width: 10px; height: 10px; border-radius: 50%; background: #D9342B;"></span></sc-if>
+                  {{ c.exp }}
+                </span>
+                <sc-if value="{{ c.hasTag }}" hint-placeholder-val="{{ true }}">
+                  <span style="display: inline-block; padding: 3px 10px; font-size: 14px; color: #095192; background: #eef4fa; border-radius: 3px;">{{ c.tag }}</span>
+                </sc-if>
               </div>
-              <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 16px; padding: 12px 20px 16px;">
+              <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px 16px; padding: 12px 20px 16px;">
                 <span style="font-size: 14px; color: #6b7480;">NDC</span>
                 <span style="font-size: 14px; color: #6b7480;">Inventory Type</span>
+                <span style="font-size: 14px; color: #6b7480;">Source</span>
                 <span style="font-size: 14px; color: #6b7480;">Inventory</span>
                 <span style="font-size: 15px; color: #21252b;">{{ c.ndc }}</span>
                 <span style="font-size: 15px; color: {{ c.invColor }};">{{ c.invType }}</span>
+                <span style="font-size: 15px; color: #21252b;">{{ c.source }}</span>
                 <span style="font-size: 15px; color: #21252b;">{{ c.inv }}</span>
               </div>
             </div>
@@ -707,6 +730,71 @@
       </div>
 
       <div style="display: flex; flex-direction: column; min-width: 0;">
+        <sc-if value="{{ vPicking }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 73px; padding: 16px 24px; border-bottom: 1px solid #e3e7ed;">
+          <div style="display: flex; flex-direction: column; min-width: 0;">
+            <span style="font-size: 18px; line-height: 26px; color: #25282a;">Select Items</span>
+            <span style="font-size: 13px; color: #6b7480; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ vPickName }}</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <button type="button" onClick="{{ vPickCancel }}" style="height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Cancel</button>
+            <button type="button" onClick="{{ vPickSave }}" aria-disabled="{{ vPickNone }}" style="height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ vPickFg }}; background: {{ vPickBg }}; border: 1px solid {{ vPickBd }}; border-radius: 4px; cursor: {{ vPickCursor }};">{{ vPickSaveLabel }}</button>
+          </div>
+        </div>
+        <div style="padding: 20px 24px;">
+          <div style="border: 1px solid #e9ecf1; border-radius: 4px; overflow: hidden;">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: #e9eef4;">
+              <span style="font-size: 14px; color: #465161;">Available Items</span>
+              <button type="button" onClick="{{ vPickToggle }}" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px; font-family: inherit; font-size: 14px; font-weight: 500; color: #095192; background: transparent; border: none; cursor: pointer;">{{ vPickToggleLabel }}<svg width="12" height="12" viewBox="0 0 14 14" fill="none" style="transform: rotate({{ vPickChev }});"><path d="M3 9l4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            </div>
+            <sc-if value="{{ vPickOpen }}" hint-placeholder-val="{{ true }}">
+            <table style="width: 100%; border-collapse: collapse;">
+              <thead>
+                <tr style="background: #f8fafc;">
+                  <th style="width: 1%; padding: 12px 8px 12px 16px; border-bottom: 1px solid #e9ecf1;">
+                    <div onClick="{{ vPickAll }}" role="checkbox" aria-checked="{{ vPickAllOn }}" style="position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ vPickAllBg }}; border: 1px solid {{ vPickAllBd }}; cursor: pointer;">
+                      <sc-if value="{{ vPickAllOn }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                    </div>
+                  </th>
+                  <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">{{ vPickIdHead }}</th>
+                  <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Expiration</th>
+                  <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Source</th>
+                  <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{ vPickRows }}" as="r" hint-placeholder-count="3">
+                  <tr style="background: {{ r.bg }}; color: {{ r.fg }};">
+                    <td style="padding: 12px 8px 12px 16px; border-bottom: 1px solid #eef1f5;">
+                      <sc-if value="{{ r.selectable }}" hint-placeholder-val="{{ true }}">
+                        <div onClick="{{ r.toggle }}" role="checkbox" aria-checked="{{ r.checked }}" style="position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ r.boxBg }}; border: 1px solid {{ r.boxBd }}; cursor: pointer;">
+                          <sc-if value="{{ r.checked }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                        </div>
+                      </sc-if>
+                    </td>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #eef1f5;">
+                      <div style="font-size: 14px;">{{ r.primary }}</div>
+                      <sc-if value="{{ r.hasLot }}" hint-placeholder-val="{{ true }}"><div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ r.lot }}</div></sc-if>
+                    </td>
+                    <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; white-space: nowrap;">
+                      {{ r.expiration }}
+                      <sc-if value="{{ r.expired }}" hint-placeholder-val="{{ false }}"><span style="margin-left: 8px; padding: 2px 8px; font-size: 12px; font-weight: 500; color: #ffffff; background: #D9342B; border-radius: 999px;">Expired</span></sc-if>
+                      <sc-if value="{{ r.inTransfer }}" hint-placeholder-val="{{ false }}"><span style="margin-left: 8px; padding: 2px 8px; font-size: 12px; font-weight: 500; color: #095192; background: #e3eef9; border-radius: 999px;">In transfer</span></sc-if>
+                    </td>
+                    <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5;">{{ r.source }}</td>
+                    <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; min-width: 96px;">{{ r.qty }}</td>
+                  </tr>
+                </sc-for>
+                <sc-if value="{{ vPickEmpty }}" hint-placeholder-val="{{ false }}">
+                  <tr><td colSpan="5" style="padding: 40px 16px; text-align: center; font-size: 14px; color: #6b7480;">No items match the selected source.</td></tr>
+                </sc-if>
+              </tbody>
+            </table>
+            </sc-if>
+          </div>
+        </div>
+        </sc-if>
+        <sc-if value="{{ vNotPicking }}" hint-placeholder-val="{{ true }}">
         <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 73px; padding: 16px 24px; border-bottom: 1px solid #e3e7ed;">
           <span style="font-size: 18px; line-height: 26px; color: #25282a;">Selected Items</span>
           <button type="button" onClick="{{ vAddManual }}" style="height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Add manually</button>
@@ -744,6 +832,7 @@
             </table>
           </div>
         </div>
+        </sc-if>
       </div>
     </div>
 
@@ -1127,60 +1216,112 @@ class Component extends DCLogic {
     });
   }
 
-  // Virtual station: scan vials straight into the transfer; products appear on the left as they are scanned.
+  // Virtual station: add vials to the transfer either by scanning a serial, or by searching for a product
+  // and picking its items. The left list shows the transfer's products, or search results while searching.
   step4(totalScanned) {
     const s = this.state, P = Component.PRODUCTS;
-    const pool = P.filter(p => !p.chips.includes("NON SERIALIZED"));
+    const serialized = p => !p.chips.includes("NON SERIALIZED");
+    const pool = P.filter(serialized);
     const has = id => (s.scanned[id] || []).length > 0;
     const ids = s.queue.filter(has);
-    const vq = String(s.vQ || "").trim().toLowerCase(), vinv = s.vInv || "All";
-    const shown = ids.filter(id => { const p = P[id]; return (!vq || p.name.toLowerCase().includes(vq) || p.ndc.includes(vq)) && (vinv === "All" || p.invType === vinv); });
-    const sel = shown.includes(s.vSel) ? s.vSel : (shown[0] != null ? shown[0] : null);
+    const vq = String(s.vQ || "").trim().toLowerCase(), vinv = s.vInv || "All", vsrc = s.vSrc || "All";
+    const searching = !!vq;
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const isExpired = x => { const [m, d, y] = x.expiration.split("/").map(Number); return new Date(y, m - 1, d) < today; };
+    const matchP = p => (!vq || p.name.toLowerCase().includes(vq) || p.ndc.includes(vq)) && (vinv === "All" || p.invType === vinv) && (vsrc === "All" || p.sources.includes(vsrc));
+    const listIds = searching ? P.filter(matchP).map(p => p.id) : ids.filter(id => matchP(P[id]));
+    const pick = searching && listIds.includes(s.vPick) ? s.vPick : null;
+    const sel = searching ? null : (listIds.includes(s.vSel) ? s.vSel : (listIds[0] != null ? listIds[0] : null));
     const ymKey = x => { const [m, , y] = x.expiration.split("/"); return y + m; };
-    const expLabel = p => { const keys = this.serialsOf(p).map(ymKey).sort(), k = keys[0]; return "Expiring " + Component.MONTHS[Number(k.slice(4)) - 1] + " " + k.slice(0, 4) + ": " + keys.filter(x => x === k).length; };
-    const free = p => this.serialsOf(p).filter(x => !(s.scanned[p.id] || []).includes(x.id));
-    const add = x => {
-      const pid = Number(x.id.split("-")[0]), isNew = !has(pid);
-      this.setState(st => ({ scanned: Object.assign({}, st.scanned, { [pid]: [x.id].concat(st.scanned[pid] || []) }), queue: st.queue.includes(pid) ? st.queue : st.queue.concat(pid), vSel: pid, vScan: "", vQ: "", lastAdded: x.id }));
-      this.toast(isNew ? P[pid].name + " added to the transfer." : "Serial " + x.serial + " added.");
+    const expInfo = p => {
+      const all = this.serialsOf(p), gone = all.filter(isExpired).length;
+      if (gone) return { label: "Expired (" + gone + ")", expired: true };
+      const keys = all.map(ymKey).sort(), k = keys[0];
+      return { label: "Expiring " + Component.MONTHS[Number(k.slice(4)) - 1] + " " + k.slice(0, 4) + ": " + keys.filter(x => x === k).length, expired: false };
     };
+    const free = p => this.serialsOf(p).filter(x => !(s.scanned[p.id] || []).includes(x.id));
+    const addMany = (pid, list, msg) => {
+      this.setState(st => ({ scanned: Object.assign({}, st.scanned, { [pid]: list.map(x => x.id).concat(st.scanned[pid] || []) }), queue: st.queue.includes(pid) ? st.queue : st.queue.concat(pid),
+        vSel: pid, vScan: "", vQ: "", vPick: null, vPickChk: {}, lastAdded: list[0].id }));
+      this.toast(msg);
+    };
+    const add = x => { const pid = Number(x.id.split("-")[0]); addMany(pid, [x], !has(pid) ? P[pid].name + " added to the transfer." : "Serial " + x.serial + " added."); };
     // Prototype stand-in for a barcode scan: take the next unscanned vial, rotating through products.
     const simulate = () => {
       const n = pool.length, start = s.vRot || 0;
-      for (let k = 0; k < n; k++) { const p = pool[(start + k) % n], f = free(p); if (f.length) { this.setState({ vRot: (start + k + 1) % n }); add(f[0]); return; } }
+      for (let k = 0; k < n; k++) { const p = pool[(start + k) % n], f = free(p).filter(x => !isExpired(x)); if (f.length) { this.setState({ vRot: (start + k + 1) % n }); add(f[0]); return; } }
       this.toast("Every vial in this station has been scanned.", "warning");
     };
     const scan = raw => {
       const t = String(raw || "").trim();
       if (!t) { simulate(); return; }
       const hit = pool.map(p => this.serialsOf(p)).flat().find(x => x.serial === t);
-      if (hit) { if ((s.scanned[Number(hit.id.split("-")[0])] || []).includes(hit.id)) this.toast("Serial " + t + " is already in this transfer.", "warning"); else add(hit); return; }
-      this.setState({ vQ: t });
+      if (hit) {
+        if ((s.scanned[Number(hit.id.split("-")[0])] || []).includes(hit.id)) this.toast("Serial " + t + " is already in this transfer.", "warning");
+        else if (isExpired(hit)) this.toast("Serial " + t + " is expired and can't be transferred.", "warning");
+        else add(hit);
+        return;
+      }
+      this.setState({ vQ: t, vPick: null, vPickChk: {} });
     };
+    const unitQty = p => "1 " + this.unitOf(p, 1) + " / " + p.strength;
     const byId = {}; if (sel != null) this.serialsOf(P[sel]).forEach(x => { byId[x.id] = x; });
-    const rows = sel == null ? [] : (s.scanned[sel] || []).map(id => { const x = byId[id], p = P[sel]; return Object.assign({}, x, {
+    const rows = sel == null ? [] : (s.scanned[sel] || []).map(id => { const x = byId[id], p = P[sel], ser = serialized(p); return Object.assign({}, x, {
+      serial: ser ? x.serial : x.lot, lot: ser ? x.lot : "Non-serialized lot",
       qty: "1 " + this.unitOf(p, 1), bg: id === s.lastAdded ? "#F4F8FC" : "#ffffff",
-      remove: () => { this.setState(st => { const l = (st.scanned[sel] || []).filter(v => v !== id); const sc = Object.assign({}, st.scanned, { [sel]: l }); return { scanned: sc, queue: l.length ? st.queue : st.queue.filter(q => q !== sel) }; }); this.toast("Serial " + x.serial + " removed.", "warning"); } }); });
-    const cards = shown.map(id => { const p = P[id], on = id === sel, n = s.scanned[id].length; return {
-      name: p.name, desc: p.desc, chips: this.chips(p), ndc: p.ndc, invType: p.invType, invColor: Component.invColor(p.invType),
-      inv: this.total(p) + " " + this.unitOf(p, this.total(p)), exp: expLabel(p), countLabel: n + " " + this.unitOf(p, n), on,
-      hdBg: on ? "#0E243F" : "#F8FAFC", hdFg: on ? "#ffffff" : "#21252b", subFg: on ? "rgba(255,255,255,0.85)" : "#6b7280",
-      bd: on ? "#0E243F" : "#e3e7ed", hoverBd: on ? "#0E243F" : "#9fb4cc", chipRing: on ? "rgba(255,255,255,0.6)" : "transparent",
-      select: () => this.setState({ vSel: id }) }; });
-    const ok = totalScanned > 0, filtered = ids.length > 0 && !shown.length;
-    return Object.assign(this.vPanelVals(ids), {
+      remove: () => { this.setState(st => { const l = (st.scanned[sel] || []).filter(v => v !== id); const sc = Object.assign({}, st.scanned, { [sel]: l }); return { scanned: sc, queue: l.length ? st.queue : st.queue.filter(q => q !== sel) }; }); this.toast((ser ? "Serial " + x.serial : "Lot " + x.lot) + " removed.", "warning"); } }); });
+    const cards = listIds.map(id => { const p = P[id], on = searching ? id === pick : id === sel, n = (s.scanned[id] || []).length, ex = expInfo(p);
+      const tag = searching ? (n ? n + " in transfer" : "") : n + " " + this.unitOf(p, n) + " added";
+      return {
+        name: p.name, desc: p.desc, chips: this.chips(p), ndc: p.ndc, invType: p.invType, invColor: Component.invColor(p.invType), source: p.sources.join(", "),
+        inv: this.total(p) + " " + this.unitOf(p, this.total(p)), exp: ex.label, hasExpired: ex.expired, tag, hasTag: !!tag, on,
+        hdBg: on ? "#0E243F" : "#F8FAFC", hdFg: on ? "#ffffff" : "#21252b", subFg: on ? "rgba(255,255,255,0.85)" : "#6b7280",
+        bd: on ? "#0E243F" : "#e3e7ed", hoverBd: on ? "#0E243F" : "#9fb4cc", chipRing: on ? "rgba(255,255,255,0.6)" : "transparent",
+        select: searching ? () => this.setState({ vPick: id, vPickChk: {}, vPickClosed: false }) : () => this.setState({ vSel: id }) }; });
+    // Pick mode: tick available items of the chosen product, then Save selection adds them to the transfer.
+    const pv = {};
+    if (pick != null) {
+      const p = P[pick], ser = serialized(p), chk = s.vPickChk || {}, inT = s.scanned[pick] || [];
+      const items = this.serialsOf(p).filter(x => vsrc === "All" || x.source === vsrc).map(x => {
+        const expired = isExpired(x), inTransfer = inT.includes(x.id), selectable = !expired && !inTransfer, checked = selectable && !!chk[x.id];
+        return { id: x.id, primary: ser ? x.serial : x.lot, lot: x.lot, hasLot: ser, expiration: x.expiration, source: x.source, qty: unitQty(p), expired, inTransfer, selectable, checked,
+          bg: expired ? "#eceef1" : checked ? "#f5f9fe" : "#ffffff", fg: expired || inTransfer ? "#6b7480" : "#21252b",
+          boxBg: checked ? "#095192" : "#ffffff", boxBd: checked ? "#095192" : "#bcc3cd",
+          toggle: () => this.setState(st => ({ vPickChk: Object.assign({}, st.vPickChk, { [x.id]: !checked }) })), x };
+      });
+      const open = items.filter(r => r.selectable), picked = items.filter(r => r.checked), allOn = open.length > 0 && picked.length === open.length, none = !picked.length;
+      Object.assign(pv, {
+        vPickName: p.name, vPickIdHead: ser ? "Serial / Lot" : "Lot", vPickRows: items, vPickEmpty: !items.length,
+        vPickOpen: !s.vPickClosed, vPickToggleLabel: s.vPickClosed ? "Show Items" : "Hide Items", vPickChev: s.vPickClosed ? "180deg" : "0deg",
+        vPickToggle: () => this.setState(st => ({ vPickClosed: !st.vPickClosed })),
+        vPickAllOn: allOn, vPickAllBg: allOn ? "#095192" : "#ffffff", vPickAllBd: allOn ? "#095192" : "#bcc3cd",
+        vPickAll: () => this.setState(() => { const c = {}; if (!allOn) open.forEach(r => { c[r.id] = true; }); return { vPickChk: c }; }),
+        vPickNone: none, vPickSaveLabel: none ? "Save selection" : "Save selection (" + picked.length + ")",
+        vPickFg: none ? "#BCC3CD" : "#ffffff", vPickBg: none ? "#F3F5F7" : "#095192", vPickBd: none ? "#DADEE3" : "#095192", vPickCursor: none ? "not-allowed" : "pointer",
+        vPickSave: () => { if (!none) addMany(pick, picked.map(r => r.x), picked.length + " item(s) of " + p.name + " added to the transfer."); },
+        vPickCancel: () => this.setState({ vPick: null, vPickChk: {} })
+      });
+    }
+    const ok = totalScanned > 0;
+    return Object.assign(this.vPanelVals(ids), pv, {
       vProducts: ids.length,
       vScan: s.vScan || "", vOnScan: e => this.setState({ vScan: e.target.value }),
       vOnScanKey: e => { if (e.key === "Enter") scan(e.target.value); },
       vSearch: () => scan(s.vScan), vSimulate: simulate,
+      vHasQuery: searching || !!s.vScan,
+      vClearQuery: () => this.setState({ vScan: "", vQ: "", vPick: null, vPickChk: {} }),
       vInv: vinv, vOnInv: e => this.setState({ vInv: e.target.value }),
-      vReset: () => this.setState({ vScan: "", vQ: "", vInv: "All" }),
-      vCards: cards, vEmpty: !shown.length, vShowSim: !ids.length,
-      vEmptyTitle: filtered ? "No scanned products match" : "Scan a vial to start",
-      vEmptyText: filtered ? "Clear the search or inventory type filter to see every scanned product." : "Scan a vial's barcode, or type its serial and press Enter. Each product appears here as its first vial is scanned.",
+      vSrc: vsrc, vOnSrc: e => this.setState({ vSrc: e.target.value }),
+      vSrcOptions: Array.from(new Set(P.flatMap(p => p.sources))).sort(),
+      vReset: () => this.setState({ vScan: "", vQ: "", vInv: "All", vSrc: "All", vPick: null, vPickChk: {} }),
+      vListTitle: searching ? listIds.length + (listIds.length === 1 ? " product" : " products") + " found for “" + s.vQ + "”. Select one to pick its items." : "Products in this transfer",
+      vCards: cards, vEmpty: !cards.length, vShowSim: !searching && !ids.length,
+      vEmptyTitle: searching ? "No products match" : ids.length ? "No products match the filters" : "Scan a vial or search for a product",
+      vEmptyText: searching ? "Try another name, NDC or AID, or clear the filters." : ids.length ? "Clear the inventory type or source filter to see every product in this transfer." : "Scan a vial's barcode (or type its serial and press Enter) to add it. Or search for a product by name, NDC or AID, then pick its items.",
+      vPicking: pick != null, vNotPicking: pick == null,
       vRows: rows, vNoRows: !rows.length,
-      vNoRowsText: sel == null ? "Scanned items for the selected product appear here." : "No items for this product.",
-      vAddManual: () => { if (sel == null) { simulate(); return; } const f = free(P[sel]); if (f.length) add(f[0]); else this.toast("All vials of " + P[sel].name + " are added.", "warning"); },
+      vNoRowsText: sel == null ? "Items added to this transfer appear here." : "No items for this product.",
+      vAddManual: () => { if (sel == null) { simulate(); return; } const f = free(P[sel]).filter(x => !isExpired(x)); if (f.length) add(f[0]); else this.toast("All vials of " + P[sel].name + " are added.", "warning"); },
       vCancel: () => { if (totalScanned) this.setState({ discard: true }); else this.goHome(); },
       vContDisabled: !ok,
       vContFg: ok ? "#ffffff" : "#BCC3CD", vContBg: ok ? "#095192" : "#F3F5F7", vContBd: ok ? "#095192" : "#DADEE3", vContCursor: ok ? "pointer" : "not-allowed",
