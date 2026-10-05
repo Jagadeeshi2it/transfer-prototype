@@ -44,6 +44,24 @@
     </div>
   </sc-if>
 
+  <sc-if value="{{ flowSwitchOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ flowSwitchStay }}" style="position: fixed; inset: 0; z-index: 7000; background: rgba(14,36,63,0.45); display: flex; align-items: center; justify-content: center; padding: 24px;">
+      <div role="dialog" aria-modal="true" onClick="{{ stopProp }}" style="width: 600px; max-width: 100%; background: #ffffff; border-radius: 4px; box-shadow: 0 20px 40px rgba(16,24,40,0.2); display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px 0;">
+          <span style="font-size: 18px; line-height: 28px; font-weight: 600; color: #25282a;">{{ flowSwitchTitle }}</span>
+          <button type="button" onClick="{{ flowSwitchStay }}" aria-label="Close" style="flex: 0 0 32px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: #64748b; cursor: pointer;" style-hover="background: #eff1f3;">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          </button>
+        </div>
+        <p style="margin: 0; padding: 16px 24px 48px; font-size: 14px; line-height: 22px; color: #25282a; text-wrap: pretty;">{{ flowSwitchBody }}</p>
+        <div style="display: flex; justify-content: flex-end; gap: 16px; padding: 0 24px 24px;">
+          <button type="button" onClick="{{ flowSwitchStay }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">No, stay</button>
+          <button type="button" onClick="{{ flowSwitchGo }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">Yes, switch</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
   <sc-if value="{{ toastOpen }}" hint-placeholder-val="{{ false }}">
     <div role="status" style="position: fixed; top: 72px; right: 24px; z-index: 8000; width: 400px; max-width: calc(100vw - 48px); display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 20px; background: {{ toastBg }}; border-radius: 6px; box-shadow: inset 6px 0 0 {{ toastAccent }}, 0 12px 24px rgba(16,24,40,0.12);">
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="flex: 0 0 22px; color: {{ toastAccent }};"><path d="M19 10.3V11a8 8 0 1 1-4.7-7.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><path d="m19 4-8 8-2.5-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
@@ -734,7 +752,9 @@
         <div style="padding: 20px 24px;">
           <div style="border: 1px solid #e9ecf1; border-radius: 4px; overflow: hidden;">
             <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: #e9eef4;">
-              <span style="font-size: 14px; color: #465161;">Available Items</span>
+              <span style="display: inline-flex; align-items: center; flex-wrap: wrap; gap: 4px 12px; font-size: 14px; color: #465161;">Available Items
+                <sc-if value="{{ vPickHasExpired }}" hint-placeholder-val="{{ false }}"><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #A3261F;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #D9342B;"></span>{{ vPickExpiredNote }}</span></sc-if>
+              </span>
               <button type="button" onClick="{{ vPickToggle }}" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px; font-family: inherit; font-size: 14px; font-weight: 500; color: #095192; background: transparent; border: none; cursor: pointer;">{{ vPickToggleLabel }}<svg width="12" height="12" viewBox="0 0 14 14" fill="none" style="transform: rotate({{ vPickChev }});"><path d="M3 9l4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
             </div>
             <sc-if value="{{ vPickOpen }}" hint-placeholder-val="{{ true }}">
@@ -754,7 +774,7 @@
               </thead>
               <tbody>
                 <sc-for list="{{ vPickRows }}" as="r" hint-placeholder-count="3">
-                  <tr style="background: {{ r.bg }}; color: {{ r.fg }};">
+                  <tr title="{{ r.hint }}" style="background: {{ r.bg }}; color: {{ r.fg }}; cursor: {{ r.cursor }};">
                     <td style="padding: 12px 8px 12px 16px; border-bottom: 1px solid #eef1f5;">
                       <sc-if value="{{ r.selectable }}" hint-placeholder-val="{{ true }}">
                         <div onClick="{{ r.toggle }}" role="checkbox" aria-checked="{{ r.checked }}" style="position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ r.boxBg }}; border: 1px solid {{ r.boxBd }}; cursor: pointer;">
@@ -961,6 +981,7 @@ class Component extends DCLogic {
   static MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   // Virtual stations use the scan-first flow (step 4); physical cabinets pick products first, then open doors.
   static isVirtual(station) { return /virtual/i.test(String(station || "")); }
+  static isExpired(x) { const [m, d, y] = x.expiration.split("/").map(Number), t = new Date(); t.setHours(0, 0, 0, 0); return new Date(y, m - 1, d) < t; }
 
   state = { step: 0, practice: 0, clinic: 0, station: null, recv: null, picked: {}, searchDraft: "", invDraft: "All", search: "", inv: "All", queue: [], cur: 0, bin: {}, scanned: {}, scanText: "", toast: null, toastTone: "success", discard: false, lastAdded: null, saved: {}, locPicked: {}, locOpen: false };
 
@@ -985,7 +1006,7 @@ class Component extends DCLogic {
         const n = out.length;
         const seed = String(parseInt(p.ndc.slice(-6), 10) * 7919 + n * 104729 + p.id * 31);
         const pt = Component.PATIENTS[(n + p.id) % 3];
-        out.push({ patientName: pt[0], patientId: "ID " + pt[1], id: p.id + "-" + n, serial: (seed + "8392017465820391").slice(0, 16), lot: (seed.split("").reverse().join("") + "293586344").slice(0, 6), expiration: Component.EXPS[(n + p.id) % 5], source: p.sources[n % p.sources.length], door, bin, binKey: door + "-" + bin });
+        out.push({ patientName: pt[0], patientId: "ID " + pt[1], id: p.id + "-" + n, serial: (seed + "8392017465820391").slice(0, 16), lot: (seed.split("").reverse().join("") + "293586344").slice(0, 6), expiration: p.id === 3 && n < 2 ? "07/31/2026" : Component.EXPS[(n + p.id) % 5], source: p.sources[n % p.sources.length], door, bin, binKey: door + "-" + bin });
       }
     });
     return (this._ser[p.id] = out);
@@ -1052,14 +1073,25 @@ class Component extends DCLogic {
       stations: cl.stations.map((name, i) => { const on = s.station === i; return { name, on,
         fg: on ? "#ffffff" : "#21252b", bg: on ? "#095192" : "#ffffff", bd: on ? "#095192" : "#d8d8d8", hoverBg: on ? "#073f73" : "#f5f9fe",
         select: () => this.setState({ station: i }) }; }),
+      flowSwitchOpen: !!s.flowSwitch,
+      flowSwitchTitle: s.flowSwitch ? "Switch to a " + s.flowSwitch.flow + " station?" : "",
+      flowSwitchBody: s.flowSwitch ? (s.flowSwitch.flow === "virtual" ? "Virtual stations use the scan-first flow, so this starts a new transfer. " : "Physical stations use the pick-products, open-door flow, so this starts a new transfer. ")
+        + "You'll lose " + [s.flowSwitch.items ? s.flowSwitch.items + " scanned item(s)" : "", s.flowSwitch.prods ? s.flowSwitch.prods + " selected product(s)" : ""].filter(Boolean).join(" and ") + "." : "",
+      // "No, stay" returns to the transfer in progress, with its original receiving station.
+      flowSwitchStay: () => { const r = this.state.recv; this.setState(Object.assign({ flowSwitch: null, step: this.state.flow === "virtual" ? 4 : 1 }, r ? { practice: r.practice, clinic: r.clinic, station: r.station } : {})); window.scrollTo(0, 0); },
+      flowSwitchGo: () => { const f = this.state.flowSwitch; if (f) f.go(); },
       next0Disabled: !ok,
       next0Fg: ok ? "#ffffff" : "#BCC3CD", next0Bg: ok ? "#095192" : "#F3F5F7", next0Bd: ok ? "#095192" : "#DADEE3", next0Cursor: ok ? "pointer" : "not-allowed",
       onNext0: () => {
         if (!ok) return;
         const flow = Component.isVirtual(cl.stations[s.station]) ? "virtual" : "physical";
-        const fresh = s.flow && s.flow !== flow ? { picked: {}, queue: [], cur: 0, bin: {}, scanned: {}, saved: {}, locPicked: {}, vSel: null } : {};
-        this.setState(Object.assign({ step: flow === "virtual" ? 4 : 1, flow, recv: { practice: s.practice, clinic: s.clinic, station: s.station } }, fresh));
-        window.scrollTo(0, 0);
+        const go = fresh => { this.setState(Object.assign({ step: flow === "virtual" ? 4 : 1, flow, recv: { practice: s.practice, clinic: s.clinic, station: s.station }, flowSwitch: null }, fresh)); window.scrollTo(0, 0); };
+        const items = Object.values(s.scanned).reduce((a, l) => a + l.length, 0), prods = Object.keys(s.picked || {}).filter(k => s.picked[k]).length;
+        if (!s.flow || s.flow === flow) { go({}); return; }
+        const fresh = { picked: {}, queue: [], cur: 0, bin: {}, scanned: {}, saved: {}, locPicked: {}, vSel: null };
+        // Switching between a virtual and a physical station starts a new transfer; confirm if that drops work.
+        if (items || (s.flow === "physical" && prods)) this.setState({ flowSwitch: { flow, items, prods: s.flow === "physical" ? prods : 0, go: () => go(fresh) } });
+        else go(fresh);
       },
       cancel0: () => { if (s.recv) { this.setState({ step: s.flow === "virtual" ? 4 : 1 }); window.scrollTo(0, 0); } else this.goHome(); }
     };
@@ -1182,8 +1214,8 @@ class Component extends DCLogic {
     const ids = s.queue.filter(has);
     const vq = String(s.vQ || "").trim().toLowerCase(), vinv = s.vInv || "All", vsrc = s.vSrc || "All";
     const searched = !!s.vSearched;
-    const today = new Date(); today.setHours(0, 0, 0, 0);
-    const isExpired = x => { const [m, d, y] = x.expiration.split("/").map(Number); return new Date(y, m - 1, d) < today; };
+    // Demo data: two CARBOPLATIN vials are expired (see serialsOf).
+    const isExpired = Component.isExpired;
     const matchP = p => (!vq || p.name.toLowerCase().includes(vq) || p.ndc.includes(vq)) && (vinv === "All" || p.invType === vinv) && (vsrc === "All" || p.sources.includes(vsrc));
     const listIds = !searched ? [] : s.vHit != null ? [s.vHit] : P.filter(matchP).map(p => p.id);
     const pick = listIds.includes(s.vPick) ? s.vPick : null;
@@ -1223,6 +1255,8 @@ class Component extends DCLogic {
         const expired = isExpired(x), inTransfer = inT.includes(x.id), selectable = !expired && !inTransfer, checked = selectable && !!chk[x.id];
         return { id: x.id, primary: ser ? x.serial : x.lot, lot: x.lot, hasLot: ser, expiration: x.expiration, source: x.source, qty: "1 " + this.unitOf(p, 1) + " / " + p.strength,
           expired, inTransfer, selectable, checked,
+          hint: expired ? "Expired on " + x.expiration + ". Expired vials can't be selected for transfer." : inTransfer ? "Already in this transfer." : "",
+          cursor: selectable ? "default" : "not-allowed",
           bg: expired ? "#eceef1" : x.id === s.vPickHi ? "#F4F8FC" : checked ? "#f5f9fe" : "#ffffff", fg: expired || inTransfer ? "#6b7480" : "#21252b",
           boxBg: checked ? "#095192" : "#ffffff", boxBd: checked ? "#095192" : "#bcc3cd",
           toggle: () => this.setState(st => ({ vPickChk: Object.assign({}, st.vPickChk, { [x.id]: !checked }) })), x };
@@ -1231,6 +1265,8 @@ class Component extends DCLogic {
       items.sort((a, b) => (b.id === s.vPickHi) - (a.id === s.vPickHi));
       const open = items.filter(r => r.selectable), picked = items.filter(r => r.checked), allOn = open.length > 0 && picked.length === open.length, none = !picked.length;
       Object.assign(pv, {
+        vPickHasExpired: items.some(r => r.expired),
+        vPickExpiredNote: (n => n + (n === 1 ? " expired item can't be selected" : " expired items can't be selected"))(items.filter(r => r.expired).length),
         vPickName: p.name, vPickIdHead: ser ? "Serial / Lot" : "Lot", vPickRows: items, vPickEmpty: !items.length,
         vPickOpen: !s.vPickClosed, vPickToggleLabel: s.vPickClosed ? "Show Items" : "Hide Items", vPickChev: s.vPickClosed ? "180deg" : "0deg",
         vPickToggle: () => this.setState(st => ({ vPickClosed: !st.vPickClosed })),
@@ -1392,11 +1428,12 @@ class Component extends DCLogic {
       const t = String(raw || "").trim();
       if (t) {
         const hit = all.find(x => x.serial === t);
+        if (hit && Component.isExpired(hit)) { this.toast("Serial " + t + " is expired and can't be transferred.", "warning"); return; }
         if (!hit) { this.toast("Serial " + t + " was not found in " + p.name + " inventory.", "warning"); return; }
         if (ids.includes(hit.id)) { this.toast("Serial " + t + " is already added.", "warning"); return; }
         add(hit); return;
       }
-      const next = all.find(x => x.door === cd.door && !ids.includes(x.id));
+      const next = all.find(x => x.door === cd.door && !ids.includes(x.id) && !Component.isExpired(x));
       if (!next) { this.toast("All serials in Door " + cd.door + " are added." + (doors.length > 1 ? " Switch doors to add more." : ""), "warning"); return; }
       add(next);
     };
