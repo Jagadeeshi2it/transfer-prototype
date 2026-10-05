@@ -1221,15 +1221,29 @@ class Component extends DCLogic {
     };
     const tickedOf = pid => { const c = {}; (s.scanned[pid] || []).forEach(id => { c[id] = true; }); return c; };
     const clearWork = { vScan: "", vQ: "", vSearched: false, vHit: null, vPick: null, vPickChk: {}, vPickHi: null };
+    // Prototype stand-in for a barcode scan: Search with an empty box "scans" the next available vial,
+    // rotating through products and skipping expired vials and ones already in the transfer.
+    const simulatedScan = () => {
+      const pool = P.filter(serialized), n = pool.length, start = s.vRot || 0;
+      for (let k = 0; k < n; k++) {
+        const p = pool[(start + k) % n], x = this.serialsOf(p).find(v => !isExpired(v) && !(s.scanned[p.id] || []).includes(v.id));
+        if (x) return { x, rot: (start + k + 1) % n };
+      }
+      return null;
+    };
     const search = () => {
-      const t = String(s.vScan || "").trim();
-      if (!t && vinv === "All" && vsrc === "All") { this.toast("Scan a serial, or enter a product name, NDC or AID.", "warning"); return; }
-      const hit = t && P.map(p => this.serialsOf(p)).flat().find(x => x.serial === t);
+      let t = String(s.vScan || "").trim(), rot = {};
+      if (!t) {
+        const sim = simulatedScan();
+        if (!sim) { this.toast("Every vial in this station is already in the transfer.", "warning"); return; }
+        t = sim.x.serial; rot = { vRot: sim.rot, vScan: t };
+      }
+      const hit = P.map(p => this.serialsOf(p)).flat().find(x => x.serial === t);
       if (hit) {
         const pid = Number(hit.id.split("-")[0]);
         if ((s.scanned[pid] || []).includes(hit.id)) { this.toast("Serial " + t + " is already in this transfer.", "warning"); return; }
         if (isExpired(hit)) { this.toast("Serial " + t + " is expired and can't be transferred.", "warning"); return; }
-        this.setState({ vQ: "", vSearched: true, vHit: pid, vPick: pid, vPickChk: Object.assign(tickedOf(pid), { [hit.id]: true }), vPickHi: hit.id, vPickClosed: false });
+        this.setState(Object.assign({ vQ: "", vSearched: true, vHit: pid, vPick: pid, vPickChk: Object.assign(tickedOf(pid), { [hit.id]: true }), vPickHi: hit.id, vPickClosed: false }, rot));
         return;
       }
       this.setState({ vQ: t, vSearched: true, vHit: null, vPick: null, vPickChk: {}, vPickHi: null });
