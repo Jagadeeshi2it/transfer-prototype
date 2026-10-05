@@ -781,9 +781,9 @@
                       <sc-if value="{{ r.hasLot }}" hint-placeholder-val="{{ true }}"><div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ r.lot }}</div></sc-if>
                     </td>
                     <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; white-space: nowrap;">
-                      {{ r.expiration }}
-                      <sc-if value="{{ r.expired }}" hint-placeholder-val="{{ false }}"><span style="margin-left: 8px; padding: 2px 8px; font-size: 12px; font-weight: 500; color: #ffffff; background: #D9342B; border-radius: 999px;">Expired</span></sc-if>
-                      <sc-if value="{{ r.inTransfer }}" hint-placeholder-val="{{ false }}"><span style="margin-left: 8px; padding: 2px 8px; font-size: 12px; font-weight: 500; color: #095192; background: #e3eef9; border-radius: 999px;">In transfer</span></sc-if>
+                      <div>{{ r.expiration }}</div>
+                      <sc-if value="{{ r.expired }}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; margin-top: 4px; padding: 1px 8px; font-size: 12px; line-height: 18px; font-weight: 500; color: #ffffff; background: #D9342B; border-radius: 999px;">Expired</span></sc-if>
+                      <sc-if value="{{ r.inTransfer }}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; margin-top: 4px; padding: 1px 8px; font-size: 12px; line-height: 18px; font-weight: 500; color: #095192; background: #e3eef9; border-radius: 999px;">In transfer</span></sc-if>
                     </td>
                     <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5;">{{ r.source }}</td>
                     <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; min-width: 96px;">{{ r.qty }}</td>
