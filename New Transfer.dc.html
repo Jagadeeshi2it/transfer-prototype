@@ -625,17 +625,10 @@
             <span style="text-decoration: underline;">{{ recvLabel }}</span>
           </span>
         </div>
-        <div onClick="{{ vpShow }}" role="button" title="View items selected for transfer" style="display: flex; align-items: center; gap: 12px; padding: 8px 12px 8px 16px; border: 1px solid #e3e7ed; border-radius: 4px; cursor: pointer;" style-hover="background: #f5f9fe; border-color: #095192;">
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-            <span style="font-size: 13px; font-weight: 500; color: #6b7480; white-space: nowrap;">Products</span>
-            <span style="font-size: 18px; font-weight: 500; color: #25282a;">{{ vProducts }}</span>
-          </div>
-          <div style="width: 1px; align-self: stretch; background: #e3e7ed;"></div>
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-            <span style="font-size: 13px; font-weight: 500; color: #6b7480; white-space: nowrap;">Items</span>
-            <span style="font-size: 18px; font-weight: 500; color: #25282a;">{{ totalScanned }}</span>
-          </div>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="color: #095192; flex-shrink: 0;"><path d="M4.5 2 9.5 7l-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        <div onClick="{{ vpShow }}" role="button" title="View items selected for transfer" style="display: flex; flex-direction: column; gap: 2px; padding: 2px 12px 2px 24px; border-left: 1px solid #e3e7ed; font-size: 14px; line-height: 20px; cursor: pointer; border-radius: 0 4px 4px 0;" style-hover="background: #f5f9fe;">
+          <span style="font-weight: 500; color: #095192;">Transfer Details</span>
+          <span style="color: #6b7480;">Products <b style="font-weight: 600; color: #25282a;">{{ vProducts }}</b></span>
+          <span style="color: #6b7480;">Items <b style="font-weight: 600; color: #25282a;">{{ totalScanned }}</b></span>
         </div>
       </div>
     </div>
