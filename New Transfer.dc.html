@@ -751,12 +751,6 @@
         <sc-if value="{{ vPicking }}" hint-placeholder-val="{{ false }}">
         <div style="padding: 20px 24px;">
           <div style="border: 1px solid #e9ecf1; border-radius: 4px; overflow: hidden;">
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: #e9eef4;">
-              <span style="display: inline-flex; align-items: center; flex-wrap: wrap; gap: 4px 12px; font-size: 14px; color: #465161;">Available Items
-                <sc-if value="{{ vPickHasExpired }}" hint-placeholder-val="{{ false }}"><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #A3261F;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #D9342B;"></span>{{ vPickExpiredNote }}</span></sc-if>
-              </span>
-              <button type="button" onClick="{{ vPickToggle }}" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px; font-family: inherit; font-size: 14px; font-weight: 500; color: #095192; background: transparent; border: none; cursor: pointer;">{{ vPickToggleLabel }}<svg width="12" height="12" viewBox="0 0 14 14" fill="none" style="transform: rotate({{ vPickChev }});"><path d="M3 9l4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
-            </div>
             <sc-if value="{{ vPickOpen }}" hint-placeholder-val="{{ true }}">
             <table style="width: 100%; border-collapse: collapse;">
               <thead>
