@@ -1021,7 +1021,7 @@ class Component extends DCLogic {
       position: (this.state.qIdx + 1) + "/" + (q.length || 1),
       transferred: this.state.transferred || 0,
       // Final product: Accept completes on its last bin, or as soon as every serial has a status; Skip completes only on its last bin.
-      acceptLabel: solo ? (single ? "Accept and save" : isLastBin || serials.every(s => s.status !== "--") ? "Accept and finish" : "Accept and continue")
+      acceptLabel: solo ? (single ? "Accept" : isLastBin || serials.every(s => s.status !== "--") ? "Accept and finish" : "Accept and continue")
         : isLast && (isLastBin || serials.every(s => s.status !== "--")) ? "Accept and complete" : "Accept and continue",
       skipLabel: solo ? (isLastBin ? "Skip and finish" : "Skip and continue") : isLast && isLastBin ? "Skip and complete" : "Skip and continue",
       // Guided single-product flow: no product / transferred counters; location tile and Skip only when there are several bins.
