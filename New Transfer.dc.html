@@ -462,6 +462,140 @@
   </div>
   </sc-if>
 
+  <sc-if value="{{ isStep4 }}" hint-placeholder-val="{{ false }}">
+  <div style="padding: 0 0 80px;" data-screen-label="Step V Scan vials (virtual station)">
+    <div style="display: flex; align-items: center; gap: 24px; padding: 12px 24px; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
+      <div style="display: flex; align-items: center; gap: 12px; min-width: 0; flex-wrap: wrap;">
+        <span style="font-size: 20px; line-height: 28px; font-weight: 400; color: #25282a;">Transferring to</span>
+        <span onClick="{{ changeLocation }}" role="button" title="Change receiving location" style="display: inline-flex; align-items: center; gap: 6px; font-size: 20px; line-height: 28px; color: #095192; cursor: pointer;" style-hover="color: #073f73;">
+          <svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M2 12l.6-2.6 7-7a1.2 1.2 0 0 1 1.8 0l.2.2a1.2 1.2 0 0 1 0 1.8l-7 7L2 12Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path></svg>
+          <span style="text-decoration: underline;">{{ recvLabel }}</span>
+        </span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 2px; margin-left: auto; padding-left: 24px; border-left: 1px solid #e3e7ed; font-size: 14px; line-height: 20px;">
+        <span style="font-weight: 500; color: #095192;">Transfer Details</span>
+        <span style="color: #6b7480;">Products <b style="font-weight: 600; color: #25282a;">{{ vProducts }}</b></span>
+        <span style="color: #6b7480;">Items <b style="font-weight: 600; color: #25282a;">{{ totalScanned }}</b></span>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: calc(100vh - 210px);">
+      <div style="display: flex; flex-direction: column; min-width: 0; border-right: 1px solid #e3e7ed;">
+        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 12px 16px; padding: 16px 24px; border-bottom: 1px solid #e3e7ed;">
+          <div style="display: flex; align-items: center; gap: 10px; flex: 1 1 200px; max-width: 280px; height: 40px; padding: 0 12px; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px;">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="color: #6b7480; flex-shrink: 0;"><rect x="2" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="11" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="2" y="11" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><path d="M11 11h2v2h-2zM14 14h2v2h-2zM14 11h2M11 15v1" stroke="currentColor" stroke-width="1.3"></path></svg>
+            <input type="text" value="{{ vScan }}" onChange="{{ vOnScan }}" onKeyDown="{{ vOnScanKey }}" placeholder="Scan vial or Name/NDC/AID" style="flex: 1; min-width: 0; height: 100%; border: none; outline: none; font-family: inherit; font-size: 14px; color: #21252b; background: transparent;" />
+          </div>
+          <div style="position: relative; flex: 0 1 200px;">
+            <select value="{{ vInv }}" onChange="{{ vOnInv }}" style="width: 100%; height: 40px; padding: 0 36px 0 12px; font-family: inherit; font-size: 14px; color: #21252b; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer;">
+              <option value="All">Inventory Type</option>
+              <sc-for list="{{ invOptions }}" as="o" hint-placeholder-count="9"><option value="{{ o }}">{{ o }}</option></sc-for>
+            </select>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="position: absolute; right: 12px; top: 13px; color: #6b7480; pointer-events: none;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.234Z" fill="currentColor"></path></svg>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <button type="button" onClick="{{ vReset }}" aria-label="Reset" title="Reset" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">
+              <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M3.2 8a4.8 4.8 0 1 0 1.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path><path d="M4.4 2v2.7h2.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </button>
+            <button type="button" onClick="{{ vSearch }}" aria-label="Scan or search" title="Scan or search" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">
+              <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.6" stroke="currentColor" stroke-width="1.5"></circle><path d="m10.5 10.5 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px; padding: 20px 24px;">
+          <sc-for list="{{ vCards }}" as="c" hint-placeholder-count="1">
+            <div onClick="{{ c.select }}" role="button" aria-pressed="{{ c.on }}" style="border: 2px solid {{ c.bd }}; border-radius: 4px; overflow: hidden; background: #ffffff; cursor: pointer;" style-hover="border-color: {{ c.hoverBd }};">
+              <div style="display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: {{ c.hdBg }}; color: {{ c.hdFg }};">
+                <div style="flex: 1; min-width: 0;">
+                  <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <span style="font-size: 18px; line-height: 26px; font-weight: 400;">{{ c.name }}</span>
+                    <sc-for list="{{ c.chips }}" as="chip" hint-placeholder-count="1">
+                      <span style="display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.2px; background: {{ chip.bg }}; color: {{ chip.fg }}; box-shadow: 0 0 0 1px {{ c.chipRing }};">{{ chip.label }}</span>
+                    </sc-for>
+                  </div>
+                  <div style="margin-top: 2px; font-size: 14px; color: {{ c.subFg }};">{{ c.desc }}</div>
+                </div>
+                <svg width="16" height="16" viewBox="0 0 14 14" fill="none" style="flex-shrink: 0;"><path d="M4.5 2 9.5 7l-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 20px; border-bottom: 1px solid #e3e7ed;">
+                <span style="display: inline-block; padding: 3px 10px; font-size: 14px; color: #25282a; border: 1px solid #c4cad2; border-radius: 3px;">{{ c.exp }}</span>
+                <span style="display: inline-block; padding: 3px 10px; font-size: 14px; color: #095192; background: #eef4fa; border-radius: 3px;">{{ c.countLabel }} scanned</span>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 16px; padding: 12px 20px 16px;">
+                <span style="font-size: 14px; color: #6b7480;">NDC</span>
+                <span style="font-size: 14px; color: #6b7480;">Inventory Type</span>
+                <span style="font-size: 14px; color: #6b7480;">Inventory</span>
+                <span style="font-size: 15px; color: #21252b;">{{ c.ndc }}</span>
+                <span style="font-size: 15px; color: {{ c.invColor }};">{{ c.invType }}</span>
+                <span style="font-size: 15px; color: #21252b;">{{ c.inv }}</span>
+              </div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ vEmpty }}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 64px 24px; text-align: center; border: 1px dashed #c4cad2; border-radius: 4px;">
+              <svg width="40" height="40" viewBox="0 0 18 18" fill="none" style="color: #9aa4b0;"><rect x="2" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.1"></rect><rect x="11" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.1"></rect><rect x="2" y="11" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.1"></rect><path d="M11 11h2v2h-2zM14 14h2v2h-2zM14 11h2M11 15v1" stroke="currentColor" stroke-width="1.1"></path></svg>
+              <div style="font-size: 16px; font-weight: 500; color: #25282a;">{{ vEmptyTitle }}</div>
+              <div style="max-width: 360px; font-size: 14px; line-height: 20px; color: #6b7480;">{{ vEmptyText }}</div>
+              <sc-if value="{{ vShowSim }}" hint-placeholder-val="{{ true }}">
+                <button type="button" onClick="{{ vSimulate }}" style="height: 36px; padding: 0 16px; font-family: inherit; font-size: 13px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Simulate a scan</button>
+              </sc-if>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; min-width: 0;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 73px; padding: 16px 24px; border-bottom: 1px solid #e3e7ed;">
+          <span style="font-size: 18px; line-height: 26px; color: #25282a;">Selected Items</span>
+          <button type="button" onClick="{{ vAddManual }}" style="height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Add manually</button>
+        </div>
+        <div style="padding: 20px 24px;">
+          <div style="border: 1px solid #e9ecf1; border-radius: 4px; overflow: hidden;">
+            <table style="width: 100%; border-collapse: collapse;">
+              <thead>
+                <tr style="background: #f8fafc;">
+                  <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;"><div>Serial</div><div style="margin-top: 2px; font-size: 13px; font-weight: 400; font-style: italic; color: #6b7280;">Lot</div></th>
+                  <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Expiration</th>
+                  <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Source</th>
+                  <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Quantity</th>
+                  <th style="width: 56px; padding: 12px 16px; border-bottom: 1px solid #e9ecf1;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{ vRows }}" as="s" hint-placeholder-count="0">
+                  <tr style="background: {{ s.bg }};">
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #eef1f5;"><div style="font-size: 14px; color: #21252b;">{{ s.serial }}</div><div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ s.lot }}</div></td>
+                    <td style="padding: 12px 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; white-space: nowrap;">{{ s.expiration }}</td>
+                    <td style="padding: 12px 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ s.source }}</td>
+                    <td style="padding: 12px 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; white-space: nowrap;">{{ s.qty }}</td>
+                    <td style="padding: 8px 16px; border-bottom: 1px solid #eef1f5;">
+                      <button type="button" onClick="{{ s.remove }}" aria-label="Remove serial" title="Remove" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: #FF3300; cursor: pointer;" style-hover="background: #fbe5e4;">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"></circle><rect x="2.4" y="6.5" width="11.2" height="3" rx="1.5" fill="#ffffff"></rect></svg>
+                      </button>
+                    </td>
+                  </tr>
+                </sc-for>
+                <sc-if value="{{ vNoRows }}" hint-placeholder-val="{{ true }}">
+                  <tr><td colSpan="5" style="padding: 48px 16px; text-align: center; font-size: 14px; line-height: 22px; color: #6b7480;">{{ vNoRowsText }}</td></tr>
+                </sc-if>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position: fixed; bottom: 0; left: 70px; right: 0; z-index: 50; display: flex; align-items: center; justify-content: flex-end; gap: 16px; padding: 14px 24px; background: #ffffff; border-top: 1px solid #e3e7ed; box-shadow: 0 -2px 8px rgba(16,24,40,0.06);">
+      <button type="button" onClick="{{ vCancel }}" style="white-space: nowrap; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Cancel</button>
+      <button type="button" onClick="{{ vContinue }}" aria-disabled="{{ vContDisabled }}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ vContFg }}; background: {{ vContBg }}; border: 1px solid {{ vContBd }}; border-radius: 4px; cursor: {{ vContCursor }};">
+        Transfer and continue
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h9.5M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </button>
+    </div>
+  </div>
+  </sc-if>
+
   <sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
   <div style="padding: 0 0 96px;" data-screen-label="Step 3 Transfer summary">
     <div style="display: flex; align-items: stretch; flex-wrap: wrap; gap: 0; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
@@ -618,6 +752,9 @@ class Component extends DCLogic {
     ] }
   ];
   static EXPS = ["02/22/2027", "07/14/2027", "11/30/2026", "05/23/2027", "09/07/2027"];
+  static MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  // Virtual stations use the scan-first flow (step 4); physical cabinets pick products first, then open doors.
+  static isVirtual(station) { return /virtual/i.test(String(station || "")); }
 
   state = { step: 0, practice: 0, clinic: 0, station: null, recv: null, picked: {}, searchDraft: "", invDraft: "All", search: "", inv: "All", queue: [], cur: 0, bin: {}, scanned: {}, scanText: "", toast: null, toastTone: "success", discard: false, lastAdded: null, saved: {}, locPicked: {}, locOpen: false };
 
@@ -674,7 +811,7 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state, P = Component.PRODUCTS;
     const common = {
-      isStep1: s.step === 1, isStep2: s.step === 2, isStep3: s.step === 3,
+      isStep1: s.step === 1, isStep2: s.step === 2, isStep3: s.step === 3, isStep4: s.step === 4,
       toastOpen: !!s.toast, toastText: s.toast || "",
       toastBg: s.toastTone === "warning" ? "#EFDABB" : "#B0E4DD",
       toastAccent: s.toastTone === "warning" ? "#A36E1E" : "#008774",
@@ -694,7 +831,7 @@ class Component extends DCLogic {
     common.isStep0 = s.step === 0;
     common.changeLocation = () => { const r = this.state.recv; this.setState(Object.assign({ step: 0 }, r ? { practice: r.practice, clinic: r.clinic, station: r.station } : {})); window.scrollTo(0, 0); };
     Object.assign(common, this.panelVals());
-    return Object.assign(common, s.step === 0 ? this.step0() : s.step === 1 ? this.step1() : s.step === 3 ? this.step3(totalScanned) : this.step2(totalScanned));
+    return Object.assign(common, s.step === 0 ? this.step0() : s.step === 1 ? this.step1() : s.step === 3 ? this.step3(totalScanned) : s.step === 4 ? this.step4(totalScanned) : this.step2(totalScanned));
   }
 
   step0() {
@@ -711,8 +848,14 @@ class Component extends DCLogic {
         select: () => this.setState({ station: i }) }; }),
       next0Disabled: !ok,
       next0Fg: ok ? "#ffffff" : "#BCC3CD", next0Bg: ok ? "#095192" : "#F3F5F7", next0Bd: ok ? "#095192" : "#DADEE3", next0Cursor: ok ? "pointer" : "not-allowed",
-      onNext0: () => { if (!ok) return; this.setState({ step: 1, recv: { practice: s.practice, clinic: s.clinic, station: s.station } }); window.scrollTo(0, 0); },
-      cancel0: () => { if (s.recv) { this.setState({ step: 1 }); window.scrollTo(0, 0); } else this.goHome(); }
+      onNext0: () => {
+        if (!ok) return;
+        const flow = Component.isVirtual(cl.stations[s.station]) ? "virtual" : "physical";
+        const fresh = s.flow && s.flow !== flow ? { picked: {}, queue: [], cur: 0, bin: {}, scanned: {}, saved: {}, locPicked: {}, vSel: null } : {};
+        this.setState(Object.assign({ step: flow === "virtual" ? 4 : 1, flow, recv: { practice: s.practice, clinic: s.clinic, station: s.station } }, fresh));
+        window.scrollTo(0, 0);
+      },
+      cancel0: () => { if (s.recv) { this.setState({ step: s.flow === "virtual" ? 4 : 1 }); window.scrollTo(0, 0); } else this.goHome(); }
     };
   }
 
@@ -821,6 +964,67 @@ class Component extends DCLogic {
         this.toast(removedN + " product(s) removed from the transfer.");
       }
     });
+  }
+
+  // Virtual station: scan vials straight into the transfer; products appear on the left as they are scanned.
+  step4(totalScanned) {
+    const s = this.state, P = Component.PRODUCTS;
+    const pool = P.filter(p => !p.chips.includes("NON SERIALIZED"));
+    const has = id => (s.scanned[id] || []).length > 0;
+    const ids = s.queue.filter(has);
+    const vq = String(s.vQ || "").trim().toLowerCase(), vinv = s.vInv || "All";
+    const shown = ids.filter(id => { const p = P[id]; return (!vq || p.name.toLowerCase().includes(vq) || p.ndc.includes(vq)) && (vinv === "All" || p.invType === vinv); });
+    const sel = shown.includes(s.vSel) ? s.vSel : (shown[0] != null ? shown[0] : null);
+    const ymKey = x => { const [m, , y] = x.expiration.split("/"); return y + m; };
+    const expLabel = p => { const keys = this.serialsOf(p).map(ymKey).sort(), k = keys[0]; return "Expiring " + Component.MONTHS[Number(k.slice(4)) - 1] + " " + k.slice(0, 4) + ": " + keys.filter(x => x === k).length; };
+    const free = p => this.serialsOf(p).filter(x => !(s.scanned[p.id] || []).includes(x.id));
+    const add = x => {
+      const pid = Number(x.id.split("-")[0]), isNew = !has(pid);
+      this.setState(st => ({ scanned: Object.assign({}, st.scanned, { [pid]: [x.id].concat(st.scanned[pid] || []) }), queue: st.queue.includes(pid) ? st.queue : st.queue.concat(pid), vSel: pid, vScan: "", vQ: "", lastAdded: x.id }));
+      this.toast(isNew ? P[pid].name + " added to the transfer." : "Serial " + x.serial + " added.");
+    };
+    // Prototype stand-in for a barcode scan: take the next unscanned vial, rotating through products.
+    const simulate = () => {
+      const n = pool.length, start = s.vRot || 0;
+      for (let k = 0; k < n; k++) { const p = pool[(start + k) % n], f = free(p); if (f.length) { this.setState({ vRot: (start + k + 1) % n }); add(f[0]); return; } }
+      this.toast("Every vial in this station has been scanned.", "warning");
+    };
+    const scan = raw => {
+      const t = String(raw || "").trim();
+      if (!t) { simulate(); return; }
+      const hit = pool.map(p => this.serialsOf(p)).flat().find(x => x.serial === t);
+      if (hit) { if ((s.scanned[Number(hit.id.split("-")[0])] || []).includes(hit.id)) this.toast("Serial " + t + " is already in this transfer.", "warning"); else add(hit); return; }
+      this.setState({ vQ: t });
+    };
+    const byId = {}; if (sel != null) this.serialsOf(P[sel]).forEach(x => { byId[x.id] = x; });
+    const rows = sel == null ? [] : (s.scanned[sel] || []).map(id => { const x = byId[id], p = P[sel]; return Object.assign({}, x, {
+      qty: "1 " + this.unitOf(p, 1), bg: id === s.lastAdded ? "#F4F8FC" : "#ffffff",
+      remove: () => { this.setState(st => { const l = (st.scanned[sel] || []).filter(v => v !== id); const sc = Object.assign({}, st.scanned, { [sel]: l }); return { scanned: sc, queue: l.length ? st.queue : st.queue.filter(q => q !== sel) }; }); this.toast("Serial " + x.serial + " removed.", "warning"); } }); });
+    const cards = shown.map(id => { const p = P[id], on = id === sel, n = s.scanned[id].length; return {
+      name: p.name, desc: p.desc, chips: this.chips(p), ndc: p.ndc, invType: p.invType, invColor: Component.invColor(p.invType),
+      inv: this.total(p) + " " + this.unitOf(p, this.total(p)), exp: expLabel(p), countLabel: n + " " + this.unitOf(p, n), on,
+      hdBg: on ? "#0E243F" : "#F8FAFC", hdFg: on ? "#ffffff" : "#21252b", subFg: on ? "rgba(255,255,255,0.85)" : "#6b7280",
+      bd: on ? "#0E243F" : "#e3e7ed", hoverBd: on ? "#0E243F" : "#9fb4cc", chipRing: on ? "rgba(255,255,255,0.6)" : "transparent",
+      select: () => this.setState({ vSel: id }) }; });
+    const ok = totalScanned > 0, filtered = ids.length > 0 && !shown.length;
+    return {
+      vProducts: ids.length,
+      vScan: s.vScan || "", vOnScan: e => this.setState({ vScan: e.target.value }),
+      vOnScanKey: e => { if (e.key === "Enter") scan(e.target.value); },
+      vSearch: () => scan(s.vScan), vSimulate: simulate,
+      vInv: vinv, vOnInv: e => this.setState({ vInv: e.target.value }),
+      vReset: () => this.setState({ vScan: "", vQ: "", vInv: "All" }),
+      vCards: cards, vEmpty: !shown.length, vShowSim: !ids.length,
+      vEmptyTitle: filtered ? "No scanned products match" : "Scan a vial to start",
+      vEmptyText: filtered ? "Clear the search or inventory type filter to see every scanned product." : "Scan a vial's barcode, or type its serial and press Enter. Each product appears here as its first vial is scanned.",
+      vRows: rows, vNoRows: !rows.length,
+      vNoRowsText: sel == null ? "Scanned items for the selected product appear here." : "No items for this product.",
+      vAddManual: () => { if (sel == null) { simulate(); return; } const f = free(P[sel]); if (f.length) add(f[0]); else this.toast("All vials of " + P[sel].name + " are added.", "warning"); },
+      vCancel: () => { if (totalScanned) this.setState({ discard: true }); else this.goHome(); },
+      vContDisabled: !ok,
+      vContFg: ok ? "#ffffff" : "#BCC3CD", vContBg: ok ? "#095192" : "#F3F5F7", vContBd: ok ? "#095192" : "#DADEE3", vContCursor: ok ? "pointer" : "not-allowed",
+      vContinue: () => { if (!ok) return; this.setState({ step: 3, collapsed: {}, note: "", noteOpen: false, lastAdded: null }); window.scrollTo(0, 0); }
+    };
   }
 
   step3(tot) {
