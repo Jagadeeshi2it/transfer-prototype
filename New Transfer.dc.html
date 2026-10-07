@@ -714,14 +714,12 @@
                   <span style="display: inline-block; padding: 3px 10px; font-size: 14px; color: #095192; background: #eef4fa; border-radius: 3px;">{{ c.tag }}</span>
                 </sc-if>
               </div>
-              <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px 16px; padding: 12px 20px 16px;">
+              <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 16px; padding: 12px 20px 16px;">
                 <span style="font-size: 14px; color: #6b7480;">NDC</span>
                 <span style="font-size: 14px; color: #6b7480;">Inventory Type</span>
-                <span style="font-size: 14px; color: #6b7480;">Source</span>
                 <span style="font-size: 14px; color: #6b7480;">Inventory</span>
                 <span style="font-size: 15px; color: #21252b;">{{ c.ndc }}</span>
                 <span style="font-size: 15px; color: {{ c.invColor }};">{{ c.invType }}</span>
-                <span style="font-size: 15px; color: #21252b;">{{ c.source }}</span>
                 <span style="font-size: 15px; color: #21252b;">{{ c.inv }}</span>
               </div>
             </div>
@@ -1269,8 +1267,8 @@ class Component extends DCLogic {
           boxBg: checked ? "#095192" : "#ffffff", boxBd: checked ? "#095192" : "#bcc3cd",
           toggle: () => this.setState(st => ({ vPickChk: Object.assign({}, st.vPickChk, { [x.id]: !checked }) })), x };
       });
-      // The scanned serial goes to the top so it is easy to confirm.
-      items.sort((a, b) => (b.id === s.vPickHi) - (a.id === s.vPickHi));
+      // The scanned serial goes to the top so it is easy to confirm; expired vials sink to the bottom.
+      items.sort((a, b) => (b.id === s.vPickHi) - (a.id === s.vPickHi) || a.expired - b.expired);
       const open = items.filter(r => r.selectable), picked = items.filter(r => r.checked), allOn = open.length > 0 && picked.length === open.length;
       // Save syncs the product's items in the transfer with the ticked rows (adds new ticks, drops unticked ones).
       const pickedIds = picked.map(r => r.id), addN = pickedIds.filter(id => !inT.includes(id)).length, dropN = inT.filter(id => !pickedIds.includes(id)).length, none = !addN && !dropN;
