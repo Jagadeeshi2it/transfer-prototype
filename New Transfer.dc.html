@@ -1027,7 +1027,10 @@ class Component extends DCLogic {
     { id: 4, name: "BOTOX 100 UNIT VIAL", desc: "onabotulinumtoxinA 100 unit solution for injection", chips: ["MDV-WNB", "CLIMATE", "CIV"], ndc: "00023114501", invType: "Sample", unit: "vials", strength: "100 unit", sources: ["CuraScript SD"], bins: [["2", "My Bin 4", 4]] },
     { id: 5, name: "EYLEA 2 MG/0.05 ML SYRINGE", desc: "aflibercept 2 mg/0.05 mL intravitreal syringe", chips: ["SDV"], ndc: "61755000501", invType: "Charity Care", unit: "each", strength: "2 mg / 0.05 mL", sources: ["Hercules"], bins: [["1", "My Bin 3", 5]] },
     { id: 6, name: "KEYTRUDA 100 MG/4 ML VIAL", desc: "pembrolizumab 100 mg/4 mL intravenous solution", chips: ["SDV"], ndc: "00006302602", invType: "Charity Care", unit: "vials", strength: "100 mg / 4 mL", sources: ["BioCare", "McKesson"], bins: [["6", "D2", 3], ["6", "D4", 2]] },
-    { id: 7, name: "HERCEPTIN 150 MG VIAL", desc: "trastuzumab 150 mg intravenous powder for solution", chips: ["SDV"], ndc: "50242013201", invType: "Specialty Pharmacy", unit: "vials", strength: "150 mg", sources: ["BioCare"], bins: [["7", "E1", 4]] }
+    { id: 7, name: "HERCEPTIN 150 MG VIAL", desc: "trastuzumab 150 mg intravenous powder for solution", chips: ["SDV"], ndc: "50242013201", invType: "Specialty Pharmacy", unit: "vials", strength: "150 mg", sources: ["BioCare"], bins: [["7", "E1", 4]] },
+    // Reference products for the virtual flow (exp: every unit shares this expiration date).
+    { id: 8, name: "Avastin 1.25 MG/0.05 ML SYRINGE (OF-REPACK)", desc: "bevacizumab 1.25 mg/0.05 mL intravitreal syringe", chips: ["SDV", "CLIMATE"], ndc: "81483004105", invType: "Purchased", unit: "vials", strength: "1.25 mg / 0.05 mL", sources: ["Leiters"], bins: [["2", "B3", 4]], exp: "10/31/2026" },
+    { id: 9, name: "EYLEA HD 8 MG/0.07 ML VIAL", desc: "aflibercept 8 mg/0.07 mL intravitreal solution for injection", chips: ["SDV", "CLIMATE"], ndc: "61755005051", invType: "Purchased", unit: "vials", strength: "8 mg / 0.07 mL", sources: ["XBioCareSD_DEMO"], bins: [["5", "E2", 5]], exp: "05/31/2031" }
   ];
   static CHIP = { SDV: ["#282e38", "#ffffff"], MDV: ["#282e38", "#ffffff"], CLIMATE: ["#06b6d4", "#ffffff"], PACK: ["#465161", "#ffffff"], CIV: ["#eec038", "#25282a"], "NON SERIALIZED": ["#fe4603", "#ffffff"] };
   static PATIENTS = [["Hernandez, Maria", "3248209348"], ["Okafor, James", "5521908734"], ["Nguyen, Linh", "7710342296"]];
@@ -1074,7 +1077,7 @@ class Component extends DCLogic {
         const n = out.length;
         const seed = String(parseInt(p.ndc.slice(-6), 10) * 7919 + n * 104729 + p.id * 31);
         const pt = Component.PATIENTS[(n + p.id) % 3];
-        out.push({ patientName: pt[0], patientId: "ID " + pt[1], id: p.id + "-" + n, serial: (seed + "8392017465820391").slice(0, 16), lot: (seed.split("").reverse().join("") + "293586344").slice(0, 6), expiration: p.id === 3 && n < 2 ? "07/31/2026" : Component.EXPS[(n + p.id) % 5], source: p.sources[n % p.sources.length], door, bin, binKey: door + "-" + bin });
+        out.push({ patientName: pt[0], patientId: "ID " + pt[1], id: p.id + "-" + n, serial: (seed + "8392017465820391").slice(0, 16), lot: (seed.split("").reverse().join("") + "293586344").slice(0, 6), expiration: p.exp || (p.id === 3 && n < 2 ? "07/31/2026" : Component.EXPS[(n + p.id) % 5]), source: p.sources[n % p.sources.length], door, bin, binKey: door + "-" + bin });
       }
     });
     return (this._ser[p.id] = out);
@@ -1301,7 +1304,7 @@ class Component extends DCLogic {
       const all = this.serialsOf(p), gone = all.filter(isExpired).length;
       if (gone) return { label: "Expired (" + gone + ")", expired: true };
       const keys = all.map(ymKey).sort(), k = keys[0];
-      return { label: "Expiring " + Component.MONTHS[Number(k.slice(4)) - 1] + " " + k.slice(0, 4) + ": " + keys.filter(x => x === k).length, expired: false };
+      return { label: "Expiring " + Component.MONTHS[Number(k.slice(4)) - 1] + " " + k.slice(0, 4) + " (" + keys.filter(x => x === k).length + ")", expired: false };
     };
     const clearWork = { vScan: "", vQ: "", vMode: null, vScanList: [], vSel: null, vPick: null, vPickChk: {} };
     // Prototype stand-in for a barcode scan: the next available serialized vial, rotating through products.
