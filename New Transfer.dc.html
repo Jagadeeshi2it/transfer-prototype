@@ -747,13 +747,17 @@
         </div>
         <sc-if value="{{ vPicking }}" hint-placeholder-val="{{ false }}">
         <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px 24px;">
+          <sc-if value="{{ vPickDirty }}" hint-placeholder-val="{{ false }}">
+            <div role="status" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #EFE3FB; border-radius: 4px; box-shadow: inset 5px 0 0 #8B3FD9;">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex: 0 0 20px; color: #8B3FD9;"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"></circle><path d="M10 6v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="10" cy="13.8" r="0.9" fill="currentColor"></circle></svg>
+              <span style="font-size: 14px; font-weight: 600; color: #0E243F;">Please save selection before continuing.</span>
+            </div>
+          </sc-if>
           <div style="border: 1px solid #e9ecf1; border-radius: 4px; overflow: hidden;">
-            <sc-if value="{{ vHasPrev }}" hint-placeholder-val="{{ false }}">
             <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #e9eef4;">
               <span style="font-size: 14px; font-weight: 500; color: #6b7480;">Available Items</span>
               <button type="button" onClick="{{ vAvailToggle }}" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px; font-family: inherit; font-size: 14px; font-weight: 500; color: #095192; background: transparent; border: none; cursor: pointer;">{{ vAvailToggleLabel }}<svg width="12" height="12" viewBox="0 0 14 14" fill="none" style="transform: rotate({{ vAvailChev }});"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
             </div>
-            </sc-if>
             <sc-if value="{{ vAvailOpen }}" hint-placeholder-val="{{ true }}">
               <table style="width: 100%; border-collapse: collapse;">
                 <thead>
@@ -1366,13 +1370,13 @@ class Component extends DCLogic {
       const allOn = open.length > 0 && addIds.length === open.length, none = !addIds.length && !dropIds.length;
       const flip = which => this.setState(st => ({ vPickPane: (st.vPickPane === undefined ? "avail" : st.vPickPane) === which ? null : which }));
       Object.assign(pv, {
-        vAvailRows: avail, vAvailEmpty: !avail.length, vAvailOpen: !prev.length || pane === "avail",
+        vAvailRows: avail, vAvailEmpty: !avail.length, vAvailOpen: pane === "avail",
         vAvailToggle: () => flip("avail"), vAvailToggleLabel: pane === "avail" ? "Hide Items" : "Show Items", vAvailChev: pane === "avail" ? "180deg" : "0deg",
         vHasPrev: prev.length > 0, vPrevRows: prev, vPrevOpen: pane === "prev", vPrevLabel: "Previously Selected Items (" + prev.length + ")",
         vPrevToggle: () => flip("prev"), vPrevToggleLabel: pane === "prev" ? "Hide Items" : "Show Items", vPrevChev: pane === "prev" ? "180deg" : "0deg",
         vPickAllOn: allOn, vPickAllBg: allOn ? "#095192" : "#ffffff", vPickAllBd: allOn ? "#095192" : "#bcc3cd",
         vPickAll: () => this.setState(() => { const c = {}; if (!allOn) open.forEach(r => { c[r.id] = true; }); return { vPickChk: c }; }),
-        vPickNone: none, vPickSaveLabel: "Save selection",
+        vPickNone: none, vPickDirty: !none, vPickSaveLabel: "Save selection",
         vPickFg: none ? "#BCC3CD" : "#ffffff", vPickBg: none ? "#F3F5F7" : "#095192", vPickBd: none ? "#DADEE3" : "#095192", vPickCursor: none ? "not-allowed" : "pointer",
         vPickSave: () => {
           if (none) return;
@@ -1385,7 +1389,7 @@ class Component extends DCLogic {
         vPickCancel: () => this.setState({ vPick: null, vPickChk: {}, vPickDrop: {} })
       });
     }
-    const ok = totalScanned > 0, addOn = sel != null && pick == null;
+    const ok = totalScanned > 0 && !pv.vPickDirty, addOn = sel != null && pick == null;
     return Object.assign(this.vPanelVals(ids), pv, {
       vProducts: ids.length,
       vScan: s.vScan || "", vOnScan: e => this.setState({ vScan: e.target.value }),
@@ -1411,7 +1415,7 @@ class Component extends DCLogic {
       vCancel: () => { if (totalScanned) this.setState({ discard: true }); else this.goHome(); },
       vContDisabled: !ok,
       vContFg: ok ? "#ffffff" : "#BCC3CD", vContBg: ok ? "#095192" : "#F3F5F7", vContBd: ok ? "#095192" : "#DADEE3", vContCursor: ok ? "pointer" : "not-allowed",
-      vContinue: () => { if (!ok) return; this.setState({ step: 3, collapsed: {}, note: "", noteOpen: false, lastAdded: null }); window.scrollTo(0, 0); }
+      vContinue: () => { if (pv.vPickDirty) { this.toast("Save or cancel your selection before continuing.", "warning"); return; } if (!ok) return; this.setState({ step: 3, collapsed: {}, note: "", noteOpen: false, lastAdded: null }); window.scrollTo(0, 0); }
     });
   }
 
