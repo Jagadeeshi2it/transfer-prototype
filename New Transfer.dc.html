@@ -761,8 +761,8 @@
                         <sc-if value="{{ vPickAllOn }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
                       </div>
                     </th>
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Serial</th>
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Lot</th>
+                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;"><div>Serial</div><div style="margin-top: 2px; font-size: 13px; font-weight: 400; font-style: italic; color: #6b7280;">Lot</div></th>
+                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Source</th>
                     <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Expiration</th>
                     <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Quantity</th>
                   </tr>
@@ -777,8 +777,8 @@
                           </div>
                         </sc-if>
                       </td>
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5;">{{ r.serial }}</td>
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5;">{{ r.lot }}</td>
+                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5;"><div>{{ r.serial }}</div><div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ r.lot }}</div></td>
+                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5;">{{ r.source }}</td>
                       <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; white-space: nowrap;">
                         <div>{{ r.expiration }}</div>
                         <sc-if value="{{ r.expired }}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; margin-top: 4px; padding: 1px 8px; font-size: 12px; line-height: 18px; font-weight: 500; color: #ffffff; background: #D9342B; border-radius: 999px;">Expired</span></sc-if>
@@ -802,8 +802,8 @@
                 <thead>
                   <tr style="background: #f8fafc;">
                     <th style="width: 1%; padding: 12px 8px 12px 16px; border-bottom: 1px solid #e9ecf1;"></th>
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Serial</th>
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Lot</th>
+                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;"><div>Serial</div><div style="margin-top: 2px; font-size: 13px; font-weight: 400; font-style: italic; color: #6b7280;">Lot</div></th>
+                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Source</th>
                     <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Expiration</th>
                     <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Quantity</th>
                   </tr>
@@ -818,8 +818,8 @@
                           </div>
                         </sc-if>
                       </td>
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5;">{{ r.serial }}</td>
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5;">{{ r.lot }}</td>
+                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5;"><div>{{ r.serial }}</div><div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ r.lot }}</div></td>
+                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5;">{{ r.source }}</td>
                       <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; white-space: nowrap;">
                         <div>{{ r.expiration }}</div>
                         <sc-if value="{{ r.expired }}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; margin-top: 4px; padding: 1px 8px; font-size: 12px; line-height: 18px; font-weight: 500; color: #ffffff; background: #D9342B; border-radius: 999px;">Expired</span></sc-if>
@@ -840,8 +840,8 @@
               <table style="width: 100%; border-collapse: collapse;">
                 <thead>
                   <tr style="background: #f8fafc;">
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Serial</th>
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Lot</th>
+                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;"><div>Serial</div><div style="margin-top: 2px; font-size: 13px; font-weight: 400; font-style: italic; color: #6b7280;">Lot</div></th>
+                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Source</th>
                     <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Expiration</th>
                     <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Quantity</th>
                     <th style="width: 56px; padding: 12px 16px; border-bottom: 1px solid #e9ecf1;"></th>
@@ -850,8 +850,8 @@
                 <tbody>
                   <sc-for list="{{ vSelRows }}" as="r" hint-placeholder-count="1">
                     <tr style="background: {{ r.bg }};">
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; color: #21252b;">{{ r.serial }}</td>
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; color: #21252b;">{{ r.lot }}</td>
+                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; color: #21252b;"><div>{{ r.serial }}</div><div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ r.lot }}</div></td>
+                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; color: #21252b;">{{ r.source }}</td>
                       <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; color: #21252b; white-space: nowrap;">{{ r.expiration }}</td>
                       <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; color: #21252b; min-width: 96px;">{{ r.qty }}</td>
                       <td style="padding: 8px 16px; border-bottom: 1px solid #eef1f5;">
@@ -1342,7 +1342,7 @@ class Component extends DCLogic {
         select: () => { if (id !== sel) this.setState({ vSel: id, vPick: null, vPickChk: {}, vPickDrop: {} }); } }; });
     // Selected product's items in the transfer (shown until the user moves on to another product).
     const selRows = sel == null || pick != null ? [] : (s.scanned[sel] || []).map(id => { const x = byId(id), p = P[sel], ser = serialized(p); return {
-      serial: ser ? x.serial : "--", lot: x.lot, expiration: x.expiration, qty: "1 " + this.unitOf(p, 1) + " / " + p.strength,
+      serial: ser ? x.serial : "--", lot: x.lot, source: x.source, expiration: x.expiration, qty: "1 " + this.unitOf(p, 1) + " / " + p.strength,
       bg: id === s.lastAdded ? "#F4F8FC" : "#ffffff",
       remove: () => { this.setState(st => { const l = (st.scanned[sel] || []).filter(v => v !== id); return { scanned: Object.assign({}, st.scanned, { [sel]: l }), queue: l.length ? st.queue : st.queue.filter(q => q !== sel) }; }); this.toast((ser ? "Serial " + x.serial : "Lot " + x.lot) + " removed from the transfer.", "warning"); } }; });
     // Add manually: "Available Items" (not yet in the transfer) to tick, and "Previously Selected Items" (already in
@@ -1351,7 +1351,7 @@ class Component extends DCLogic {
     if (pick != null) {
       const p = P[pick], ser = serialized(p), chk = s.vPickChk || {}, drop = s.vPickDrop || {}, inT = s.scanned[pick] || [];
       const pane = s.vPickPane === undefined ? "avail" : s.vPickPane;
-      const rowOf = (x, checked, selectable, toggle) => ({ serial: ser ? x.serial : "--", lot: x.lot, expiration: x.expiration, qty: "1 " + this.unitOf(p, 1) + " / " + p.strength,
+      const rowOf = (x, checked, selectable, toggle) => ({ serial: ser ? x.serial : "--", lot: x.lot, source: x.source, expiration: x.expiration, qty: "1 " + this.unitOf(p, 1) + " / " + p.strength,
         expired: isExpired(x), selectable, checked,
         hint: isExpired(x) ? "Expired on " + x.expiration + ". Expired vials can't be selected for transfer." : "", cursor: selectable ? "default" : "not-allowed",
         bg: !selectable ? "#eceef1" : checked ? "#f5f9fe" : "#ffffff", fg: !selectable ? "#6b7480" : "#21252b",
