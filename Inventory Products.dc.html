@@ -37,7 +37,7 @@
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
           </button>
         </div>
-        <p style="margin: 0; padding: 16px 24px 48px; font-size: 14px; line-height: 22px; color: #25282a; text-wrap: pretty;">There are some products that still need to be transferred. If you close any remaining products will be ignored.</p>
+        <p style="margin: 0; padding: 16px 24px 48px; font-size: 14px; line-height: 22px; color: #25282a; text-wrap: pretty;">{{ closeBody }}</p>
         <div style="display: flex; justify-content: flex-end; gap: 16px; padding: 0 24px 24px;">
           <button type="button" onClick="{{ stayAccept }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">No, stay</button>
           <button type="button" onClick="{{ confirmClose }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">Yes, continue</button>
@@ -1382,6 +1382,10 @@ class Component extends DCLogic {
       acceptProduct: () => this.advance(true),
       closeAccept: () => this.setState({ confirmClose: true }),
       confirmCloseOpen: !!this.state.confirmClose,
+      // Single product (chevron, or a queue of one) gets its own copy; a multi-product queue keeps the batch wording.
+      closeBody: (this.state.queue || []).length <= 1
+        ? ((rows[(this.state.queue || [])[0]] || {}).name || "This product") + " still needs to be transferred. If you close now, it will stay on the Incoming Transfers list so you can finish it later."
+        : "There are some products that still need to be transferred. If you close any remaining products will be ignored.",
       stayAccept: () => this.setState({ confirmClose: false }),
       stopProp: e => e.stopPropagation(),
       confirmClose: () => { this.setState({ confirmClose: false, view: "list", queue: [], qIdx: 0, picked: {}, serialStatus: {}, accSel: {}, leave: null, locOpen: false, panelOpen: false });
