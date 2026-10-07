@@ -748,10 +748,12 @@
         <sc-if value="{{ vPicking }}" hint-placeholder-val="{{ false }}">
         <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px 24px;">
           <div style="border: 1px solid #e9ecf1; border-radius: 4px; overflow: hidden;">
+            <sc-if value="{{ vHasPrev }}" hint-placeholder-val="{{ false }}">
             <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #e9eef4;">
               <span style="font-size: 14px; font-weight: 500; color: #6b7480;">Available Items</span>
               <button type="button" onClick="{{ vAvailToggle }}" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px; font-family: inherit; font-size: 14px; font-weight: 500; color: #095192; background: transparent; border: none; cursor: pointer;">{{ vAvailToggleLabel }}<svg width="12" height="12" viewBox="0 0 14 14" fill="none" style="transform: rotate({{ vAvailChev }});"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
             </div>
+            </sc-if>
             <sc-if value="{{ vAvailOpen }}" hint-placeholder-val="{{ true }}">
               <table style="width: 100%; border-collapse: collapse;">
                 <thead>
@@ -1339,7 +1341,7 @@ class Component extends DCLogic {
         inv: this.total(p) + " " + this.unitOf(p, this.total(p)), exp: ex.label, hasExpired: ex.expired, tag: n ? n + " in transfer" : "", hasTag: n > 0, on,
         hdBg: on ? "#0E243F" : "#F8FAFC", hdFg: on ? "#ffffff" : "#21252b", subFg: on ? "rgba(255,255,255,0.85)" : "#6b7280",
         bd: on ? "#0E243F" : "#e3e7ed", hoverBd: on ? "#0E243F" : "#9fb4cc", chipRing: on ? "rgba(255,255,255,0.6)" : "transparent",
-        select: () => { if (id !== sel) this.setState({ vSel: id, vPick: null, vPickChk: {}, vPickDrop: {} }); } }; });
+        select: () => { if (id === sel && (mode !== "search" || pick != null)) return; this.setState({ vSel: id, vPick: mode === "search" ? id : null, vPickChk: {}, vPickDrop: {}, vPickPane: "avail" }); } }; });
     // Selected product's items in the transfer (shown until the user moves on to another product).
     const selRows = sel == null || pick != null ? [] : (s.scanned[sel] || []).map(id => { const x = byId(id), p = P[sel], ser = serialized(p); return {
       serial: ser ? x.serial : "--", lot: x.lot, source: x.source, expiration: x.expiration, qty: "1 " + this.unitOf(p, 1) + " / " + p.strength,
@@ -1364,7 +1366,7 @@ class Component extends DCLogic {
       const allOn = open.length > 0 && addIds.length === open.length, none = !addIds.length && !dropIds.length;
       const flip = which => this.setState(st => ({ vPickPane: (st.vPickPane === undefined ? "avail" : st.vPickPane) === which ? null : which }));
       Object.assign(pv, {
-        vAvailRows: avail, vAvailEmpty: !avail.length, vAvailOpen: pane === "avail",
+        vAvailRows: avail, vAvailEmpty: !avail.length, vAvailOpen: !prev.length || pane === "avail",
         vAvailToggle: () => flip("avail"), vAvailToggleLabel: pane === "avail" ? "Hide Items" : "Show Items", vAvailChev: pane === "avail" ? "180deg" : "0deg",
         vHasPrev: prev.length > 0, vPrevRows: prev, vPrevOpen: pane === "prev", vPrevLabel: "Previously Selected Items (" + prev.length + ")",
         vPrevToggle: () => flip("prev"), vPrevToggleLabel: pane === "prev" ? "Hide Items" : "Show Items", vPrevChev: pane === "prev" ? "180deg" : "0deg",
@@ -1396,7 +1398,7 @@ class Component extends DCLogic {
       vSrcOptions: Array.from(new Set(P.flatMap(p => p.sources))).sort(),
       vReset: () => this.setState(Object.assign({ vInv: "All", vSrc: "All" }, clearWork)),
       vHasResults: cards.length > 0,
-      vListTitle: mode === "scan" ? "Scanned vials are added to the transfer as you scan. Select a product to see its items." : cards.length + (cards.length === 1 ? " product" : " products") + " found. Select one, then use Add manually to pick its items.",
+      vListTitle: mode === "scan" ? "Scanned vials are added to the transfer as you scan. Select a product to see its items." : cards.length + (cards.length === 1 ? " product" : " products") + " found. Select one to pick its items.",
       vCards: cards, vEmpty: !cards.length,
       vEmptyText: mode === "search" ? "No products match your search. Try another name, NDC or AID." : "Scan or search for a product",
       vPicking: pick != null, vNotPicking: pick == null,
