@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ally Prototype Kit</title>
+<!-- generated from gallery.src.html by build-gallery.py; edit the source -->
+<style>
+/* ==========================================================================
+   Ally prototype kit
+   Components for HTML prototypes, built from the AllyGPO Design System
+   library as used in the Transfer Figma file (eT6HcGEMl1keXbU21Yp7q8).
+   Every value below comes from the Figma component, not from an old prototype.
+   Class names follow the Figma component names. See gallery.html.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
+
+/* --------------------------------------------------------------------------
+   Tokens
+   -------------------------------------------------------------------------- */
+:root {
+  /* Brand + action (Button set) */
+  --ak-brand: #095192;
+  --ak-brand-hover: #173a63;
+  --ak-brand-active: #122e50;
+  --ak-brand-disabled: rgba(32, 81, 140, 0.6);
+  --ak-danger: #d9342b;
+  --ak-danger-hover: #c32f27;
+  --ak-danger-active: #ae2a22;
+  --ak-danger-disabled: rgba(217, 52, 43, 0.6);
+
+  /* Text */
+  --ak-text: #25282a;            /* text/default */
+  --ak-text-label: #64748b;      /* field labels, counters */
+  --ak-text-muted: #757575;      /* secondary/italic cell text */
+  --ak-text-placeholder: #9fa9b7;
+  --ak-text-tab-idle: #767676;
+  --ak-text-empty: #6b7280;
+  --ak-text-on-brand: #ffffff;
+
+  /* Surfaces + borders */
+  --ak-bg: #ffffff;
+  --ak-bg-subtle: #f5f5f5;       /* Search Filter */
+  --ak-bg-table-header: #f5f7fa;
+  --ak-bg-disabled: #fafafa;
+  --ak-border-input: #bcc3cd;
+  --ak-border-table: #dadee3;
+  --ak-border-tile: #d8d8d8;
+  --ak-border-divider: #e0e0e0;
+  --ak-border-bar: #d9d9d9;
+  --ak-border-panel: #e5e7eb;
+  --ak-border-tab-idle: #e9eef4;
+  --ak-border-card: #eeeeee;
+  --ak-overlay: rgba(26, 31, 38, 0.4);
+
+  /* Nav */
+  --ak-nav-bg: #095192;
+  --ak-nav-logo-bg: #0e243f;
+  --ak-nav-muted: #9fb4ce;
+
+  /* Feedback (Alert / Inline Alert) */
+  --ak-success-bg: #d9f2ef;  --ak-success-border: #009883;  --ak-success-icon: #007f6d;
+  --ak-warning-bg: #f7edde;  --ak-warning-border: #b87b21;
+  --ak-danger-bg: #f9e1df;   --ak-danger-border: #d9342b;
+  --ak-info-bg: #ead6fd;
+
+  /* Status Badge pills (Badge / Category) */
+  --ak-pill-success: #008774;
+  --ak-pill-warning: #eec038;
+  --ak-pill-danger: #c32f27;
+  --ak-pill-info: #3b83f7;
+  --ak-pill-emphasis: #a855f7;
+  --ak-pill-neutral: #465161;
+
+  /* Solid status chips */
+  --ak-chip-success: #00a991;  --ak-chip-success-border: #006557;
+  --ak-chip-danger: #d9342b;   --ak-chip-danger-border: #8c221c;
+
+  /* Product Badge (Components/tag/bg-*) */
+  --ak-tag-sdv: #282e38;
+  --ak-tag-climate: #06b6d4;
+  --ak-tag-pack: #465161;
+  --ak-tag-civ: #eec038;
+  --ak-tag-non-serial: #fe4603;
+
+  /* Door Type */
+  --ak-door-physical: #5b6b7b;
+  --ak-door-virtual: #8b3fd9;
+
+  /* Radius + elevation */
+  --ak-radius: 4px;
+  --ak-radius-lg: 6px;
+  --ak-radius-pill: 25px;
+  --ak-shadow-modal: 0 2px 1px -1px rgba(0,0,0,.02), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+  --ak-shadow-bar: 0 -4px 8px rgba(0,0,0,.10);
+  --ak-focus-ring: 0 0 3px 4px #095192;   /* Input / Text Area, State=Active */
+
+  /* Layout (1512 x 1024 artboards) */
+  --ak-sidenav-w: 70px;
+  --ak-topnav-h: 54px;
+  --ak-gutter: 24px;              /* content edge = side nav + 24 = 94 */
+  --ak-bottom-bar-h: 68px;
+
+  /* Type */
+  --ak-font: "Inter", -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   Base + DS text styles (H1 35 ... XS 12; line height auto unless stated)
+   -------------------------------------------------------------------------- */
+.ak, .ak * { box-sizing: border-box; }
+.ak { font-family: var(--ak-font); color: var(--ak-text); font-size: 14px; -webkit-font-smoothing: antialiased; }
+.ak button, .ak input, .ak select, .ak textarea { font-family: inherit; }
+
+.ak-h1 { font-size: 35px; } .ak-h2 { font-size: 28px; } .ak-h3 { font-size: 24px; }
+.ak-h4 { font-size: 21px; } .ak-h5 { font-size: 18px; } .ak-body { font-size: 16px; }
+.ak-small { font-size: 14px; } .ak-xs { font-size: 12px; }
+.ak-regular { font-weight: 400; } .ak-medium { font-weight: 500; }
+.ak-semibold { font-weight: 600; } .ak-bold { font-weight: 700; }
+.ak-italic { font-style: italic; }
+.ak-label { color: var(--ak-text-label); }
+.ak-muted { color: var(--ak-text-muted); }
+.ak-link { color: var(--ak-brand); text-decoration: none; cursor: pointer; }
+.ak-link:hover { text-decoration: underline; }
+
+/* --------------------------------------------------------------------------
+   Icons: <span class="ak-icon" data-icon="search"></span> (filled by ally-kit.js)
+   -------------------------------------------------------------------------- */
+.ak-icon { display: inline-flex; width: 24px; height: 24px; flex: none; align-items: center; justify-content: center; }
+.ak-icon svg { width: 100%; height: 100%; display: block; }
+.ak-icon--14 { width: 14px; height: 14px; } .ak-icon--16 { width: 16px; height: 16px; }
+.ak-icon--17 { width: 17px; height: 17px; } .ak-icon--20 { width: 20px; height: 20px; }
+.ak-icon--21 { width: 21px; height: 21px; } .ak-icon--28 { width: 28px; height: 28px; }
+.ak-icon--current svg path { fill: currentColor; }
+.ak-icon[data-icon="check-circle"], [data-icon="check-circle"] { color: var(--ak-success-icon); }
+.ak-btn [data-icon="check-circle"] { color: inherit; }
+
+/* --------------------------------------------------------------------------
+   Button (Standard, 36) and _Large Button (44)
+   Figma: Button / _Large Button  ·  Type = Primary | Secondary | Tertiary
+   -------------------------------------------------------------------------- */
+.ak-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 36px; padding: 8px 12px; border-radius: var(--ak-radius);
+  border: 1px solid transparent; background: transparent;
+  font-size: 14px; line-height: 20px; font-weight: 600; white-space: nowrap;
+  cursor: pointer; text-decoration: none;
+}
+.ak-btn--lg { height: 44px; padding: 8px 16px; }
+.ak-btn .ak-icon { width: 20px; height: 20px; }
+.ak-btn .ak-icon svg path { fill: currentColor; }
+
+.ak-btn--primary { background: var(--ak-brand); color: #fff; }
+.ak-btn--primary:hover { background: var(--ak-brand-hover); }
+.ak-btn--primary:active { background: var(--ak-brand-active); }
+.ak-btn--secondary { border-color: var(--ak-brand); color: var(--ak-brand); background: #fff; }
+.ak-btn--secondary:hover { border-color: var(--ak-brand-hover); color: var(--ak-brand-hover); }
+.ak-btn--secondary:active { border-color: var(--ak-brand-active); color: var(--ak-brand-active); }
+.ak-btn--tertiary { padding-left: 0; padding-right: 0; gap: 4px; color: var(--ak-brand); }
+.ak-btn--tertiary:not(.ak-btn--lg) { height: 20px; padding: 0; }
+.ak-btn--tertiary:hover { color: var(--ak-brand-hover); }
+.ak-btn--tertiary:active { color: var(--ak-brand-active); }
+
+.ak-btn--danger.ak-btn--primary { background: var(--ak-danger); }
+.ak-btn--danger.ak-btn--primary:hover { background: var(--ak-danger-hover); }
+.ak-btn--danger.ak-btn--primary:active { background: var(--ak-danger-active); }
+.ak-btn--danger.ak-btn--secondary { border-color: var(--ak-danger); color: var(--ak-danger); }
+.ak-btn--danger.ak-btn--secondary:hover { border-color: var(--ak-danger-hover); color: var(--ak-danger-hover); }
+.ak-btn--danger.ak-btn--tertiary { color: var(--ak-danger); }
+
+.ak-btn:disabled, .ak-btn[aria-disabled="true"] { cursor: not-allowed; pointer-events: none; }
+.ak-btn--primary:disabled, .ak-btn--primary[aria-disabled="true"] { background: var(--ak-brand-disabled); }
+.ak-btn--secondary:disabled, .ak-btn--secondary[aria-disabled="true"] { border-color: var(--ak-brand-disabled); color: var(--ak-brand-disabled); }
+.ak-btn--tertiary:disabled, .ak-btn--tertiary[aria-disabled="true"] { color: var(--ak-brand-disabled); }
+.ak-btn--danger.ak-btn--primary:disabled { background: var(--ak-danger-disabled); }
+.ak-btn--danger.ak-btn--secondary:disabled { border-color: var(--ak-danger-disabled); color: var(--ak-danger-disabled); }
+
+/* Link Button (Table Cell Variants · Link Button), e.g. "Select" in a table */
+.ak-link-btn { display: inline-flex; align-items: center; gap: 4px; padding: 2px; border-radius: var(--ak-radius); border: 0; background: none; color: var(--ak-brand); font-size: 14px; line-height: 20px; font-weight: 500; cursor: pointer; }
+.ak-link-btn:hover { text-decoration: underline; }
+
+/* --------------------------------------------------------------------------
+   Input (48), _Input Group Add-Ons, Dropdown, Text Area
+   -------------------------------------------------------------------------- */
+.ak-field { display: flex; flex-direction: column; gap: 4px; }
+.ak-field__label { font-size: 16px; font-weight: 500; color: var(--ak-text); }
+.ak-field__help { font-size: 14px; color: var(--ak-text-label); }
+.ak-field--error .ak-field__label, .ak-field--error .ak-field__help { color: var(--ak-danger); }
+
+.ak-input {
+  display: flex; align-items: center; gap: 8px; height: 48px; padding: 12px;
+  background: #fff; border: 1px solid var(--ak-border-input); border-radius: var(--ak-radius);
+  font-size: 16px; color: var(--ak-text);
+}
+.ak-input input, input.ak-input, .ak-input select {
+  flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; padding: 0;
+  font: inherit; font-size: 16px; color: var(--ak-text);
+}
+input.ak-input { width: 100%; padding: 12px; }
+.ak-input input::placeholder, input.ak-input::placeholder, .ak-textarea::placeholder { color: var(--ak-text-placeholder); }
+.ak-input:focus-within, input.ak-input:focus { border-color: var(--ak-text-placeholder); box-shadow: var(--ak-focus-ring); }
+.ak-input--disabled, .ak-input:has(input:disabled) { background: var(--ak-bg-disabled); }
+.ak-input--error { border-color: var(--ak-danger); }
+.ak-input--error input::placeholder { color: var(--ak-danger); }
+.ak-input--warning { border-color: var(--ak-warning-border); }
+.ak-input .ak-icon svg path { fill: var(--ak-text-label); }
+
+/* Input + add-on button (search) */
+.ak-input-group { display: flex; align-items: stretch; }
+.ak-input-group .ak-input { border-top-right-radius: 0; border-bottom-right-radius: 0; flex: 1; }
+.ak-addon {
+  width: 52px; height: 48px; display: inline-flex; align-items: center; justify-content: center;
+  background: var(--ak-brand); border: 1px solid var(--ak-brand); border-radius: 0 var(--ak-radius) var(--ak-radius) 0;
+  color: #fff; cursor: pointer;
+}
+.ak-addon:hover { background: var(--ak-brand-hover); }
+.ak-addon .ak-icon { width: 20px; height: 20px; }
+
+/* Dropdown: Input look with clear (times) + chevron-down */
+.ak-select { position: relative; }
+.ak-select select { appearance: none; -webkit-appearance: none; cursor: pointer; padding-right: 32px; }
+.ak-select::after {
+  content: ""; position: absolute; right: 12px; top: 50%; width: 24px; height: 24px; margin-top: -12px; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12.01 15.2a.75.75 0 0 1-.53-.22l-5-5a.75.75 0 0 1 1.06-1.03l4.47 4.44 4.47-4.44a.75.75 0 0 1 1.06 1L12.54 14.95a.75.75 0 0 1-.53.25Z' fill='%2364748B'/%3E%3C/svg%3E") no-repeat center;
+}
+
+.ak-textarea {
+  display: block; width: 100%; min-height: 108px; padding: 12px; resize: vertical;
+  background: #fff; border: 1px solid var(--ak-border-input); border-radius: var(--ak-radius);
+  font: inherit; font-size: 16px; color: var(--ak-text); outline: 0;
+}
+.ak-textarea:focus { border-color: var(--ak-text-label); box-shadow: var(--ak-focus-ring); }
+
+/* Checkbox (Table Cell Variants · Checkbox) */
+.ak-checkbox { appearance: none; -webkit-appearance: none; width: 16px; height: 16px; margin: 0; border: 1px solid var(--ak-border-input); border-radius: 2px; background: #fff; cursor: pointer; display: inline-grid; place-content: center; vertical-align: middle; }
+.ak-checkbox:checked, .ak-checkbox:indeterminate { background: var(--ak-brand); border-color: var(--ak-brand); }
+.ak-checkbox:checked::after { content: ""; width: 9px; height: 5px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
+.ak-checkbox:indeterminate::after { content: ""; width: 8px; height: 2px; background: #fff; }
+
+/* --------------------------------------------------------------------------
+   Search Filter (grey bar with inputs + RESET / SEARCH)
+   -------------------------------------------------------------------------- */
+.ak-search-filter {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 16px 24px; background: var(--ak-bg-subtle); border: 1px solid var(--ak-border-divider); border-radius: var(--ak-radius);
+}
+.ak-search-filter__fields { display: flex; gap: 14px; align-items: center; }
+.ak-search-filter__actions { display: flex; gap: 16px; align-items: center; }
+
+/* --------------------------------------------------------------------------
+   Tabs (_Tab Row / _Tabs)
+   -------------------------------------------------------------------------- */
+.ak-tabs { display: flex; }
+.ak-tab {
+  display: inline-flex; align-items: center; gap: 4px; height: 64px; padding: 20px;
+  border: 0; border-bottom: 2px solid var(--ak-border-tab-idle); background: none;
+  font-size: 16px; line-height: 24px; font-weight: 700; color: var(--ak-text-tab-idle); cursor: pointer; white-space: nowrap;
+}
+.ak-tab:hover { color: var(--ak-text-label); border-bottom-color: var(--ak-text-label); }
+.ak-tab[aria-selected="true"], .ak-tab--selected { color: var(--ak-brand); border-bottom-color: var(--ak-brand); }
+.ak-tab:disabled { color: var(--ak-text-placeholder); border-bottom-color: var(--ak-text-placeholder); cursor: not-allowed; }
+.ak-tab__count { min-width: 20px; height: 20px; padding: 4px 6px; border-radius: 10px; background: var(--ak-brand); color: #fff; font-size: 12px; line-height: 12px; font-weight: 700; }
+
+/* --------------------------------------------------------------------------
+   Table (Table Cell: Table Header / Table Cell / Nested Table)
+   No column dividers; each cell has a bottom border only.
+   -------------------------------------------------------------------------- */
+.ak-table {
+  width: 100%; background: #fff; font-size: 14px; line-height: 20px;
+  border: 1px solid var(--ak-border-table); border-radius: var(--ak-radius);
+  border-collapse: separate; border-spacing: 0; overflow: hidden;   /* Figma table frame: 1px #dadee3, radius 4, clips */
+}
+.ak-table thead tr:first-child th:first-child { border-top-left-radius: var(--ak-radius); }
+.ak-table thead tr:first-child th:last-child { border-top-right-radius: var(--ak-radius); }
+.ak-table tbody tr:last-child td { border-bottom: 0; }
+.ak-table--boxed { /* same as default; kept for older markup */ }
+.ak-table--flush, .ak-box > .ak-table, .ak-box > div > .ak-table, .ak-card .ak-table { border: 0; border-radius: 0; }
+.ak-table th, .ak-th {
+  height: 56px; padding: 8px; text-align: left; vertical-align: top;
+  background: var(--ak-bg-table-header); border-bottom: 1px solid var(--ak-border-table);
+  font-weight: 500; color: var(--ak-text); white-space: nowrap;
+}
+.ak-table--compact th { height: 36px; }
+.ak-th__inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.ak-th__sub { display: block; font-style: italic; font-weight: 400; color: var(--ak-text-muted); }
+.ak-th__sort { width: 20px; height: 20px; flex: none; cursor: pointer; }
+.ak-table td, .ak-td {
+  padding: 8px; vertical-align: top; background: #fff; border-bottom: 1px solid var(--ak-border-table);
+  font-weight: 400; color: var(--ak-text);
+}
+.ak-table tbody tr:hover td { background: #f8fafc; }
+.ak-table tbody tr.is-selected td { background: #eef4fa; }
+.ak-table tbody tr.is-disabled td { color: var(--ak-text-placeholder); }
+.ak-cell-sub { display: block; font-style: italic; color: var(--ak-text-muted); }
+.ak-cell-check { width: 40px; }
+.ak-cell-action { width: 48px; text-align: center; vertical-align: middle !important; }
+
+/* Product Name cell: NAME / generic name / badges */
+.ak-product__name { display: block; text-transform: uppercase; color: var(--ak-text); }
+.ak-product__generic { display: block; font-style: italic; color: var(--ak-text-muted); }
+.ak-product__badges { display: flex; flex-wrap: wrap; gap: 4px; padding-top: 4px; }
+
+/* Empty row ("No products match your search") */
+.ak-empty { padding: 20px 0; text-align: center; font-size: 14px; line-height: 20px; font-weight: 500; color: var(--ak-text-empty); }
+
+/* --------------------------------------------------------------------------
+   Product Badge  (SDV · CLIMATE · PACK · CIV · NON SERIAL)
+   -------------------------------------------------------------------------- */
+.ak-badge {
+  display: inline-flex; align-items: center; height: 20px; padding: 2px 8px; border-radius: var(--ak-radius);
+  font-size: 12px; line-height: 16px; font-weight: 500; text-transform: uppercase; white-space: nowrap;
+  background: var(--ak-tag-pack); color: #fff;
+}
+.ak-badge--sdv, .ak-badge--mdv { background: var(--ak-tag-sdv); }
+.ak-badge--climate { background: var(--ak-tag-climate); }
+.ak-badge--pack, .ak-badge--mdv-wnb { background: var(--ak-tag-pack); }
+.ak-badge--civ { background: var(--ak-tag-civ); color: var(--ak-text); }
+.ak-badge--non-serial { background: var(--ak-tag-non-serial); }
+
+/* --------------------------------------------------------------------------
+   Status Badge (Badge / Category): white, grey border, coloured pill
+   -------------------------------------------------------------------------- */
+.ak-status {
+  display: inline-flex; align-items: center; gap: 4px; height: 20px; padding: 4px; border-radius: var(--ak-radius);
+  background: #fff; border: 1px solid var(--ak-border-tile);
+  font-size: 12px; line-height: 16px; font-weight: 500; color: var(--ak-text); white-space: nowrap;
+}
+.ak-status::before { content: ""; width: 4px; height: 12px; border-radius: 20px; background: var(--ak-pill-neutral); }
+.ak-status--positive::before { background: var(--ak-pill-success); }
+.ak-status--pending::before { background: var(--ak-pill-warning); }
+.ak-status--negative::before { background: var(--ak-pill-danger); }
+.ak-status--complete::before { background: var(--ak-pill-info); }
+.ak-status--patient::before { background: var(--ak-pill-emphasis); }
+.ak-status--incomplete::before { background: var(--ak-pill-neutral); }
+.ak-status--tag::before { display: none; }
+.ak-status--tag { padding: 4px; }
+
+/* Solid status chip (In Progress / Submitted / Error · Solid) */
+.ak-chip {
+  display: inline-flex; align-items: center; height: 24px; padding: 2px 10px; border-radius: var(--ak-radius-pill);
+  border: 1.5px solid var(--ak-chip-success-border); background: var(--ak-chip-success); color: #fff;
+  font-size: 14px; font-weight: 500; white-space: nowrap;
+}
+.ak-table .ak-chip { height: 20px; }
+.ak-chip--danger { background: var(--ak-chip-danger); border-color: var(--ak-chip-danger-border); }
+
+/* --------------------------------------------------------------------------
+   Alert (toast) and Inline Alert
+   -------------------------------------------------------------------------- */
+.ak-toast-region { position: fixed; top: 24px; right: 24px; z-index: 9000; display: flex; flex-direction: column; gap: 12px; }
+.ak-alert {
+  display: flex; align-items: flex-start; gap: 8px; width: 578px; max-width: calc(100vw - 48px);
+  padding: 16px 24px; border-radius: var(--ak-radius-lg); border-left: 8px solid var(--ak-success-border);
+  background: var(--ak-success-bg); color: var(--ak-text); font-size: 14px;
+}
+.ak-alert__icon { width: 21px; height: 21px; flex: none; }
+.ak-alert__text { flex: 1; padding-top: 2px; }
+.ak-alert__title { font-weight: 700; margin-right: 4px; }
+.ak-alert__close { width: 14px; height: 14px; margin-top: 4px; flex: none; border: 0; padding: 0; background: none; cursor: pointer; }
+.ak-alert--warning { background: var(--ak-warning-bg); border-left-color: var(--ak-warning-border); }
+.ak-alert--danger { background: var(--ak-danger-bg); border-left-color: var(--ak-danger-border); }
+.ak-alert--info { background: var(--ak-info-bg); border-left-color: var(--ak-pill-emphasis); }
+.ak-alert--tablet { font-size: 16px; }
+
+.ak-inline-alert {
+  display: flex; align-items: flex-start; gap: 8px; padding: 16px; border-radius: var(--ak-radius-lg);
+  background: var(--ak-info-bg); color: var(--ak-text); font-size: 14px;
+}
+.ak-inline-alert .ak-icon { width: 21px; height: 21px; }
+.ak-inline-alert__text { flex: 1; padding-top: 2px; }
+.ak-inline-alert--success { background: var(--ak-success-bg); }
+.ak-inline-alert--warning { background: var(--ak-warning-bg); }
+.ak-inline-alert--danger { background: var(--ak-danger-bg); }
+
+/* --------------------------------------------------------------------------
+   Modal (600)
+   -------------------------------------------------------------------------- */
+.ak-overlay { position: fixed; inset: 0; z-index: 7000; background: var(--ak-overlay); display: flex; align-items: center; justify-content: center; padding: 24px; }
+.ak-modal { width: 600px; max-width: 100%; background: #fff; border-radius: var(--ak-radius-lg); box-shadow: var(--ak-shadow-modal); display: flex; flex-direction: column; }
+.ak-modal__header { position: relative; padding: 48px 32px 16px; }
+.ak-modal__title { margin: 0; font-size: 18px; font-weight: 700; color: var(--ak-text); }
+.ak-modal__close { position: absolute; top: 16px; right: 16px; width: 28px; height: 28px; border: 0; padding: 0; background: none; cursor: pointer; }
+.ak-modal__body { padding: 8px 32px 32px; font-size: 16px; line-height: 24px; font-weight: 500; }
+.ak-modal__footer { display: flex; justify-content: flex-end; gap: 16px; padding: 24px 40px 24px 32px; }
+
+/* --------------------------------------------------------------------------
+   Side panel (815, right) — header / sections / footer with Large Close
+   -------------------------------------------------------------------------- */
+.ak-panel { position: fixed; top: 0; right: 0; bottom: 0; z-index: 7100; width: 815px; max-width: 100vw; background: #fff; display: flex; flex-direction: column; }
+.ak-panel__header { padding: 24px 24px 16px; border-bottom: 1px solid var(--ak-border-panel); display: flex; flex-direction: column; gap: 4px; }
+.ak-panel__title-row { display: flex; align-items: center; justify-content: space-between; }
+.ak-panel__title { margin: 0; font-size: 24px; font-weight: 500; }
+.ak-panel__close { width: 24px; height: 24px; border: 0; padding: 0; background: none; cursor: pointer; }
+.ak-panel__section { padding: 16px 24px; }
+.ak-panel__section-title { margin: 0 0 12px; font-size: 16px; font-weight: 500; }
+.ak-panel__body { flex: 1; overflow: auto; }
+.ak-panel__footer { padding: 12px 24px; border-top: 1px solid var(--ak-border-panel); display: flex; justify-content: flex-end; gap: 16px; }
+
+/* Stat row inside panels: small label over semibold value */
+.ak-stats { display: flex; }
+.ak-stat { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.ak-stat__label { font-size: 14px; color: var(--ak-text-label); }
+.ak-stat__value { font-size: 16px; font-weight: 600; }
+
+/* --------------------------------------------------------------------------
+   Bottom Action Bar (68) + Product / Location / Transfer counters
+   -------------------------------------------------------------------------- */
+.ak-bottom-bar {
+  position: fixed; left: var(--ak-sidenav-w); right: 0; bottom: 0; z-index: 50; height: var(--ak-bottom-bar-h);
+  display: flex; align-items: center; justify-content: space-between; padding: 12px 40px 12px 29px;
+  background: #fff; border-top: 1px solid var(--ak-border-bar);
+}
+.ak-bottom-bar__actions { display: flex; gap: 24px; margin-left: auto; }
+.ak-bar-info { display: flex; align-items: center; gap: 20px; }
+.ak-bar-info__item { display: flex; align-items: center; gap: 16px; }
+.ak-bar-info__text { display: flex; flex-direction: column; gap: 8px; }
+.ak-bar-info__label { font-size: 14px; font-weight: 500; color: var(--ak-text-label); }
+.ak-bar-info__value { font-size: 18px; font-weight: 600; color: var(--ak-brand); }
+.ak-bar-info__value--plain { color: var(--ak-text); }
+.ak-bar-info__divider { width: 1px; height: 67px; background: var(--ak-border-bar); }
+.ak-bar-info__item[role="button"] { cursor: pointer; }
+
+/* --------------------------------------------------------------------------
+   Page header, info bar, transfer info, counters
+   -------------------------------------------------------------------------- */
+.ak-page { position: relative; margin-left: var(--ak-sidenav-w); min-height: 100vh; background: #fff; }
+.ak-page__content { padding: 0 var(--ak-gutter); }
+.ak-page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding: 16px var(--ak-gutter) 16px; border-bottom: 1px solid var(--ak-border-divider); }
+.ak-page-title { margin: 0; font-size: 24px; font-weight: 400; }
+.ak-page-subtitle { margin: 7px 0 0; font-size: 16px; font-weight: 500; }
+.ak-section-title { margin: 24px 0 16px; font-size: 18px; font-weight: 600; }
+
+/* Info bar: columns of label/value rows (NDC, Inventory Type, ... Door/Bin) */
+.ak-info-bar { display: flex; justify-content: space-between; gap: 24px; padding: 16px 0; font-size: 16px; }
+.ak-info-bar__col { display: flex; flex-direction: column; gap: 8px; }
+.ak-info-bar__row { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.ak-info-bar__label { min-width: 100px; color: var(--ak-text-label); }
+
+/* Transfer Info: "Sending Location / Receiving Location" pairs in page headers */
+.ak-transfer-info { display: flex; flex-direction: column; gap: 8px; font-size: 16px; }
+.ak-transfer-info__row { display: flex; gap: 8px; }
+.ak-transfer-info__label { width: 156px; font-weight: 500; color: var(--ak-text-label); }
+.ak-transfer-info__value { font-weight: 600; }
+
+/* Counter: "Target vs Scanned" label + big number */
+.ak-counter { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; padding: 8px; }
+.ak-counter__value { font-size: 28px; font-weight: 400; }
+
+/* Door Type icon before a door number */
+.ak-door { display: inline-flex; align-items: center; gap: 8px; }
+.ak-door .ak-icon { width: 16px; height: 16px; }
+.ak-table .ak-door .ak-icon { width: 17px; height: 17px; }
+
+/* --------------------------------------------------------------------------
+   Station Tile (local component) and Products Selected tile
+   -------------------------------------------------------------------------- */
+.ak-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(242px, 1fr)); gap: 12px; }
+.ak-tile {
+  height: 86px; padding: 0 12px; display: flex; align-items: center; justify-content: center; text-align: center;
+  background: #fff; border: 1px solid var(--ak-border-tile); border-radius: var(--ak-radius);
+  font-size: 14px; color: var(--ak-text); cursor: pointer;
+}
+.ak-tile:hover { border-color: var(--ak-brand); }
+.ak-tile[aria-pressed="true"], .ak-tile--selected { background: var(--ak-brand); border-color: var(--ak-brand); color: #fff; }
+
+.ak-count-tile {
+  display: inline-flex; flex-direction: column; gap: 8px; width: 129px; padding: 8px;
+  background: #fff; border: 1px solid var(--ak-border-card); border-radius: var(--ak-radius);
+  font-size: 12px; font-weight: 600; color: var(--ak-text); cursor: pointer;
+}
+.ak-count-tile__label { color: var(--ak-text-label); }
+.ak-count-tile--active, .ak-count-tile--active .ak-count-tile__label { border-color: var(--ak-brand); color: var(--ak-brand); }
+
+/* --------------------------------------------------------------------------
+   App shell: Side Nav (70) and top Navigation (54)
+   -------------------------------------------------------------------------- */
+.ak-sidenav { position: fixed; top: 0; left: 0; bottom: 0; z-index: 60; width: var(--ak-sidenav-w); background: var(--ak-nav-bg); display: flex; flex-direction: column; }
+.ak-sidenav__logo { height: 54px; background: var(--ak-nav-logo-bg); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; }
+.ak-sidenav__items { flex: 1; display: flex; flex-direction: column; overflow: auto; }
+.ak-sidenav__item { height: 54px; padding: 8px 0; display: flex; flex-direction: column; align-items: center; gap: 2px; color: #fff; font-size: 10px; text-decoration: none; cursor: pointer; }
+.ak-sidenav__item .ak-icon svg path { fill: currentColor; }
+.ak-sidenav__item--selected { background: #fff; color: var(--ak-brand); }
+.ak-sidenav__foot { display: flex; flex-direction: column; align-items: center; padding-bottom: 16px; }
+.ak-sidenav__help { padding: 6px 0; font-size: 7px; font-weight: 500; line-height: 8px; text-align: center; color: var(--ak-nav-muted); }
+.ak-sidenav__version { padding: 5px 0; font-size: 12px; color: #fff; }
+
+.ak-topnav { height: var(--ak-topnav-h); display: flex; align-items: center; justify-content: space-between; padding: 0 24px 0 16px; border-bottom: 1px solid var(--ak-border-divider); background: #fff; }
+.ak-topnav__context { display: flex; align-items: center; gap: 16px; }
+.ak-topnav__item { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 500; color: var(--ak-brand); }
+.ak-topnav__divider { width: 2px; height: 32px; background: var(--ak-border-divider); }
+.ak-topnav__user { display: flex; align-items: center; gap: 16px; }
+.ak-topnav__who { text-align: right; font-size: 14px; line-height: 17px; }
+.ak-topnav__name { font-weight: 700; }
+.ak-topnav__email { font-weight: 500; }
+
+/* --------------------------------------------------------------------------
+   Popover (e.g. "Bins in this door", product switcher)
+   -------------------------------------------------------------------------- */
+.ak-popover { position: absolute; z-index: 8000; min-width: 240px; background: #fff; border: 1px solid var(--ak-border-table); border-radius: var(--ak-radius-lg); box-shadow: 0 8px 24px rgba(16,24,40,.16); padding: 8px 0; font-size: 14px; }
+.ak-popover__title { padding: 8px 16px; font-weight: 600; }
+.ak-popover__item { padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; cursor: pointer; }
+.ak-popover__item:hover { background: var(--ak-bg-table-header); }
+.ak-popover__item--active { color: var(--ak-brand); font-weight: 600; }
+
+/* ==========================================================================
+   Prototype-only patterns
+   These come from the Transfer prototype and have no AllyGPO library
+   component yet. They use kit tokens, so they sit well with the rest; flag
+   them to design when a screen relies on them.
+   ========================================================================== */
+
+/* Tooltip (dark) */
+.ak-tooltip { position: absolute; z-index: 8100; max-width: 320px; padding: 8px 12px; border-radius: var(--ak-radius); background: var(--ak-tag-pack); color: #f5f5f5; font-size: 14px; line-height: 20px; box-shadow: 0 1px 2px rgba(228,229,231,.24), 0 12px 24px rgba(136,140,152,.12); }
+
+/* Popover title in the "Bins in this door" style */
+.ak-popover__eyebrow { padding: 8px 16px 4px; font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: .4px; text-transform: uppercase; color: var(--ak-text-label); }
+
+/* Selectable product card (virtual flow) */
+.ak-card { border: 2px solid var(--ak-border-card); border-radius: var(--ak-radius); background: #fff; overflow: hidden; }
+.ak-card:hover { border-color: var(--ak-nav-muted); }
+.ak-card__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; background: var(--ak-bg-table-header); }
+.ak-card__body { padding: 12px 16px; }
+.ak-card--selected { border-color: var(--ak-nav-logo-bg); }
+.ak-card--selected .ak-card__head { background: var(--ak-nav-logo-bg); color: #fff; }
+.ak-card--selected .ak-product__name { color: #fff; }
+.ak-card--selected .ak-product__generic { color: #c9d4e2; }
+
+/* Collapsible section header (Available / Previously selected) */
+.ak-collapsible { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--ak-border-tab-idle); font-size: 14px; font-weight: 500; color: var(--ak-text-label); }
+.ak-collapsible__toggle { display: inline-flex; align-items: center; gap: 4px; border: 0; background: none; color: var(--ak-brand); font: inherit; font-weight: 500; cursor: pointer; }
+
+/* Outline tag (expiry date / "in transfer" tags on cards) */
+.ak-tag { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border: 1px solid var(--ak-border-input); border-radius: var(--ak-radius); font-size: 14px; color: var(--ak-text); background: #fff; }
+.ak-tag--brand { border-color: transparent; background: #eef4fa; color: var(--ak-brand); }
+.ak-tag__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ak-danger); }
+
+/* Dashed empty box (empty workspace / nothing scanned yet) */
+.ak-empty-box { display: flex; align-items: center; justify-content: center; min-height: 150px; padding: 24px; border: 1px dashed var(--ak-border-input); border-radius: var(--ak-radius); text-align: center; font-size: 16px; color: var(--ak-text-label); }
+
+/* ==========================================================================
+   Added from the Transfer migration (2026-10-09)
+   ========================================================================== */
+
+/* Div checkbox for custom rows: role="checkbox" aria-checked="true|false|mixed".
+   .is-on / .is-disabled also work when the state comes as a class. */
+.ak-check { position: relative; width: 16px; height: 16px; flex: none; display: inline-grid; place-content: center; vertical-align: middle; border: 1px solid var(--ak-border-input); border-radius: 2px; background: var(--ak-bg); cursor: pointer; }
+.ak-check:hover { border-color: var(--ak-brand); }
+.ak-check[aria-checked="true"], .ak-check[aria-checked="mixed"], .ak-check.is-on { background: var(--ak-brand); border-color: var(--ak-brand); }
+.ak-check[aria-checked="true"]::after { content: ""; width: 9px; height: 5px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
+.ak-check[aria-checked="mixed"]::after { content: ""; width: 8px; height: 2px; background: #fff; }
+.ak-check.is-disabled, .ak-check[aria-disabled="true"] { background: var(--ak-bg-disabled); border-color: var(--ak-border-table); cursor: not-allowed; }
+.ak-check .ak-icon { width: 12px; height: 12px; }
+
+/* Icon-only button: square, same height as an input (48) or a Standard button with --sm (36) */
+.ak-btn.ak-btn--icon { width: 48px; height: 48px; padding: 0; flex: none; }
+.ak-btn.ak-btn--icon.ak-btn--sm { width: 36px; height: 36px; }
+
+/* Disabled-looking but still clickable, so the click can explain why (toast/tooltip).
+   Use with aria-disabled="true"; keep the guard in the handler. */
+.ak-btn.ak-btn--guarded[aria-disabled="true"] { pointer-events: auto; cursor: not-allowed; }
+.ak-btn--danger.ak-btn--tertiary:disabled, .ak-btn--danger.ak-btn--tertiary[aria-disabled="true"] { color: var(--ak-danger-disabled); }
+
+/* Disabled input group: grey glyphs + faded add-on */
+.ak-input--disabled .ak-icon svg path { fill: var(--ak-border-input); }
+.ak-addon:disabled, .ak-addon[aria-disabled="true"] { background: var(--ak-brand-disabled); border-color: transparent; cursor: not-allowed; }
+
+/* Dropdown with a chosen value (e.g. row status): brand border */
+.ak-select--set { border-color: var(--ak-brand); }
+
+/* Link Button disabled (e.g. "Current bin") */
+.ak-link-btn:disabled, .ak-link-btn[aria-disabled="true"] { color: var(--ak-text-placeholder); cursor: default; text-decoration: none; }
+
+/* Sortable header label: <span class="ak-sort ak-sort--on ak-sort--desc">A-Z <span class="ak-th__sort" data-icon="sort-alt"></span></span> */
+.ak-sort { display: inline-flex; align-items: center; gap: 2px; font-size: 12px; font-weight: 600; color: var(--ak-text); cursor: pointer; }
+.ak-sort--on { color: var(--ak-brand); }
+.ak-sort--on .ak-th__sort svg path { fill: var(--ak-brand); }
+.ak-sort--desc .ak-th__sort { transform: scaleY(-1); }
+
+/* Bordered box around a table or section */
+.ak-box { border: 1px solid var(--ak-border-table); border-radius: var(--ak-radius); background: var(--ak-bg); overflow: hidden; }
+
+/* Patient-linked inventory types (Charity Care, Specialty Pharmacy) */
+.ak .ak-patient { color: var(--ak-door-virtual); }
+
+/* Card states: read-only (no hover), current, done */
+.ak-card.ak-card--static:hover { border-color: var(--ak-border-card); }
+.ak-card.is-current, .ak-card.is-current:hover { border-color: var(--ak-brand); background: #eef4fa; }
+.ak-card.is-done { background: var(--ak-bg-table-header); }
+
+/* Icon recolour: follow the text colour (fill and stroke) */
+.ak-icon--current svg path { stroke: currentColor; }
+.ak-icon--current svg path[stroke="none"], .ak-icon--current svg path:not([stroke]) { stroke: none; }
+
+</style>
+<script>
+/* Ally prototype kit: icons + small helpers. Works from file:// (icons are inlined).
+   Icons are the AllyGPO library icons exported from the Transfer Figma file.
+   Usage:
+     <span class="ak-icon" data-icon="search"></span>     -> injects the SVG (also for content added later)
+     AllyKit.icon('times')                                -> SVG string
+     AllyKit.toast({ title: 'ALIMTA 500 MG VIAL ', message: 'product successfully transferred.', type: 'success' })
+   Toast types: success | warning | danger | info. Toasts sit 24px from the top-right and close after 5s. */
+(function () {
+  var ICONS = {
+"check-circle": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M8.75112 12.7121C8.59034 12.6998 8.44077 12.625 8.33446 12.5037L5.83446 10.0037C5.77876 9.8871 5.76058 9.75607 5.78244 9.62869C5.80429 9.5013 5.86511 9.38382 5.9565 9.29243C6.04789 9.20104 6.16536 9.14023 6.29275 9.11838C6.42013 9.09652 6.55116 9.11469 6.66779 9.1704L8.72612 11.2287L15.8345 4.17039C15.9511 4.11469 16.0821 4.09652 16.2095 4.11838C16.3369 4.14023 16.4544 4.20104 16.5458 4.29243C16.6371 4.38383 16.698 4.5013 16.7198 4.62869C16.7417 4.75607 16.7235 4.8871 16.6678 5.00373L9.16779 12.5037C9.06148 12.625 8.91191 12.6998 8.75112 12.7121Z\" fill=\"currentColor\"/><path d=\"M9.99814 17.5007C8.65769 17.4985 7.34232 17.1372 6.18891 16.4542C5.03549 15.7712 4.0862 14.7916 3.4398 13.6173C2.94846 12.7423 2.64478 11.7746 2.54814 10.7757C2.39562 9.31075 2.67781 7.83333 3.35951 6.52774C4.0412 5.22214 5.09223 4.14616 6.38147 3.43402C7.25649 2.94267 8.22427 2.639 9.22314 2.54235C10.2183 2.43531 11.2248 2.5317 12.1815 2.82568C12.2669 2.84274 12.3477 2.87745 12.4189 2.92759C12.4901 2.97773 12.55 3.04219 12.5948 3.11683C12.6397 3.19148 12.6684 3.27467 12.6792 3.36107C12.69 3.44746 12.6826 3.53516 12.6575 3.61855C12.6325 3.70193 12.5903 3.77915 12.5336 3.84526C12.4769 3.91138 12.4071 3.96492 12.3285 4.00247C12.25 4.04002 12.1644 4.06074 12.0774 4.0633C11.9904 4.06586 11.9038 4.05021 11.8231 4.01735C11.0136 3.77395 10.1637 3.69462 9.32314 3.78402C8.4923 3.86909 7.68726 4.12137 6.95647 4.52568C6.25241 4.9141 5.62992 5.43473 5.12314 6.05902C4.60135 6.69498 4.21172 7.42867 3.97704 8.21711C3.74237 9.00555 3.66738 9.8329 3.75647 10.6507C3.84155 11.4815 4.09383 12.2866 4.49814 13.0173C4.88656 13.7214 5.40718 14.3439 6.03147 14.8507C6.66744 15.3725 7.40113 15.7621 8.18957 15.9968C8.97801 16.2314 9.80535 16.3064 10.6231 16.2173C11.454 16.1323 12.259 15.88 12.9898 15.4757C13.6939 15.0873 14.3164 14.5666 14.8231 13.9423C15.3449 13.3064 15.7346 12.5727 15.9692 11.7843C16.2039 10.9958 16.2789 10.1685 16.1898 9.35068C16.1816 9.26478 16.1904 9.17809 16.2157 9.09559C16.241 9.01308 16.2823 8.93636 16.3372 8.86981C16.3922 8.80326 16.4597 8.74819 16.5359 8.70773C16.6121 8.66727 16.6956 8.64222 16.7815 8.63402C16.8674 8.62581 16.9541 8.6346 17.0366 8.65989C17.1191 8.68519 17.1958 8.72648 17.2623 8.78142C17.3289 8.83636 17.384 8.90388 17.4244 8.9801C17.4649 9.05633 17.4899 9.13978 17.4981 9.22568C17.6499 10.6915 17.3664 12.1695 16.6832 13.4752C16 14.7809 14.9473 15.8564 13.6565 16.5673C12.7722 17.0788 11.7894 17.3969 10.7731 17.5007C10.5148 17.5007 10.2481 17.5007 9.99814 17.5007Z\" fill=\"currentColor\"/></svg>",
+"check": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M6.00059 12.169C5.93346 12.1667 5.86748 12.1508 5.80673 12.1221C5.74597 12.0935 5.69171 12.0527 5.64726 12.0023L2.31393 8.66901C2.25037 8.6278 2.19701 8.57269 2.15787 8.50785C2.11873 8.443 2.09483 8.37011 2.08799 8.29467C2.08114 8.21924 2.09152 8.14324 2.11834 8.0724C2.14517 8.00156 2.18773 7.93775 2.24283 7.88577C2.29792 7.8338 2.36411 7.79502 2.43638 7.77236C2.50866 7.7497 2.58514 7.74377 2.66005 7.75499C2.73495 7.76622 2.80633 7.79432 2.86879 7.83717C2.93125 7.88001 2.98316 7.93649 3.02059 8.00234L6.00059 10.9623L12.9806 4.00234C13.0746 3.94141 13.1863 3.9138 13.2978 3.92392C13.4093 3.93405 13.5142 3.98133 13.5957 4.05818C13.6772 4.13503 13.7305 4.23701 13.7471 4.34777C13.7637 4.45852 13.7426 4.57165 13.6873 4.66901L6.35393 12.0023C6.30948 12.0527 6.25522 12.0935 6.19446 12.1221C6.1337 12.1508 6.06773 12.1667 6.00059 12.169Z\" fill=\"white\" stroke=\"white\" stroke-width=\"0.5\"/></svg>",
+"chevron-down": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12.0124 15.1979C11.9138 15.1984 11.8162 15.1792 11.7252 15.1414C11.6342 15.1036 11.5516 15.048 11.4824 14.9779L6.48239 9.97791C6.38266 9.83202 6.33766 9.65559 6.35532 9.47975C6.37297 9.30391 6.45216 9.13996 6.5789 9.0168C6.70564 8.89365 6.8718 8.8192 7.04808 8.8066C7.22435 8.79399 7.39941 8.84404 7.54239 8.94791L12.0124 13.3879L16.4824 8.94791C16.6233 8.85652 16.7909 8.8151 16.9582 8.83029C17.1255 8.84548 17.2829 8.91639 17.4051 9.03167C17.5273 9.14695 17.6072 9.29992 17.6321 9.46606C17.657 9.63219 17.6254 9.80188 17.5424 9.94791L12.5424 14.9479C12.4757 15.0235 12.3943 15.0846 12.3032 15.1276C12.2121 15.1706 12.1131 15.1945 12.0124 15.1979Z\" fill=\"#64748B\"/></svg>",
+"chevron-right": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M9.77278 17.7391C9.67424 17.7396 9.5766 17.7203 9.48558 17.6826C9.39457 17.6448 9.31202 17.5892 9.24278 17.5191C9.10233 17.3785 9.02344 17.1879 9.02344 16.9891C9.02344 16.7904 9.10233 16.5997 9.24278 16.4591L13.7128 11.9891L9.24278 7.5191C9.1103 7.37693 9.03817 7.18888 9.0416 6.99458C9.04503 6.80028 9.12374 6.6149 9.26116 6.47748C9.39857 6.34007 9.58395 6.26136 9.77826 6.25793C9.97256 6.2545 10.1606 6.32662 10.3028 6.4591L15.3028 11.4591C15.4432 11.5997 15.5221 11.7904 15.5221 11.9891C15.5221 12.1879 15.4432 12.3785 15.3028 12.5191L10.3028 17.5191C10.2335 17.5892 10.151 17.6448 10.06 17.6826C9.96896 17.7203 9.87132 17.7396 9.77278 17.7391Z\" fill=\"#095192\"/></svg>",
+"door-physical": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M4 9H20M4 15H20M9.5 6H11.5M9.5 12H11.5M9.5 18H11.5M4 3H20V21H4V3Z\" stroke=\"#5B6B7B\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>",
+"door-virtual": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M15.6 12.5H15.61M5 3H19V21H5V3Z\" stroke=\"#8B3FD9\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>",
+"edit": "<svg width=\"15\" height=\"15\" viewBox=\"0 0 15 15\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2.6444 12.4955C2.41655 12.4953 2.19812 12.4047 2.03711 12.2435C1.94662 12.1572 1.87691 12.0516 1.83324 11.9345C1.78957 11.8173 1.77308 11.6918 1.78502 11.5674L1.96836 9.36742C1.98252 9.16514 2.06775 8.97438 2.20898 8.82888L8.53398 2.50388C8.97035 2.09961 9.54328 1.875 10.1381 1.875C10.733 1.875 11.3059 2.09961 11.7423 2.50388C11.9575 2.72073 12.1271 2.97841 12.2412 3.26177C12.3554 3.54513 12.4117 3.84844 12.4069 4.15388C12.4114 4.43542 12.36 4.71506 12.2558 4.97663C12.1515 5.23821 11.9965 5.47653 11.7996 5.67784L5.47461 12.0028C5.33432 12.1467 5.14753 12.236 4.94752 12.2549L2.7246 12.4612L2.6444 12.4955ZM3.65273 9.8143L3.58398 10.6851L4.47773 10.6049L10.585 4.49763C10.6571 4.41118 10.694 4.30069 10.6881 4.18826C10.6877 4.02874 10.6309 3.87451 10.5277 3.75284C10.4151 3.66913 10.2785 3.62393 10.1381 3.62393C9.99781 3.62393 9.8612 3.66913 9.74856 3.75284L3.65273 9.8143Z\" fill=\"#095192\"/></svg>",
+"exclamation-triangle": "<svg width=\"21\" height=\"21\" viewBox=\"0 0 21 21\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><g clip-path=\"url(#clip0_2803_131145)\"><path d=\"M20.1028 19.7839H0.897256C0.73995 19.7835 0.58544 19.7423 0.448729 19.6645C0.312019 19.5867 0.197755 19.4748 0.117032 19.3398C0.0402961 19.2022 1.52588e-05 19.0473 1.52588e-05 18.8897C1.52588e-05 18.7321 0.0402961 18.5772 0.117032 18.4396L9.71979 1.63473C9.8052 1.50598 9.92114 1.40036 10.0573 1.3273C10.1934 1.25424 10.3455 1.216 10.5 1.216C10.6545 1.216 10.8066 1.25424 10.9428 1.3273C11.0789 1.40036 11.1948 1.50598 11.2802 1.63473L20.883 18.4396C20.9597 18.5772 21 18.7321 21 18.8897C21 19.0473 20.9597 19.2022 20.883 19.3398C20.8023 19.4748 20.688 19.5867 20.5513 19.6645C20.4146 19.7423 20.2601 19.7835 20.1028 19.7839ZM2.4457 17.9834H18.5543L10.5 3.89138L2.4457 17.9834Z\" fill=\"#B87B21\"/><path d=\"M10.5 13.1821C10.2622 13.1789 10.035 13.0831 9.86688 12.9149C9.69872 12.7468 9.60287 12.5196 9.59976 12.2818V8.08059C9.59976 7.84182 9.69461 7.61284 9.86344 7.44401C10.0323 7.27518 10.2613 7.18033 10.5 7.18033C10.7388 7.18033 10.9678 7.27518 11.1366 7.44401C11.3054 7.61284 11.4003 7.84182 11.4003 8.08059V12.2818C11.3972 12.5196 11.3013 12.7468 11.1332 12.9149C10.965 13.0831 10.7378 13.1789 10.5 13.1821V13.1821Z\" fill=\"#B87B21\"/><path d=\"M10.5 16.7831C10.2622 16.78 10.035 16.6841 9.86688 16.516C9.69872 16.3478 9.60287 16.1206 9.59976 15.8828V15.2827C9.59976 15.0439 9.69461 14.8149 9.86344 14.6461C10.0323 14.4772 10.2613 14.3824 10.5 14.3824C10.7388 14.3824 10.9678 14.4772 11.1366 14.6461C11.3054 14.8149 11.4003 15.0439 11.4003 15.2827V15.8828C11.3972 16.1206 11.3013 16.3478 11.1332 16.516C10.965 16.6841 10.7378 16.78 10.5 16.7831V16.7831Z\" fill=\"#B87B21\"/></g><defs><clipPath id=\"clip0_2803_131145\"><rect width=\"21\" height=\"21\" fill=\"white\"/></clipPath></defs></svg>",
+"file-o": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M15.4417 7.5026L10.8333 2.89427C10.7162 2.77703 10.5574 2.71108 10.3917 2.71094H6.66667C6.05888 2.71094 5.47598 2.95238 5.04621 3.38215C4.61644 3.81192 4.375 4.39482 4.375 5.0026V15.0026C4.375 15.6104 4.61644 16.1933 5.04621 16.6231C5.47598 17.0528 6.05888 17.2943 6.66667 17.2943H13.3333C13.9411 17.2943 14.524 17.0528 14.9538 16.6231C15.3836 16.1933 15.625 15.6104 15.625 15.0026V7.91927C15.6184 7.76227 15.553 7.61351 15.4417 7.5026ZM11.0417 4.84427L13.4917 7.29427H11.0417V4.84427ZM13.3333 16.0443H6.66667C6.3904 16.0443 6.12545 15.9345 5.9301 15.7392C5.73475 15.5438 5.625 15.2789 5.625 15.0026V5.0026C5.625 4.72634 5.73475 4.46139 5.9301 4.26603C6.12545 4.07068 6.3904 3.96094 6.66667 3.96094H9.79167V7.91927C9.79382 8.08436 9.86037 8.24208 9.97711 8.35883C10.0939 8.47557 10.2516 8.54211 10.4167 8.54427H14.375V15.0026C14.375 15.2789 14.2653 15.5438 14.0699 15.7392C13.8746 15.9345 13.6096 16.0443 13.3333 16.0443Z\" fill=\"#095192\"/></svg>",
+"info-circle": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M9 12.5625C8.85142 12.5606 8.70947 12.5007 8.6044 12.3956C8.49933 12.2905 8.43944 12.1486 8.4375 12V8.25C8.4375 8.10082 8.49676 7.95774 8.60225 7.85225C8.70774 7.74676 8.85082 7.6875 9 7.6875C9.14918 7.6875 9.29226 7.74676 9.39775 7.85225C9.50324 7.95774 9.5625 8.10082 9.5625 8.25V12C9.56056 12.1486 9.50067 12.2905 9.3956 12.3956C9.29053 12.5007 9.14858 12.5606 9 12.5625Z\" fill=\"#25282A\"/><path d=\"M9 6.9375C8.85142 6.93556 8.70947 6.87567 8.6044 6.7706C8.49933 6.66553 8.43944 6.52358 8.4375 6.375V6C8.4375 5.85082 8.49676 5.70774 8.60225 5.60225C8.70774 5.49676 8.85082 5.4375 9 5.4375C9.14918 5.4375 9.29226 5.49676 9.39775 5.60225C9.50324 5.70774 9.5625 5.85082 9.5625 6V6.375C9.56056 6.52358 9.50067 6.66553 9.3956 6.7706C9.29053 6.87567 9.14858 6.93556 9 6.9375Z\" fill=\"#25282A\"/><path d=\"M9 15.75C7.66498 15.75 6.35994 15.3541 5.2499 14.6124C4.13987 13.8707 3.27471 12.8165 2.76382 11.5831C2.25292 10.3497 2.11925 8.99252 2.3797 7.68314C2.64015 6.37377 3.28303 5.17104 4.22703 4.22703C5.17104 3.28303 6.37377 2.64015 7.68314 2.3797C8.99252 2.11925 10.3497 2.25292 11.5831 2.76382C12.8165 3.27471 13.8707 4.13987 14.6124 5.2499C15.3541 6.35994 15.75 7.66498 15.75 9C15.75 10.7902 15.0388 12.5071 13.773 13.773C12.5071 15.0388 10.7902 15.75 9 15.75ZM9 3.375C7.88748 3.375 6.79995 3.7049 5.87492 4.32299C4.94989 4.94107 4.22892 5.81957 3.80318 6.84741C3.37744 7.87524 3.26604 9.00624 3.48309 10.0974C3.70013 11.1885 4.23586 12.1908 5.02253 12.9775C5.8092 13.7641 6.81148 14.2999 7.90262 14.5169C8.99376 14.734 10.1248 14.6226 11.1526 14.1968C12.1804 13.7711 13.0589 13.0501 13.677 12.1251C14.2951 11.2001 14.625 10.1125 14.625 9C14.625 7.50816 14.0324 6.07742 12.9775 5.02253C11.9226 3.96764 10.4918 3.375 9 3.375Z\" fill=\"#25282A\"/></svg>",
+"map-marker": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M9.99574 17.3439C9.87932 17.3451 9.76559 17.309 9.67111 17.241C9.43357 17.0906 3.85938 13.3454 3.85938 8.79261C3.85938 7.16515 4.50588 5.60434 5.65667 4.45355C6.80747 3.30276 8.36827 2.65625 9.99574 2.65625C11.6232 2.65625 13.184 3.30276 14.3348 4.45355C15.4856 5.60434 16.1321 7.16515 16.1321 8.79261C16.1321 13.3454 10.5896 17.0906 10.3204 17.241C10.2259 17.309 10.1122 17.3451 9.99574 17.3439ZM9.99574 3.88352C8.68883 3.87931 7.43367 4.3939 6.50583 5.31431C5.578 6.23472 5.05334 7.48571 5.04706 8.79261C5.04706 12.126 8.83973 15.1744 9.99574 16.0216C11.1518 15.1744 14.9444 12.126 14.9444 8.79261C14.9381 7.48571 14.4135 6.23472 13.4856 5.31431C12.5578 4.3939 11.3026 3.87931 9.99574 3.88352Z\" fill=\"#095192\"/><path d=\"M9.99773 10.6127C9.56708 10.6127 9.1461 10.4849 8.78802 10.2457C8.42995 10.0064 8.15086 9.66637 7.98606 9.26849C7.82126 8.87062 7.77814 8.43282 7.86215 8.01044C7.94617 7.58806 8.15355 7.20008 8.45806 6.89556C8.76258 6.59105 9.15056 6.38367 9.57294 6.29965C9.99532 6.21564 10.4331 6.25876 10.831 6.42356C11.2289 6.58836 11.5689 6.86745 11.8082 7.22552C12.0474 7.5836 12.1752 8.00458 12.1752 8.43523C12.1752 9.01272 11.9457 9.56656 11.5374 9.9749C11.1291 10.3832 10.5752 10.6127 9.99773 10.6127ZM9.99773 7.4455C9.80198 7.4455 9.61063 7.50354 9.44787 7.6123C9.2851 7.72105 9.15825 7.87563 9.08334 8.05648C9.00843 8.23733 8.98883 8.43633 9.02701 8.62832C9.0652 8.82031 9.15947 8.99666 9.29788 9.13508C9.4363 9.2735 9.61266 9.36776 9.80465 9.40595C9.99664 9.44414 10.1956 9.42454 10.3765 9.34963C10.5573 9.27472 10.7119 9.14786 10.8207 8.9851C10.9294 8.82234 10.9875 8.63098 10.9875 8.43523C10.9875 8.17274 10.8832 7.92099 10.6976 7.73538C10.512 7.54977 10.2602 7.4455 9.99773 7.4455Z\" fill=\"#095192\"/></svg>",
+"minus-circle": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10 17.5C8.51664 17.5 7.0666 17.0601 5.83323 16.236C4.59986 15.4119 3.63856 14.2406 3.07091 12.8701C2.50325 11.4997 2.35472 9.99168 2.64411 8.53683C2.9335 7.08197 3.64781 5.7456 4.6967 4.6967C5.7456 3.64781 7.08197 2.9335 8.53683 2.64411C9.99168 2.35472 11.4997 2.50325 12.8701 3.07091C14.2406 3.63856 15.4119 4.59986 16.236 5.83323C17.0601 7.0666 17.5 8.51664 17.5 10C17.5 11.9891 16.7098 13.8968 15.3033 15.3033C13.8968 16.7098 11.9891 17.5 10 17.5ZM10 3.75C8.76387 3.75 7.5555 4.11656 6.52769 4.80332C5.49988 5.49008 4.6988 6.46619 4.22576 7.60823C3.75271 8.75027 3.62894 10.0069 3.8701 11.2193C4.11125 12.4317 4.70651 13.5453 5.58059 14.4194C6.45466 15.2935 7.56831 15.8888 8.78069 16.1299C9.99307 16.3711 11.2497 16.2473 12.3918 15.7743C13.5338 15.3012 14.5099 14.5001 15.1967 13.4723C15.8834 12.4445 16.25 11.2361 16.25 10C16.25 8.3424 15.5915 6.75269 14.4194 5.58059C13.2473 4.40848 11.6576 3.75 10 3.75Z\" fill=\"#FF3300\"/><path d=\"M13.3307 10.625H6.66406C6.4983 10.625 6.33933 10.5592 6.22212 10.4419C6.10491 10.3247 6.03906 10.1658 6.03906 10C6.03906 9.83424 6.10491 9.67527 6.22212 9.55806C6.33933 9.44085 6.4983 9.375 6.66406 9.375H13.3307C13.4965 9.375 13.6555 9.44085 13.7727 9.55806C13.8899 9.67527 13.9557 9.83424 13.9557 10C13.9557 10.1658 13.8899 10.3247 13.7727 10.4419C13.6555 10.5592 13.4965 10.625 13.3307 10.625Z\" fill=\"#FF3300\"/></svg>",
+"plus": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10.6224 9.3724V4.16406C10.6224 3.9983 10.5565 3.83933 10.4393 3.72212C10.3221 3.60491 10.1632 3.53906 9.9974 3.53906C9.83164 3.53906 9.67267 3.60491 9.55545 3.72212C9.43824 3.83933 9.3724 3.9983 9.3724 4.16406V9.3724H4.16406C3.9983 9.3724 3.83933 9.43824 3.72212 9.55545C3.60491 9.67267 3.53906 9.83164 3.53906 9.9974C3.53906 10.1632 3.60491 10.3221 3.72212 10.4393C3.83933 10.5565 3.9983 10.6224 4.16406 10.6224H9.3724V15.8307C9.37455 15.9958 9.4411 16.1535 9.55784 16.2703C9.67459 16.387 9.83231 16.4536 9.9974 16.4557C10.1632 16.4557 10.3221 16.3899 10.4393 16.2727C10.5565 16.1555 10.6224 15.9965 10.6224 15.8307V10.6224H15.8307C15.9965 10.6224 16.1555 10.5565 16.2727 10.4393C16.3899 10.3221 16.4557 10.1632 16.4557 9.9974C16.4536 9.83231 16.387 9.67459 16.2703 9.55784C16.1535 9.4411 15.9958 9.37455 15.8307 9.3724H10.6224Z\" fill=\"white\"/></svg>",
+"qrcode": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12.3828 3.88281V10.8828H19.3828V3.88281H12.3828ZM17.8828 9.38281H13.8828V5.38281H17.8828V9.38281Z\" fill=\"#64748B\"/><path d=\"M3.88281 10.8828H10.8828V3.88281H3.88281V10.8828ZM5.38281 5.38281H9.38281V9.38281H5.38281V5.38281Z\" fill=\"#64748B\"/><path d=\"M3.88281 19.3828H10.8828V12.3828H3.88281V19.3828ZM5.38281 13.8828H9.38281V17.8828H5.38281V13.8828Z\" fill=\"#64748B\"/><path d=\"M14.1328 12.3828H12.3828V14.1328H14.1328V12.3828Z\" fill=\"#64748B\"/><path d=\"M17.6328 12.3828H15.8828V14.1328H17.6328V12.3828Z\" fill=\"#64748B\"/><path d=\"M15.8828 14.1328H14.1328V15.8828H15.8828V14.1328Z\" fill=\"#64748B\"/><path d=\"M19.3828 14.1328H17.6328V15.8828H19.3828V14.1328Z\" fill=\"#64748B\"/><path d=\"M14.1328 15.8828H12.3828V17.6328H14.1328V15.8828Z\" fill=\"#64748B\"/><path d=\"M17.6328 15.8828H15.8828V17.6328H17.6328V15.8828Z\" fill=\"#64748B\"/><path d=\"M15.8828 17.6328H14.1328V19.3828H15.8828V17.6328Z\" fill=\"#64748B\"/><path d=\"M19.3828 17.6328H17.6328V19.3828H19.3828V17.6328Z\" fill=\"#64748B\"/></svg>",
+"search": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M8.97813 15.2531C7.73705 15.2531 6.52384 14.8851 5.49192 14.1956C4.46001 13.5061 3.65572 12.5261 3.18078 11.3795C2.70584 10.2329 2.58158 8.97117 2.8237 7.75394C3.06582 6.53671 3.66346 5.41861 4.54103 4.54103C5.41861 3.66346 6.53671 3.06582 7.75394 2.8237C8.97117 2.58158 10.2329 2.70584 11.3795 3.18078C12.5261 3.65572 13.5061 4.46001 14.1956 5.49192C14.8851 6.52384 15.2531 7.73705 15.2531 8.97813C15.2531 9.80217 15.0908 10.6181 14.7755 11.3795C14.4601 12.1408 13.9979 12.8325 13.4152 13.4152C12.8325 13.9979 12.1408 14.4601 11.3795 14.7755C10.6181 15.0908 9.80217 15.2531 8.97813 15.2531ZM8.97813 3.96146C7.98922 3.96146 7.02252 4.25471 6.20028 4.80411C5.37803 5.35352 4.73717 6.13441 4.35873 7.04804C3.98029 7.96167 3.88128 8.96701 4.0742 9.93691C4.26713 10.9068 4.74333 11.7977 5.44259 12.497C6.14186 13.1963 7.03277 13.6725 8.00268 13.8654C8.97258 14.0583 9.97791 13.9593 10.8915 13.5809C11.8052 13.2024 12.5861 12.5616 13.1355 11.7393C13.6849 10.9171 13.9781 9.95037 13.9781 8.96146C13.9781 7.63538 13.4513 6.36361 12.5137 5.42593C11.576 4.48825 10.3042 3.96146 8.97813 3.96146Z\" fill=\"white\"/><path d=\"M16.6683 17.2933C16.5861 17.2937 16.5048 17.2776 16.4289 17.2462C16.3531 17.2147 16.2843 17.1684 16.2266 17.1099L12.7849 13.6683C12.6745 13.5498 12.6144 13.3931 12.6173 13.2312C12.6201 13.0692 12.6857 12.9148 12.8002 12.8002C12.9148 12.6857 13.0692 12.6201 13.2312 12.6173C13.3931 12.6144 13.5498 12.6745 13.6683 12.7849L17.1099 16.2266C17.227 16.3438 17.2927 16.5026 17.2927 16.6683C17.2927 16.8339 17.227 16.9927 17.1099 17.1099C17.0522 17.1684 16.9834 17.2147 16.9076 17.2462C16.8317 17.2776 16.7504 17.2937 16.6683 17.2933Z\" fill=\"white\"/></svg>",
+"sign-out": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M9 20.7524H6C5.65324 20.7671 5.30697 20.7134 4.98101 20.5942C4.65505 20.4749 4.3558 20.2926 4.10038 20.0576C3.84495 19.8226 3.63837 19.5396 3.49246 19.2247C3.34654 18.9098 3.26415 18.5692 3.25 18.2224V5.78239C3.26415 5.4356 3.34654 5.095 3.49246 4.78009C3.63837 4.46518 3.84495 4.18213 4.10038 3.94714C4.3558 3.71215 4.65505 3.52983 4.98101 3.41062C5.30697 3.29141 5.65324 3.23764 6 3.25239H9C9.19891 3.25239 9.38968 3.3314 9.53033 3.47206C9.67098 3.61271 9.75 3.80347 9.75 4.00239C9.75 4.2013 9.67098 4.39206 9.53033 4.53272C9.38968 4.67337 9.19891 4.75239 9 4.75239H6C5.70307 4.72657 5.4076 4.81603 5.17487 5.00222C4.94213 5.18841 4.78999 5.45703 4.75 5.75239V18.2224C4.78999 18.5177 4.94213 18.7864 5.17487 18.9726C5.4076 19.1587 5.70307 19.2482 6 19.2224H9C9.19891 19.2224 9.38968 19.3014 9.53033 19.4421C9.67098 19.5827 9.75 19.7735 9.75 19.9724C9.75 20.1713 9.67098 20.3621 9.53033 20.5027C9.38968 20.6434 9.19891 20.7224 9 20.7224V20.7524Z\" fill=\"#095192\"/><path d=\"M16.0031 16.7531C15.9045 16.7535 15.8069 16.7343 15.7159 16.6965C15.6249 16.6588 15.5423 16.6032 15.4731 16.5331C15.3326 16.3925 15.2537 16.2018 15.2537 16.0031C15.2537 15.8043 15.3326 15.6137 15.4731 15.4731L18.9431 12.0031L15.4731 8.53308C15.3994 8.46442 15.3403 8.38162 15.2993 8.28962C15.2583 8.19762 15.2363 8.09831 15.2345 7.99761C15.2327 7.8969 15.2512 7.79687 15.289 7.70349C15.3267 7.6101 15.3828 7.52526 15.454 7.45404C15.5253 7.38283 15.6101 7.32668 15.7035 7.28896C15.7969 7.25124 15.8969 7.23271 15.9976 7.23449C16.0983 7.23627 16.1976 7.25831 16.2896 7.2993C16.3816 7.34029 16.4644 7.3994 16.5331 7.47308L20.5331 11.4731C20.6735 11.6137 20.7524 11.8043 20.7524 12.0031C20.7524 12.2018 20.6735 12.3925 20.5331 12.5331L16.5331 16.5331C16.4638 16.6032 16.3813 16.6588 16.2903 16.6965C16.1993 16.7343 16.1016 16.7535 16.0031 16.7531Z\" fill=\"#095192\"/><path d=\"M20 12.75H9C8.80109 12.75 8.61032 12.671 8.46967 12.5303C8.32902 12.3897 8.25 12.1989 8.25 12C8.25 11.8011 8.32902 11.6103 8.46967 11.4697C8.61032 11.329 8.80109 11.25 9 11.25H20C20.1989 11.25 20.3897 11.329 20.5303 11.4697C20.671 11.6103 20.75 11.8011 20.75 12C20.75 12.1989 20.671 12.3897 20.5303 12.5303C20.3897 12.671 20.1989 12.75 20 12.75Z\" fill=\"#095192\"/></svg>",
+"sort-alt": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M8.75148 6.87028C8.5907 6.85799 8.44112 6.7832 8.33481 6.66195L6.66815 4.99528L5.00148 6.66195C4.95839 6.75218 4.89428 6.83075 4.81453 6.89106C4.73479 6.95138 4.64174 6.99169 4.54319 7.0086C4.44464 7.0255 4.34347 7.01852 4.24818 6.98824C4.15289 6.95795 4.06626 6.90524 3.99556 6.83454C3.92486 6.76384 3.87215 6.6772 3.84186 6.58191C3.81158 6.48662 3.80459 6.38546 3.8215 6.28691C3.83841 6.18836 3.87871 6.09531 3.93903 6.01556C3.99935 5.93582 4.07792 5.87171 4.16815 5.82862L6.25148 3.74528C6.36867 3.62824 6.52752 3.5625 6.69315 3.5625C6.85877 3.5625 7.01763 3.62824 7.13481 3.74528L9.16815 5.82862C9.27064 5.9432 9.3273 6.09155 9.3273 6.24528C9.3273 6.39902 9.27064 6.54736 9.16815 6.66195C9.06184 6.7832 8.91227 6.85799 8.75148 6.87028Z\" fill=\"#818EA1\"/><path d=\"M6.67188 16.4557C6.50679 16.4536 6.34907 16.387 6.23232 16.2703C6.11557 16.1535 6.04903 15.9958 6.04688 15.8307V4.16406C6.04688 3.9983 6.11272 3.83933 6.22993 3.72212C6.34714 3.60491 6.50611 3.53906 6.67188 3.53906C6.83764 3.53906 6.99661 3.60491 7.11382 3.72212C7.23103 3.83933 7.29688 3.9983 7.29688 4.16406V15.8307C7.29472 15.9958 7.22818 16.1535 7.11143 16.2703C6.99468 16.387 6.83696 16.4536 6.67188 16.4557Z\" fill=\"#818EA1\"/><path d=\"M13.3322 16.4572C13.2501 16.4576 13.1687 16.4416 13.0929 16.4101C13.017 16.3786 12.9482 16.3323 12.8905 16.2739L10.8322 14.1655C10.742 14.1225 10.6634 14.0583 10.6031 13.9786C10.5428 13.8989 10.5025 13.8058 10.4856 13.7073C10.4687 13.6087 10.4756 13.5075 10.5059 13.4122C10.5362 13.317 10.5889 13.2303 10.6596 13.1596C10.7303 13.0889 10.817 13.0362 10.9122 13.0059C11.0075 12.9756 11.1087 12.9687 11.2073 12.9856C11.3058 13.0025 11.3989 13.0428 11.4786 13.1031C11.5583 13.1634 11.6225 13.242 11.6655 13.3322L13.3322 14.9989L14.9989 13.3322C15.042 13.242 15.1061 13.1634 15.1858 13.1031C15.2656 13.0428 15.3586 13.0025 15.4572 12.9856C15.5557 12.9687 15.6569 12.9756 15.7522 13.0059C15.8475 13.0362 15.9341 13.0889 16.0048 13.1596C16.0755 13.2303 16.1282 13.317 16.1585 13.4122C16.1888 13.5075 16.1958 13.6087 16.1789 13.7073C16.1619 13.8058 16.1216 13.8989 16.0613 13.9786C16.001 14.0583 15.9224 14.1225 15.8322 14.1655L13.7489 16.2489C13.6426 16.3701 13.493 16.4449 13.3322 16.4572Z\" fill=\"#818EA1\"/><path d=\"M13.3359 16.4557C13.1708 16.4536 13.0131 16.387 12.8964 16.2703C12.7796 16.1535 12.7131 15.9958 12.7109 15.8307V4.16406C12.7109 3.9983 12.7768 3.83933 12.894 3.72212C13.0112 3.60491 13.1702 3.53906 13.3359 3.53906C13.5017 3.53906 13.6607 3.60491 13.7779 3.72212C13.8951 3.83933 13.9609 3.9983 13.9609 4.16406V15.8307C13.9588 15.9958 13.8922 16.1535 13.7755 16.2703C13.6587 16.387 13.501 16.4536 13.3359 16.4557Z\" fill=\"#818EA1\"/></svg>",
+"station": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M18 2.5C19.1046 2.5 20 3.39543 20 4.5V10.4336C19.9999 11.538 19.1045 12.4336 18 12.4336H6C4.89552 12.4336 4.00014 11.538 4 10.4336V4.5C4 3.39543 4.89543 2.5 6 2.5H18ZM6.59961 4.09961C6.04756 4.09982 5.5997 4.54753 5.59961 5.09961V9.83301C5.59961 10.3852 6.0475 10.8328 6.59961 10.833H17.4004C17.9525 10.8328 18.4004 10.3852 18.4004 9.83301V5.09961C18.4003 4.54753 17.9524 4.09982 17.4004 4.09961H6.59961Z\" fill=\"#095192\"/><path d=\"M19.3135 19.5027C19.6928 19.5031 20 19.9504 20 20.5027C19.9998 21.0548 19.6927 21.5023 19.3135 21.5027H4.68652C4.30727 21.5023 4.00017 21.0548 4 20.5027C4 19.9504 4.30717 19.5031 4.68652 19.5027H19.3135ZM19.3135 16.5027C19.6928 16.5031 20 16.9504 20 17.5027C19.9998 18.0548 19.6927 18.5023 19.3135 18.5027H4.68652C4.30727 18.5023 4.00017 18.0548 4 17.5027C4 16.9504 4.30717 16.5031 4.68652 16.5027H19.3135ZM4 11.0867C4.00005 10.0174 5.51482 9.80555 5.80859 10.8338C5.92176 11.2294 6.28378 11.5026 6.69531 11.5027H9C9.55228 11.5027 10 11.9504 10 12.5027V14.5027C9.99975 15.0548 9.55213 15.5027 9 15.5027H5C4.44787 15.5027 4.00025 15.0548 4 14.5027V11.0867ZM19.3135 13.5027C19.6928 13.5031 20 13.9504 20 14.5027C19.9998 15.0548 19.6927 15.5023 19.3135 15.5027H11.6865C11.3073 15.5023 11.0002 15.0548 11 14.5027C11 13.9504 11.3072 13.5031 11.6865 13.5027H19.3135Z\" fill=\"#095192\"/></svg>",
+"times-circle": "<svg width=\"21\" height=\"21\" viewBox=\"0 0 21 21\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><g clip-path=\"url(#clip0_2803_131159)\"><path d=\"M10.5 21C8.4233 21 6.39323 20.3842 4.66652 19.2304C2.9398 18.0767 1.59399 16.4368 0.799269 14.5182C0.00454943 12.5996 -0.203385 10.4884 0.201759 8.45155C0.606904 6.41475 1.60693 4.54383 3.07538 3.07538C4.54383 1.60693 6.41475 0.606904 8.45155 0.201759C10.4884 -0.203385 12.5996 0.00454943 14.5182 0.799269C16.4368 1.59399 18.0767 2.9398 19.2304 4.66652C20.3842 6.39323 21 8.4233 21 10.5C21 13.2848 19.8938 15.9555 17.9246 17.9246C15.9555 19.8938 13.2848 21 10.5 21V21ZM10.5 1.75C8.76942 1.75 7.07769 2.26318 5.63876 3.22464C4.19983 4.18611 3.07832 5.55267 2.41606 7.15152C1.75379 8.75038 1.58051 10.5097 1.91813 12.207C2.25575 13.9044 3.08911 15.4635 4.31282 16.6872C5.53653 17.9109 7.09563 18.7443 8.79296 19.0819C10.4903 19.4195 12.2496 19.2462 13.8485 18.5839C15.4473 17.9217 16.8139 16.8002 17.7754 15.3612C18.7368 13.9223 19.25 12.2306 19.25 10.5C19.25 8.17936 18.3281 5.95376 16.6872 4.31282C15.0462 2.67188 12.8206 1.75 10.5 1.75Z\" fill=\"#D9342B\"/><path d=\"M6.99993 14.875C6.88497 14.8756 6.77105 14.8531 6.66487 14.8091C6.55869 14.765 6.46238 14.7002 6.3816 14.6184C6.21774 14.4543 6.1257 14.2319 6.1257 14C6.1257 13.7681 6.21774 13.5458 6.3816 13.3817L13.3816 6.38169C13.5475 6.22713 13.7669 6.14299 13.9935 6.14699C14.2202 6.15099 14.4365 6.24282 14.5968 6.40313C14.7571 6.56345 14.849 6.77973 14.853 7.00642C14.857 7.2331 14.7728 7.45249 14.6183 7.61836L7.61826 14.6184C7.53748 14.7002 7.44117 14.765 7.33499 14.8091C7.22881 14.8531 7.1149 14.8756 6.99993 14.875Z\" fill=\"#D9342B\"/><path d=\"M14 14.875C13.885 14.8756 13.7711 14.8531 13.6649 14.8091C13.5587 14.765 13.4624 14.7002 13.3816 14.6184L6.38163 7.61836C6.22707 7.45249 6.14293 7.2331 6.14693 7.00642C6.15093 6.77973 6.24276 6.56345 6.40307 6.40313C6.56339 6.24282 6.77967 6.15099 7.00635 6.14699C7.23304 6.14299 7.45243 6.22713 7.6183 6.38169L14.6183 13.3817C14.7822 13.5458 14.8742 13.7681 14.8742 14C14.8742 14.2319 14.7822 14.4543 14.6183 14.6184C14.5375 14.7002 14.4412 14.765 14.335 14.8091C14.2288 14.8531 14.1149 14.8756 14 14.875V14.875Z\" fill=\"#D9342B\"/></g><defs><clipPath id=\"clip0_2803_131159\"><rect width=\"21\" height=\"21\" fill=\"white\"/></clipPath></defs></svg>",
+"times": "<svg width=\"28\" height=\"28\" viewBox=\"0 0 28 28\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M15.2375 14L20.3941 8.84328C20.4801 8.76318 20.549 8.66658 20.5969 8.55925C20.6447 8.45191 20.6704 8.33605 20.6725 8.21856C20.6746 8.10107 20.6529 7.98437 20.6089 7.87542C20.5649 7.76647 20.4994 7.6675 20.4163 7.58441C20.3332 7.50132 20.2343 7.43582 20.1253 7.39181C20.0164 7.3478 19.8997 7.32619 19.7822 7.32826C19.6647 7.33033 19.5488 7.35605 19.4415 7.40387C19.3342 7.4517 19.2376 7.52065 19.1575 7.60662L14.0008 12.7633L8.84413 7.60662C8.67825 7.45206 8.45887 7.36791 8.23218 7.37191C8.0055 7.37591 7.78922 7.46774 7.6289 7.62806C7.46859 7.78837 7.37675 8.00466 7.37275 8.23134C7.36875 8.45803 7.4529 8.67741 7.60746 8.84328L12.7641 14L7.60746 19.1566C7.4436 19.3207 7.35156 19.5431 7.35156 19.775C7.35156 20.0068 7.4436 20.2292 7.60746 20.3933C7.77152 20.5571 7.99392 20.6492 8.22579 20.6492C8.45767 20.6492 8.68006 20.5571 8.84413 20.3933L14.0008 15.2366L19.1575 20.3933C19.3215 20.5571 19.5439 20.6492 19.7758 20.6492C20.0077 20.6492 20.2301 20.5571 20.3941 20.3933C20.558 20.2292 20.65 20.0068 20.65 19.775C20.65 19.5431 20.558 19.3207 20.3941 19.1566L15.2375 14Z\" fill=\"#64748B\"/></svg>",
+"undo": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10.0026 17.2943C8.40093 17.2921 6.86549 16.6548 5.73294 15.5223C4.60038 14.3897 3.96314 12.8543 3.96094 11.2526C3.96094 11.0868 4.02679 10.9279 4.144 10.8107C4.26121 10.6935 4.42018 10.6276 4.58594 10.6276C4.7517 10.6276 4.91067 10.6935 5.02788 10.8107C5.14509 10.9279 5.21094 11.0868 5.21094 11.2526C5.21094 12.2003 5.49196 13.1267 6.01848 13.9147C6.54499 14.7027 7.29335 15.3169 8.16891 15.6795C9.04448 16.0422 10.0079 16.1371 10.9374 15.9522C11.8669 15.7673 12.7207 15.311 13.3908 14.6408C14.061 13.9707 14.5173 13.1169 14.7022 12.1874C14.8871 11.2579 14.7922 10.2945 14.4295 9.41891C14.0669 8.54335 13.4527 7.79499 12.6647 7.26848C11.8767 6.74196 10.9503 6.46094 10.0026 6.46094H7.91927C7.75351 6.46094 7.59454 6.39509 7.47733 6.27788C7.36012 6.16067 7.29427 6.0017 7.29427 5.83594C7.29427 5.67018 7.36012 5.51121 7.47733 5.394C7.59454 5.27679 7.75351 5.21094 7.91927 5.21094H10.0026C11.605 5.21094 13.1417 5.84747 14.2747 6.9805C15.4077 8.11353 16.0443 9.65025 16.0443 11.2526C16.0443 12.855 15.4077 14.3917 14.2747 15.5247C13.1417 16.6577 11.605 17.2943 10.0026 17.2943Z\" fill=\"#095192\"/><path d=\"M9.99945 8.9609C9.91733 8.96129 9.83597 8.94527 9.76012 8.91379C9.68428 8.88231 9.61549 8.836 9.55778 8.77757L7.05778 6.27757C6.94074 6.16038 6.875 6.00153 6.875 5.8359C6.875 5.67028 6.94074 5.51142 7.05778 5.39424L9.55778 2.89424C9.615 2.83283 9.684 2.78358 9.76067 2.74942C9.83733 2.71526 9.9201 2.69689 10.004 2.69541C10.0879 2.69393 10.1713 2.70937 10.2491 2.7408C10.3269 2.77223 10.3976 2.81902 10.457 2.87837C10.5163 2.93772 10.5631 3.00841 10.5946 3.08624C10.626 3.16406 10.6414 3.24742 10.6399 3.33134C10.6385 3.41526 10.6201 3.49802 10.5859 3.57468C10.5518 3.65135 10.5025 3.72035 10.4411 3.77757L8.38278 5.8359L10.4411 7.89424C10.5582 8.01142 10.6239 8.17028 10.6239 8.3359C10.6239 8.50153 10.5582 8.66038 10.4411 8.77757C10.3834 8.836 10.3146 8.88231 10.2388 8.91379C10.1629 8.94527 10.0816 8.96129 9.99945 8.9609Z\" fill=\"#095192\"/></svg>"
+};
+  var TOAST_ICON = { success: 'check-circle', warning: 'exclamation-triangle', danger: 'times-circle', info: 'info-circle' };
+
+  function fill(root) {
+    var nodes = (root.querySelectorAll ? root : document).querySelectorAll('[data-icon]');
+    for (var i = 0; i < nodes.length; i++) {
+      var el = nodes[i], name = el.getAttribute('data-icon');
+      if (el.getAttribute('data-icon-done') === name || !ICONS[name]) continue;
+      el.innerHTML = ICONS[name];
+      el.setAttribute('data-icon-done', name);
+      if (!el.classList.contains('ak-icon')) el.classList.add('ak-icon');
+    }
+  }
+
+  function toast(opts) {
+    opts = opts || {};
+    var type = opts.type || 'success';
+    var region = document.querySelector('.ak-toast-region');
+    if (!region) { region = document.createElement('div'); region.className = 'ak-toast-region ak'; document.body.appendChild(region); }
+    var el = document.createElement('div');
+    el.className = 'ak-alert ak-alert--' + type;
+    el.setAttribute('role', 'status');
+    el.innerHTML = '<span class="ak-alert__icon">' + (ICONS[TOAST_ICON[type]] || '') + '</span>' +
+      '<div class="ak-alert__text"><span class="ak-alert__title"></span><span class="ak-alert__msg"></span></div>' +
+      '<button type="button" class="ak-alert__close" aria-label="Dismiss">' + ICONS.times + '</button>';
+    el.querySelector('.ak-alert__title').textContent = opts.title || '';
+    el.querySelector('.ak-alert__msg').textContent = opts.message || '';
+    el.querySelector('.ak-alert__close').onclick = function () { el.remove(); };
+    region.appendChild(el);
+    if (opts.duration !== 0) setTimeout(function () { el.remove(); }, opts.duration || 5000);
+    return el;
+  }
+
+  window.AllyKit = { icons: ICONS, icon: function (n) { return ICONS[n] || ''; }, fill: fill, toast: toast };
+
+  function start() {
+    fill(document);
+    new MutationObserver(function (muts) {
+      for (var i = 0; i < muts.length; i++) {
+        var m = muts[i];
+        if (m.type === 'attributes') { fill(m.target.parentNode || document); continue; }
+        for (var j = 0; j < m.addedNodes.length; j++) {
+          var n = m.addedNodes[j];
+          if (n.nodeType !== 1) continue;
+          if (n.hasAttribute('data-icon')) fill(n.parentNode); else fill(n);
+        }
+      }
+    }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-icon'] });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+</script>
+<style>
+  body { margin: 0; background: #f3f5f7; }
+  .g-wrap { max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px; }
+  .g-intro h1 { margin: 0 0 8px; font-size: 35px; font-weight: 600; }
+  .g-intro p { margin: 0 0 8px; font-size: 16px; line-height: 24px; color: var(--ak-text-label); max-width: 820px; }
+  .g-toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 32px; }
+  .g-toc a { padding: 6px 10px; border-radius: 4px; background: #fff; border: 1px solid var(--ak-border-table); font-size: 13px; color: var(--ak-brand); text-decoration: none; }
+  .g-sec { background: #fff; border: 1px solid var(--ak-border-table); border-radius: 6px; margin-bottom: 24px; overflow: hidden; }
+  .g-sec__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; padding: 16px 24px; border-bottom: 1px solid var(--ak-border-table); }
+  .g-sec__head h2 { margin: 0; font-size: 21px; font-weight: 600; }
+  .g-figma { font-size: 12px; color: var(--ak-text-label); }
+  .g-figma code { font-size: 11px; background: #f3f5f7; padding: 1px 4px; border-radius: 3px; }
+  .g-demo { padding: 24px; display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; position: relative; }
+  .g-demo--col { flex-direction: column; align-items: stretch; }
+  .g-label { font-size: 12px; color: var(--ak-text-label); margin-bottom: 6px; }
+  .g-diff { margin: 0; padding: 12px 24px 16px 44px; background: #fbfaf5; border-top: 1px solid #eee7cf; font-size: 13px; line-height: 20px; color: #5a4a12; }
+  .g-diff li + li { margin-top: 4px; }
+  .g-diff-title { display: block; margin-left: -20px; margin-bottom: 4px; font-weight: 600; }
+  details.g-code { border-top: 1px solid var(--ak-border-table); }
+  details.g-code summary { padding: 10px 24px; font-size: 13px; color: var(--ak-brand); cursor: pointer; }
+  details.g-code pre { margin: 0; padding: 16px 24px; background: #0e243f; color: #e9eef4; font-size: 12px; line-height: 18px; overflow: auto; }
+  .g-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; width: 100%; }
+  .g-sw { border: 1px solid var(--ak-border-table); border-radius: 4px; overflow: hidden; font-size: 12px; }
+  .g-sw i { display: block; height: 44px; }
+  .g-sw span { display: block; padding: 6px 8px; }
+  .g-sw b { display: block; font-weight: 600; }
+  .g-type div { padding: 4px 0; }
+  .g-frame { position: relative; width: 100%; height: 560px; overflow: hidden; border: 1px solid var(--ak-border-table); border-radius: 4px; transform: translateZ(0); background: #fff; }
+  .g-frame .ak-sidenav, .g-frame .ak-bottom-bar, .g-frame .ak-panel, .g-frame .ak-overlay { position: absolute; }
+  .g-frame .ak-page { min-height: 100%; }
+  @media (max-width: 700px) { .g-frame { height: auto; } }
+</style>
+</head>
+<body class="ak">
+<div class="g-wrap">
+
+<div class="g-intro">
+  <h1>Ally Prototype Kit</h1>
+  <p>These HTML/CSS components are built from the AllyGPO Design System library components used in the Transfer Figma file. Sizes, colours and text styles come from Figma, and the class names follow the Figma component names.</p>
+  <p>The yellow notes under each component list where the Transfer prototype differed from Figma. The kit follows Figma in every case. Open "HTML" to copy a snippet.</p>
+</div>
+<nav class="g-toc" id="toc"></nav>
+
+<!-- ============================== FOUNDATIONS ============================== -->
+<section class="g-sec" id="tokens" data-title="Colours">
+  <div class="g-sec__head"><h2>Colours</h2><span class="g-figma">Figma variables · <code>--ak-*</code> custom properties</span></div>
+  <div class="g-demo"><div class="g-swatches" id="swatches"></div></div>
+  <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
+    <li>The prototype's body text was <code>#21252b</code>. The kit uses <code>#25282a</code>, Figma's text/default.</li>
+    <li>The prototype used near-duplicate greys: <code>#e9ecf1</code>, <code>#eef1f5</code> and <code>#e3e7ed</code> for borders, and <code>#6b7480</code> and <code>#6b7280</code> for labels. The kit uses <code>#dadee3</code> for table borders, <code>#e0e0e0</code> for dividers and <code>#64748b</code> for labels.</li>
+    <li>Primary hover was <code>#073f73</code> in the prototype. Figma uses <code>#173a63</code> for hover and <code>#122e50</code> for pressed.</li>
+    <li>The modal overlay was <code>rgba(14,36,63,.45)</code>. Figma uses <code>rgba(26,31,38,.40)</code>.</li>
+  </ul>
+</section>
+
+<section class="g-sec" id="type" data-title="Type">
+  <div class="g-sec__head"><h2>Text styles</h2><span class="g-figma">AllyGPO DS text styles · Inter</span></div>
+  <div class="g-demo g-demo--col g-type">
+    <div class="ak-h1 ak-medium">H1 · 35 Medium</div>
+    <div class="ak-h2 ak-regular">H2 · 28 Regular (counters)</div>
+    <div class="ak-h3 ak-regular">H3 · 24 Regular (page title) / <span class="ak-medium">Medium (panel title)</span></div>
+    <div class="ak-h4 ak-medium">H4 · 21 Medium</div>
+    <div class="ak-h5 ak-bold">H5 · 18 Bold (modal title) / <span class="ak-semibold">Semi Bold (bar values)</span></div>
+    <div class="ak-body ak-medium">Body · 16 Medium (subtitle, labels) / <span class="ak-regular">Regular (inputs, info bar)</span> / <span class="ak-semibold">Semi Bold (values)</span></div>
+    <div class="ak-small">Small · 14 Regular (table cells, 20px line) / <span class="ak-medium">Medium (headers)</span> / <span class="ak-bold">Bold (toast title)</span> / <span class="ak-italic ak-muted">Regular Italic (secondary)</span></div>
+    <div class="ak-xs ak-semibold">XS · 12 Semi Bold (tile labels) / <span class="ak-medium">Medium (badges)</span></div>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
+    <li>The prototype pages used the system font stack. The kit loads <b>Inter</b>, the font of the design system.</li>
+    <li>The prototype used several sizes the design system doesn't have: 13, 15, 20, 22 and 32px. Map them to the nearest style: 13 → Small 14, 15 → Body 16, 20/22 → H3 24, 32 → H2 28.</li>
+  </ul>
+</section>
+
+<!-- ============================== ACTIONS ============================== -->
+<section class="g-sec" id="button" data-title="Button">
+  <div class="g-sec__head"><h2>Button · Standard (36)</h2><span class="g-figma">Figma <b>Button</b> · set <code>cbcfe08a…</code> · Type × State × Severity</span></div>
+  <div class="g-demo">
+    <button class="ak-btn ak-btn--primary">Primary</button>
+    <button class="ak-btn ak-btn--secondary">Secondary</button>
+    <button class="ak-btn ak-btn--tertiary">Tertiary</button>
+    <button class="ak-btn ak-btn--primary"><span class="ak-icon" data-icon="plus"></span>New transfer</button>
+    <button class="ak-btn ak-btn--primary" disabled>Disabled</button>
+    <button class="ak-btn ak-btn--secondary" disabled>Disabled</button>
+    <button class="ak-btn ak-btn--primary ak-btn--danger">Delete</button>
+    <button class="ak-btn ak-btn--secondary ak-btn--danger">Remove</button>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
+    <li>Prototype buttons were 40px tall with 0 20px padding, 14px Medium and 0.3px letter-spacing. Figma's Standard button is <b>36px</b>, padding 8/12, 14px <b>Semi Bold</b>, with no letter-spacing.</li>
+    <li>The prototype's disabled buttons were grey (<code>#f3f5f7</code> background, <code>#bcc3cd</code> text). Figma's disabled buttons are brand blue at 60% opacity.</li>
+    <li>The prototype set uppercase in CSS. Figma has no transform; the Transfer screens type labels in capitals ("RESET", "SEARCH"). Write the label the way it should read.</li>
+  </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<section class="g-sec" id="button-lg" data-title="Large button">
+  <div class="g-sec__head"><h2>_Large Button (44) · bottom bars, search filter, panel footers</h2><span class="g-figma">Figma <b>_Large Button</b> · set <code>63dd897f…</code></span></div>
+  <div class="g-demo">
+    <button class="ak-btn ak-btn--lg ak-btn--secondary">CANCEL</button>
+    <button class="ak-btn ak-btn--lg ak-btn--secondary">SKIP &amp; CONTINUE</button>
+    <button class="ak-btn ak-btn--lg ak-btn--primary"><span class="ak-icon" data-icon="check-circle"></span>TRANSFER &amp; CONTINUE</button>
+    <button class="ak-btn ak-btn--lg ak-btn--primary" disabled>NEXT</button>
+    <button class="ak-btn ak-btn--lg ak-btn--secondary" disabled><span class="ak-icon" data-icon="minus-circle"></span>REMOVE</button>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
+    <li>The prototype had no Large size: its bottom-bar buttons were the same 40px buttons. Figma uses the <b>44px _Large Button</b> (padding 8/16) for bottom bars, the Search Filter's RESET / SEARCH and panel footers.</li>
+  </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<section class="g-sec" id="link-btn" data-title="Link button">
+  <div class="g-sec__head"><h2>Link Button · in tables</h2><span class="g-figma">Figma <b>Table Cell Variants</b> · Link Button</span></div>
+  <div class="g-demo">
+    <button class="ak-link-btn">Select</button>
+    <button class="ak-link-btn">Current bin</button>
+    <a class="ak-link"><span class="ak-icon ak-icon--16" data-icon="edit"></span> Rocky Creek / Infusion Suite</a>
+  </div>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<!-- ============================== FORMS ============================== -->
+<section class="g-sec" id="input" data-title="Input">
+  <div class="g-sec__head"><h2>Input (48), Dropdown, Text Area</h2><span class="g-figma">Figma <b>Input</b> <code>f3626639…</code> · <b>_Input Group Add-Ons</b> <code>19cf0c49…</code> · <b>Text Area</b> <code>cbb56cec…</code></span></div>
+  <div class="g-demo">
+    <label class="ak-field" style="width:300px"><span class="ak-field__label">Label</span>
+      <span class="ak-input"><input placeholder="Placeholder"></span>
+      <span class="ak-field__help">Helper text</span></label>
+    <div class="ak-field" style="width:386px"><span class="ak-field__label">Search with add-on</span>
+      <div class="ak-input-group"><span class="ak-input"><span class="ak-icon" data-icon="qrcode"></span><input placeholder="Scan or enter serial number"></span><button class="ak-addon" aria-label="Search"><span class="ak-icon" data-icon="search"></span></button></div></div>
+    <label class="ak-field" style="width:336px"><span class="ak-field__label">Dropdown</span>
+      <span class="ak-input ak-select"><select><option>Onco Health Partners</option><option>Rocky Creek</option></select></span></label>
+    <label class="ak-field ak-field--error" style="width:300px"><span class="ak-field__label">Error</span>
+      <span class="ak-input ak-input--error"><input placeholder="Serial not found"></span>
+      <span class="ak-field__help">This serial isn't in this door.</span></label>
+    <label class="ak-field" style="width:300px"><span class="ak-field__label">Disabled</span>
+      <span class="ak-input ak-input--disabled"><input placeholder="Placeholder" disabled></span></label>
+    <label class="ak-field" style="width:555px"><span class="ak-field__label">Text Area</span>
+      <textarea class="ak-textarea" placeholder="Add a note for the receiving location"></textarea></label>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
+    <li>Prototype inputs and selects were 40px tall, 14px, with a <code>#ced4da</code> border. Figma's are <b>48px</b> with padding 12, <b>16px Body/Regular</b> and a <code>#bcc3cd</code> border.</li>
+    <li>On focus, the prototype used a 2px ring at 15% opacity. Figma's Active state uses a <code>#9fa9b7</code> border with a solid brand glow (0 0 3px 4px <code>#095192</code>). This is copied exactly; the glow is strong, so confirm it with design.</li>
+    <li>The search add-on was 40–48px wide in the prototype. Figma's is <b>52×48</b>.</li>
+    <li>The Text Area was 14px with 10/12 padding in the prototype. Figma's is 16px, padding 12, at least 108px tall.</li>
+  </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<section class="g-sec" id="search-filter" data-title="Search filter">
+  <div class="g-sec__head"><h2>Search Filter</h2><span class="g-figma">Frame pattern · reference node <code>4912:143651</code></span></div>
+  <div class="g-demo g-demo--col">
+    <div class="ak-search-filter">
+      <div class="ak-search-filter__fields">
+        <span class="ak-input" style="width:400px"><input placeholder="Search by Name or NDC"></span>
+        <span class="ak-input ak-select" style="width:200px"><select><option>Status</option><option>Submitted</option><option>In Progress</option></select></span>
+      </div>
+      <div class="ak-search-filter__actions">
+        <button class="ak-btn ak-btn--lg ak-btn--secondary">RESET</button>
+        <button class="ak-btn ak-btn--lg ak-btn--primary">SEARCH</button>
+      </div>
+    </div>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
+    <li>The prototype used padding 24 and a <code>#d8d8d8</code> border. Figma uses padding <b>16/24</b> and a <b><code>#e0e0e0</code></b> border, with 48px inputs and Large buttons.</li>
+    <li>Some prototype screens used 40×40 icon buttons for reset and search. The dev-ready Figma screens use RESET / SEARCH text buttons.</li>
+  </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<!-- ============================== NAVIGATION ============================== -->
+<section class="g-sec" id="tabs" data-title="Tabs">
+  <div class="g-sec__head"><h2>Tabs</h2><span class="g-figma">Figma <b>_Tab Row</b> / <b>_Tabs</b> <code>313f6eb5…</code></span></div>
+  <div class="g-demo">
+    <div class="ak-tabs" role="tablist">
+      <button class="ak-tab" role="tab" aria-selected="true">Incoming Transfers</button>
+      <button class="ak-tab" role="tab">Outgoing Transfers</button>
+      <button class="ak-tab" role="tab">History</button>
+      <button class="ak-tab" role="tab" disabled>Disabled</button>
+    </div>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
+    <li>Prototype tabs were 14px, Regular/Semi Bold, padding 18/8, with a 3px inset underline on the active tab only. Figma's are <b>64px tall, 16px Bold</b>, padding 20, with a 2px bottom border on every tab: <code>#e9eef4</code> when idle, brand when selected.</li>
+    <li>Idle tab text was <code>#4b5563</code> in the prototype. Figma uses <code>#767676</code>.</li>
+  </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<section class="g-sec" id="shell" data-title="App shell">
+  <div class="g-sec__head"><h2>App shell · Side Nav (70) + Navigation (54)</h2><span class="g-figma">Figma <b>Side Nav</b> <code>7682828f…</code> · <b>list menu</b> · nav from Accept 01 <code>4912:143596</code></span></div>
+  <div class="g-demo g-demo--col">
+    <div class="g-frame" style="height:330px">
+      <aside class="ak-sidenav">
+        <div class="ak-sidenav__logo">A</div>
+        <nav class="ak-sidenav__items">
+          <a class="ak-sidenav__item"><span class="ak-icon" data-icon="station"></span>Home</a>
+          <a class="ak-sidenav__item"><span class="ak-icon" data-icon="file-o"></span>Order</a>
+          <a class="ak-sidenav__item ak-sidenav__item--selected"><span class="ak-icon" data-icon="undo"></span>Transfer</a>
+          <a class="ak-sidenav__item"><span class="ak-icon" data-icon="map-marker"></span>Station</a>
+        </nav>
+        <div class="ak-sidenav__foot"><div class="ak-sidenav__help">Help</div><div class="ak-sidenav__version">V 1.0</div></div>
+      </aside>
+      <div class="ak-page">
+        <header class="ak-topnav">
+          <div class="ak-topnav__context">
+            <span class="ak-topnav__item"><span class="ak-icon" data-icon="station"></span>AllyIQ Practice</span>
+            <span class="ak-topnav__divider"></span>
+            <span class="ak-topnav__item"><span class="ak-icon ak-icon--20" data-icon="map-marker"></span>Source Onco Clinic</span>
+            <span class="ak-topnav__divider"></span>
+            <span class="ak-topnav__item"><span class="ak-icon" data-icon="station"></span>Source Onco Station</span>
+          </div>
+          <div class="ak-topnav__user">
+            <div class="ak-topnav__who"><div class="ak-topnav__name">Chloe Test</div><div class="ak-topnav__email">Chloe.Test@TXOncology.com</div></div>
+            <span class="ak-topnav__divider"></span>
+            <span class="ak-icon" data-icon="sign-out"></span>
+          </div>
+        </header>
+      </div>
+    </div>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
+    <li>The prototype's top nav was 50px tall. Figma's is <b>54px</b> with a <code>#e0e0e0</code> bottom border. There's no extra 16px under it; the page title starts 16px below the nav.</li>
+    <li>The side nav is the Figma one: <code>#095192</code>, a <code>#0e243f</code> logo block, 70×54 items with 10px labels, and a white selected item.</li>
+    <li>The Figma side nav uses product-specific module icons. The kit shows placeholders; export the module icons from Figma if a screen needs them.</li>
+  </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<!-- ============================== DATA DISPLAY ============================== -->
+<section class="g-sec" id="table" data-title="Table">
+  <div class="g-sec__head"><h2>Table · Table Header / Table Cell</h2><span class="g-figma">Figma <b>Table Cell</b> <code>2aac1c0e…</code> · <b>Table Cell Variants</b> · reference <code>4822:281142</code></span></div>
+  <div class="g-demo g-demo--col">
+    <table class="ak-table">
+      <thead><tr>
+        <th class="ak-cell-check"><input type="checkbox" class="ak-checkbox" aria-label="Select all"></th>
+        <th><div class="ak-th__inner"><span>Product Name</span><span class="ak-th__sort" data-icon="sort-alt"></span></div></th>
+        <th><div class="ak-th__inner"><span>NDC/AIC<span class="ak-th__sub">Inventory Type</span></span><span class="ak-th__sort" data-icon="sort-alt"></span></div></th>
+        <th><div class="ak-th__inner"><span>Sending Location</span><span class="ak-th__sort" data-icon="sort-alt"></span></div></th>
+        <th>Quantity</th><th>Status</th><th class="ak-cell-action"></th>
+      </tr></thead>
+      <tbody>
+        <tr class="is-selected">
+          <td class="ak-cell-check"><input type="checkbox" class="ak-checkbox" checked aria-label="Select"></td>
+          <td><span class="ak-product__name">Alimta 500 mg vial</span><span class="ak-product__generic">pemetrexed disodium 500 mg intravenous powder</span><span class="ak-product__badges"><span class="ak-badge ak-badge--sdv">SDV</span></span></td>
+          <td>00002762301<span class="ak-cell-sub">Purchased</span></td>
+          <td>Onco Clinic Center<span class="ak-cell-sub">Onco Station</span></td>
+          <td>8 vials</td>
+          <td><span class="ak-chip">In Progress</span></td>
+          <td class="ak-cell-action"><span class="ak-icon" data-icon="chevron-right"></span></td>
+        </tr>
+        <tr>
+          <td class="ak-cell-check"><input type="checkbox" class="ak-checkbox" aria-label="Select"></td>
+          <td><span class="ak-product__name">Gammagard liquid 10% vial 2.5 g 25 mL</span><span class="ak-product__generic">immune globulin intravenous, human</span><span class="ak-product__badges"><span class="ak-badge ak-badge--climate">Climate</span><span class="ak-badge ak-badge--non-serial">Non Serial</span></span></td>
+          <td>00944270002<span class="ak-cell-sub" style="color:#8b3fd9">Charity Care</span></td>
+          <td>Badri Clinic<span class="ak-cell-sub">Infusion Suite</span></td>
+          <td>2 vials</td>
+          <td><span class="ak-chip">Submitted</span></td>
+          <td class="ak-cell-action"><span class="ak-icon" data-icon="chevron-right"></span></td>
+        </tr>
+        <tr><td colspan="7" class="ak-empty">No products match your search</td></tr>
+      </tbody>
+    </table>
+    <div class="g-label" style="margin-top:16px">Compact, boxed (panel table) with Door Type and Link Button</div>
+    <table class="ak-table ak-table--compact ak-table--boxed">
+      <thead><tr><th>Door</th><th>Bin</th><th>Size</th><th>Latest expiration</th><th>Inventory</th><th></th></tr></thead>
+      <tbody>
+        <tr><td><span class="ak-door"><span class="ak-icon" data-icon="door-physical"></span>1</span></td><td>A1</td><td>1×1</td><td>02/22/2027</td><td>1 vial</td><td><button class="ak-link-btn">Select</button></td></tr>
+        <tr><td><span class="ak-door"><span class="ak-icon" data-icon="door-virtual"></span>V2</span></td><td>B3</td><td>1×1</td><td>05/10/2027</td><td>3 vials</td><td><button class="ak-link-btn">Current bin</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
+    <li>Prototype cells had 14/16 padding, headers were 13px Semi Bold on <code>#f8fafc</code>, and borders were <code>#e9ecf1</code> / <code>#eef1f5</code>. Figma cells have <b>8px</b> padding, headers are <b>14px Medium</b> on <b><code>#f5f7fa</code></b>, and borders are <code>#dadee3</code>. Every line is 14/20.</li>
+    <li>Figma has <b>no column dividers</b>. Every table, page or panel, sits in a 1px <code>#dadee3</code> frame with radius 4, and the last row has no bottom line. Inside an <code>ak-box</code> or a card, use <code>ak-table--flush</code> (applied automatically) so the border isn't doubled.</li>
+    <li>Secondary lines (inventory type, station, generic name) are 14px italic <code>#757575</code> with no top margin. The prototype used 13px <code>#6b7280</code> with 2px margin in some tables.</li>
+    <li>The prototype's sort icon was a 12px custom glyph with an "A-Z" label. Figma's is the 20px <b>sort-alt</b> icon.</li>
+    <li>Prototype checkboxes were 20px with radius 4. The kit uses a 16px checkbox. <b>Not verified against Figma</b>; check it against the library Checkbox before relying on it.</li>
+    <li>Row hover and selected colours are prototype values (<code>#f8fafc</code> / <code>#eef4fa</code>). Figma doesn't define them.</li>
+  </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<section class="g-sec" id="badges" data-title="Badges">
+  <div class="g-sec__head"><h2>Product Badge · Status Badge · Solid chip</h2><span class="g-figma">Figma <b>Product Badge</b> <code>54b849ce…</code> · <b>Badge</b> (Category) <code>4dba0b4a…</code> · <b>In Progress / Submitted / Error · Solid</b></span></div>
+  <div class="g-demo g-demo--col">
+    <div class="g-label">Product Badge</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span class="ak-badge ak-badge--sdv">SDV</span><span class="ak-badge ak-badge--mdv">MDV</span><span class="ak-badge ak-badge--climate">Climate</span><span class="ak-badge ak-badge--pack">Pack</span><span class="ak-badge ak-badge--mdv-wnb">MDV-WNB</span><span class="ak-badge ak-badge--civ">CIV</span><span class="ak-badge ak-badge--non-serial">Non Serial</span>
+    </div>
+    <div class="g-label" style="margin-top:12px">Status Badge (outlined, coloured pill)</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span class="ak-status ak-status--positive">Accepted</span><span class="ak-status ak-status--pending">Pending Transfer</span><span class="ak-status ak-status--negative">Damaged</span><span class="ak-status ak-status--complete">Complete</span><span class="ak-status ak-status--patient">Patient</span><span class="ak-status ak-status--incomplete">Canceled</span><span class="ak-status ak-status--tag">Info Tag</span>
+    </div>
+    <div class="g-label" style="margin-top:12px">Solid chip</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span class="ak-chip">In Progress</span><span class="ak-chip">Submitted</span><span class="ak-chip ak-chip--danger">Expired</span>
+    </div>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
+    <li>In some files the prototype's product badges were 11px Semi Bold with radius 3 and 0.2px letter-spacing. Figma's Product Badge is <b>12/16 Medium, padding 2/8, radius 4</b>. The colours already matched.</li>
+    <li>The prototype showed In-Progress as yellow (<code>#eec038</code>) and Submitted as <code>#008774</code>. Figma's solid chips are <b>both green</b>: <code>#00a991</code> with a 1.5px <code>#006557</code> border, 14px Medium, radius 25. If In-Progress should be yellow, raise it with design.</li>
+    <li>Outlined statuses (Pending Transfer, Canceled) used inset rings in the prototype. Figma's <b>Badge / Category</b> is white with a <code>#d8d8d8</code> border and a 4×12 coloured pill, 12px Medium.</li>
+    <li>The prototype's expired chip was <code>#dc2626</code> or <code>#d9342b</code>. The kit uses Figma's <b>Error / Solid</b> (<code>#d9342b</code> with a <code>#8c221c</code> border).</li>
+  </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<section class="g-sec" id="info" data-title="Info bar">
+  <div class="g-sec__head"><h2>Page header · Transfer Info · Info bar · Counter</h2><span class="g-figma">Frame patterns · reference nodes <code>4967:155882</code>, <code>4970:156716</code>, <code>4970:156642</code></span></div>
+  <div class="g-demo g-demo--col">
+    <div class="ak-page-header" style="padding-left:0;padding-right:0">
+      <div><h1 class="ak-page-title">New Transfer</h1><p class="ak-page-subtitle">Select products to transfer</p></div>
+      <div style="display:flex;gap:32px;align-items:flex-start">
+        <div class="ak-transfer-info">
+          <div class="ak-transfer-info__row"><span class="ak-transfer-info__label">Sending Location</span><span class="ak-transfer-info__value">Onco Clinic Center / Onco Station</span></div>
+          <div class="ak-transfer-info__row"><span class="ak-transfer-info__label">Receiving Location</span><a class="ak-link ak-transfer-info__value"><span class="ak-icon ak-icon--16" data-icon="edit"></span> Rocky Creek / Infusion Suite</a></div>
+        </div>
+        <span class="ak-count-tile"><span class="ak-count-tile__label">Products Selected</span><span>3</span></span>
+      </div>
+    </div>
+    <div class="ak-info-bar">
+      <div class="ak-info-bar__col"><div class="ak-info-bar__row"><span class="ak-info-bar__label">NDC</span>00002762301</div><div class="ak-info-bar__row"><span class="ak-info-bar__label">Inventory Type</span>Purchased</div></div>
+      <div class="ak-info-bar__col"><div class="ak-info-bar__row"><span class="ak-info-bar__label">Sending Location</span>Onco Clinic Center / Onco Station</div></div>
+      <div class="ak-info-bar__col"><div class="ak-info-bar__row"><span class="ak-info-bar__label">Created On</span>10/08/2026</div><div class="ak-info-bar__row"><span class="ak-info-bar__label">Created By</span>User Super</div></div>
+      <div class="ak-info-bar__col"><div class="ak-info-bar__row"><span class="ak-info-bar__label" style="min-width:72px">Door</span><span class="ak-door"><span class="ak-icon" data-icon="door-physical"></span>1</span>&nbsp;&nbsp;<span class="ak-label">Bin</span> Multiple</div><div class="ak-info-bar__row"><span class="ak-info-bar__label" style="min-width:72px">Inventory</span><a class="ak-link">2 vials</a></div></div>
+    </div>
+    <div style="display:flex;gap:24px;align-items:center">
+      <div class="ak-counter"><button class="ak-btn ak-btn--tertiary">Products transferred</button><span class="ak-counter__value">0</span></div>
+      <span class="ak-count-tile ak-count-tile--active"><span class="ak-count-tile__label">Products Selected</span><span>3</span></span>
+    </div>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
+    <li>The prototype's page title was 20px Medium. Figma's is <b>H3 24 Regular</b>, with a 16px Medium subtitle and a full-width divider 16px below.</li>
+    <li>The prototype's info bar was a grey <code>#e9eef4</code> strip with 14px labels. Figma's is <b>white</b>, uses <b>16px Body/Regular</b> with <code>#64748b</code> labels, and is laid out in columns with fixed-width labels. Order: NDC + Inventory Type · Sending Location · Created On + Created By · Door/Bin + Inventory.</li>
+    <li>Big counters were 32/40 in the prototype. Figma's are <b>H2 28 Regular</b>.</li>
+    <li>The Products Selected tile had 13px / 18px text and a min-width of 140 in the prototype. The Figma component is <b>129 wide, with 12px Semi Bold</b> label and value.</li>
+  </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<section class="g-sec" id="tiles" data-title="Station tile">
+  <div class="g-sec__head"><h2>Station Tile</h2><span class="g-figma">Local component <b>Station Tile</b> <code>4965:152469</code> (not in the DS library)</span></div>
+  <div class="g-demo g-demo--col">
+    <div class="ak-tiles">
+      <button class="ak-tile">Back Office Station</button>
+      <button class="ak-tile" aria-pressed="true">Infusion Suite (physical)</button>
+      <button class="ak-tile">Infusion Suite (virtual)</button>
+      <button class="ak-tile">Pharmacy Cabinet A</button>
+    </div>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
+    <li>Prototype tiles were 88px with 15/22 text and a minimum column of 200. The Figma tile is <b>242×86, 14px Small/Regular</b>, padding 0 12, with a 12px grid gap.</li>
+  </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<!-- ============================== FEEDBACK ============================== -->
+<section class="g-sec" id="alert" data-title="Toast">
+  <div class="g-sec__head"><h2>Alert (toast) · Inline Alert</h2><span class="g-figma">Figma <b>Alert</b> <code>381ec2b7…</code> (Header + Body) · <b>Inline Alert</b> <code>de5e2514…</code></span></div>
+  <div class="g-demo g-demo--col">
+    <div class="ak-alert ak-alert--success"><span class="ak-alert__icon" data-icon="check-circle"></span><div class="ak-alert__text"><span class="ak-alert__title">ALIMTA 500 MG VIAL</span>product successfully transferred.</div><button class="ak-alert__close" aria-label="Dismiss" data-icon="times"></button></div>
+    <div class="ak-alert ak-alert--warning"><span class="ak-alert__icon" data-icon="exclamation-triangle"></span><div class="ak-alert__text"><span class="ak-alert__title">AVASTIN 400 MG/16 ML VIAL</span>is partially transferred.</div><button class="ak-alert__close" aria-label="Dismiss" data-icon="times"></button></div>
+    <div class="ak-alert ak-alert--danger"><span class="ak-alert__icon" data-icon="times-circle"></span><div class="ak-alert__text"><span class="ak-alert__title">1234567890</span>isn't in this door.</div><button class="ak-alert__close" aria-label="Dismiss" data-icon="times"></button></div>
+    <div><button class="ak-btn ak-btn--secondary" onclick="AllyKit.toast({title:'Door 1', message:'is unlocked now.'})">Show a live toast</button></div>
+    <div class="ak-inline-alert" style="max-width:767px"><span class="ak-icon" data-icon="info-circle"></span><div class="ak-inline-alert__text">This product is in more than one location. Select a bin to open its door.</div></div>
+    <div class="ak-inline-alert ak-inline-alert--warning" style="max-width:767px"><span class="ak-icon" data-icon="exclamation-triangle"></span><div class="ak-inline-alert__text">Save your selection before searching for another product.</div></div>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
+    <li>The prototype's toast was 400 wide at top 72, with a 6px inset accent and a mint background that differed between files (<code>#dff3ef</code> / <code>#b0e4dd</code>). Figma's Alert is <b>578 wide, 24px from the top-right</b>, padding 16/24, radius 6, with an <b>8px left border</b>. Success is <code>#d9f2ef</code> / <code>#009883</code>; warning is <code>#f7edde</code> / <code>#b87b21</code>.</li>
+    <li>Header: product name in Small/Bold; body: the message in Small/Regular. Don't use a generic "All set!".</li>
+    <li>The prototype's purple notice was <code>#f3e4fd</code> with a border. Figma's Inline Alert Info is <b><code>#ead6fd</code> with no border</b>, padding 16, radius 6 and a 21px icon.</li>
+  </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<section class="g-sec" id="modal" data-title="Modal">
+  <div class="g-sec__head"><h2>Modal (600)</h2><span class="g-figma">Figma <b>Modal</b> <code>f31470f1…</code> (Header, Body)</span></div>
+  <div class="g-demo">
+    <div class="g-frame" style="height:340px">
+      <div class="ak-overlay">
+        <div class="ak-modal" role="dialog" aria-modal="true" aria-labelledby="m1">
+          <div class="ak-modal__header"><h2 class="ak-modal__title" id="m1">Are you sure?</h2><button class="ak-modal__close" aria-label="Close" data-icon="times"></button></div>
+          <div class="ak-modal__body">AVASTIN 400 MG/16 ML VIAL has statuses you haven't saved. If you leave now, they will be lost.</div>
+          <div class="ak-modal__footer"><button class="ak-btn ak-btn--secondary">NO, STAY</button><button class="ak-btn ak-btn--primary">YES, DISCARD</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
+    <li>The prototype's dialog had radius 4, a 20/24 header, a 14/22 body and a heavy shadow. Figma's has <b>radius 6</b>, a header with padding 48/32/16 and an <b>H5 18 Bold</b> title, a <b>16/24 Medium</b> body with padding 8/32/32, a footer with padding 24/40/24/32, a 28px close icon and a light 3-layer shadow.</li>
+    <li>Dialog buttons stay the <b>Standard (36)</b> size; don't use Large here.</li>
+  </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<section class="g-sec" id="panel" data-title="Side panel">
+  <div class="g-sec__head"><h2>Side panel (815)</h2><span class="g-figma">Frame pattern · reference <code>4812:255134</code> / <code>4970:482250</code></span></div>
+  <div class="g-demo">
+    <div class="g-frame" style="height:520px">
+      <div class="ak-overlay" style="z-index:1"></div>
+      <aside class="ak-panel" style="width:min(815px,100%);z-index:2">
+        <div class="ak-panel__header">
+          <div class="ak-panel__title-row"><h2 class="ak-panel__title">Select a Location to Transfer</h2><button class="ak-panel__close" aria-label="Close" data-icon="times"></button></div>
+          <div style="display:flex;gap:4px;align-items:center;margin-top:12px"><span class="ak-body ak-medium">ALIMTA 500 MG VIAL</span><span class="ak-badge ak-badge--sdv">SDV</span></div>
+          <span class="ak-italic ak-muted">pemetrexed disodium 500 mg</span>
+        </div>
+        <div class="ak-panel__body">
+          <div class="ak-panel__section ak-stats">
+            <div class="ak-stat"><span class="ak-stat__label">NDC</span><span class="ak-stat__value">00002762301</span></div>
+            <div class="ak-stat"><span class="ak-stat__label">Inventory type</span><span class="ak-stat__value">Purchased</span></div>
+            <div class="ak-stat"><span class="ak-stat__label">Inventory</span><span class="ak-stat__value">7 vials</span></div>
+            <div class="ak-stat"><span class="ak-stat__label">Transfer qty</span><span class="ak-stat__value">0 vials</span></div>
+          </div>
+          <div class="ak-panel__section" style="padding-top:0"><div class="ak-inline-alert"><span class="ak-icon" data-icon="info-circle"></span><div class="ak-inline-alert__text">Select a bin to open its door.</div></div></div>
+          <div class="ak-panel__section"><h3 class="ak-panel__section-title">Available at (2)</h3>
+            <table class="ak-table ak-table--compact ak-table--boxed"><thead><tr><th>Door</th><th>Bin</th><th>Inventory</th><th></th></tr></thead>
+              <tbody><tr><td><span class="ak-door"><span class="ak-icon" data-icon="door-physical"></span>1</span></td><td>A1</td><td>1 vial</td><td><button class="ak-link-btn">Select</button></td></tr></tbody></table></div>
+        </div>
+        <div class="ak-panel__footer"><button class="ak-btn ak-btn--lg ak-btn--secondary">CLOSE</button></div>
+      </aside>
+    </div>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
+    <li>Prototype panels were <code>min(900px, 62vw)</code> or <code>min(640px, 56vw)</code> wide, with a 24px Semi Bold title, a 22/24 header and a heavy shadow. The dev-ready Figma panel is <b>815 wide</b>, with an <b>H3 24 Medium</b> title, header padding 24/24/16, <code>#e5e7eb</code> separators, and a footer with padding 12/24 and a <b>Large</b> CLOSE button.</li>
+    <li>The overlay was <code>rgba(11,42,74,.28)</code>. Figma uses <code>rgba(26,31,38,.40)</code>, the same as the modal.</li>
+  </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<section class="g-sec" id="bottom-bar" data-title="Bottom bar">
+  <div class="g-sec__head"><h2>Bottom Action Bar (68) with counters</h2><span class="g-figma">Figma <b>Bottom Action Bar</b> <code>ba639e05…</code> · Product Info frame <code>4970:156690</code></span></div>
+  <div class="g-demo">
+    <div class="g-frame" style="height:110px">
+      <div class="ak-bottom-bar" style="left:0">
+        <div class="ak-bar-info">
+          <div class="ak-bar-info__item" role="button"><span class="ak-icon" data-icon="station"></span><div class="ak-bar-info__text"><span class="ak-bar-info__label">Product</span><span class="ak-bar-info__value">1/3</span></div><span class="ak-icon" data-icon="chevron-right"></span></div>
+          <span class="ak-bar-info__divider"></span>
+          <div class="ak-bar-info__item" role="button"><span class="ak-icon" data-icon="map-marker"></span><div class="ak-bar-info__text"><span class="ak-bar-info__label">Location</span><span class="ak-bar-info__value">1/5</span></div></div>
+          <span class="ak-bar-info__divider"></span>
+          <div class="ak-bar-info__item"><span class="ak-icon" data-icon="check-circle" style="color:#008774"></span><div class="ak-bar-info__text"><span class="ak-bar-info__label">Transfer</span><span class="ak-bar-info__value ak-bar-info__value--plain">0</span></div></div>
+          <span class="ak-bar-info__divider"></span>
+        </div>
+        <div class="ak-bottom-bar__actions">
+          <button class="ak-btn ak-btn--lg ak-btn--secondary">CANCEL</button>
+          <button class="ak-btn ak-btn--lg ak-btn--primary">TRANSFER &amp; CONTINUE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
+    <li>The prototype bar had padding 14/24, a <code>#e3e7ed</code> border, a soft shadow and 40px buttons with a 12–16px gap. Figma's is <b>68 tall</b> with a <code>#d9d9d9</code> top border and <b>Large</b> buttons 24px apart.</li>
+    <li>The prototype's counters used 13px labels and 18px Medium values with right borders. Figma's are 24px icons, with <b>Small/Medium <code>#64748b</code></b> labels over <b>H5 18 Semi Bold</b> values in brand, separated by 1×67 <code>#d9d9d9</code> dividers.</li>
+    <li>The library Bottom Action Bar has a <code>0 -4px 8px</code> shadow, but the dev-ready Transfer screens use a 1px border instead. The kit follows the dev-ready screens.</li>
+  </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<!-- ============================== PROTOTYPE-ONLY ============================== -->
+<section class="g-sec" id="proto-only" data-title="Prototype-only">
+  <div class="g-sec__head"><h2>Prototype-only patterns</h2><span class="g-figma">Not in the AllyGPO library; styled with kit tokens</span></div>
+  <div class="g-demo">
+    <div class="ak-card ak-card--selected" style="width:360px">
+      <div class="ak-card__head"><div><span class="ak-product__name">Botox 100 unit vial</span><span class="ak-product__generic">onabotulinumtoxinA</span></div><span class="ak-badge ak-badge--sdv">SDV</span></div>
+      <div class="ak-card__body" style="display:flex;gap:8px;flex-wrap:wrap"><span class="ak-tag"><span class="ak-tag__dot"></span>Exp 01/12/2026</span><span class="ak-tag ak-tag--brand">2 in transfer</span></div>
+    </div>
+    <div class="ak-card" style="width:360px">
+      <div class="ak-card__head"><div><span class="ak-product__name">Eylea 2 mg/0.05 ml syringe</span><span class="ak-product__generic">aflibercept</span></div><span class="ak-badge ak-badge--climate">Climate</span></div>
+      <div class="ak-collapsible">Available Items (4)<button class="ak-collapsible__toggle">Hide <span class="ak-icon ak-icon--16" data-icon="chevron-down"></span></button></div>
+    </div>
+    <div style="position:relative;width:280px;height:150px">
+      <div class="ak-popover" style="top:0;left:0;width:260px"><div class="ak-popover__eyebrow">Bins in this door</div><div class="ak-popover__item ak-popover__item--active">A1 <b>1 vial</b></div><div class="ak-popover__item">A2 <b>3 vials</b></div></div>
+    </div>
+    <div style="position:relative;width:340px;height:90px"><div class="ak-tooltip" style="top:0;left:0">Charity Care items are linked to a patient and keep that patient at the receiving station.</div></div>
+    <div class="ak-empty-box" style="width:100%">Scan a serial number or search by product name to add items.</div>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Before using these</span>
+    <li>Selectable product card, collapsible section header, outline tag, popover, tooltip and dashed empty box: <b>none of these exist in the AllyGPO library</b>. They're kept so new prototypes can reuse the Transfer behaviour; flag them to design whenever a screen depends on them.</li>
+  </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<section class="g-sec" id="added" data-title="Added from Transfer">
+  <div class="g-sec__head"><h2>States and helpers added during the Transfer migration</h2><span class="g-figma">Built from kit tokens; follow Figma state rules (disabled = 60% brand)</span></div>
+  <div class="g-demo">
+    <span class="ak-check" role="checkbox" aria-checked="false" tabindex="0"></span>
+    <span class="ak-check" role="checkbox" aria-checked="true" tabindex="0"></span>
+    <span class="ak-check" role="checkbox" aria-checked="mixed" tabindex="0"></span>
+    <span class="ak-check is-disabled" role="checkbox" aria-checked="false" aria-disabled="true"></span>
+    <button class="ak-btn ak-btn--secondary ak-btn--icon" aria-label="Reset"><span class="ak-icon" data-icon="undo"></span></button>
+    <button class="ak-btn ak-btn--primary ak-btn--icon" aria-label="Search"><span class="ak-icon" data-icon="search"></span></button>
+    <button class="ak-btn ak-btn--primary ak-btn--guarded" aria-disabled="true" onclick="AllyKit.toast({title:'Save or cancel', message:'your selection first.', type:'warning'})">TRANSFER &amp; VIEW SUMMARY</button>
+    <div class="ak-input-group ak-input--disabled" style="width:320px"><span class="ak-input ak-input--disabled"><span class="ak-icon" data-icon="qrcode"></span><input placeholder="Select a location first" disabled></span><button class="ak-addon" disabled aria-label="Search"><span class="ak-icon" data-icon="search"></span></button></div>
+    <span class="ak-input ak-select ak-select--set" style="width:240px"><select><option>Accept</option><option>Damaged</option></select></span>
+    <button class="ak-link-btn" disabled>Current bin</button>
+    <span class="ak-sort ak-sort--on ak-sort--desc">Z-A <span class="ak-th__sort" data-icon="sort-alt"></span></span>
+    <span class="ak-patient">Charity Care</span>
+    <div class="ak-box" style="width:100%"><table class="ak-table ak-table--compact"><thead><tr><th>Serial</th><th>Inventory Type</th></tr></thead><tbody><tr><td>2396410153839201</td><td class="ak-patient">Charity Care</td></tr></tbody></table></div>
+    <div class="ak-card is-current" style="width:300px;padding:12px 16px">Current product (is-current)</div>
+    <div class="ak-card is-done" style="width:300px;padding:12px 16px">Done product (is-done)</div>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">When to use</span>
+    <li><code>ak-check</code>: for div-based selectable rows that need a "partly selected" (mixed) state, which a native checkbox can't show from markup.</li>
+    <li><code>ak-btn--guarded</code>: the button looks disabled but still takes a click, so the click can say why (for example "Select a product card first"). Keep the guard in the handler.</li>
+    <li><code>ak-btn--icon</code>: a square 48px icon button that sits next to 48px inputs. Add <code>--sm</code> for 36px.</li>
+    <li><code>ak-select--set</code>: a dropdown with a chosen value shows a brand border, as in the serial status column.</li>
+    <li><code>ak-sort</code>: header sort label; <code>--on</code> marks the active column and <code>--desc</code> flips the icon.</li>
+  </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<!-- ============================== FULL SCREEN ============================== -->
+<section class="g-sec" id="screen" data-title="Full screen">
+  <div class="g-sec__head"><h2>Putting it together · a list screen</h2><span class="g-figma">Matches the spacing of Accept 01 (<code>4912:143596</code>)</span></div>
+  <div class="g-demo">
+    <div class="g-frame" style="height:620px">
+      <aside class="ak-sidenav"><div class="ak-sidenav__logo">A</div><nav class="ak-sidenav__items"><a class="ak-sidenav__item"><span class="ak-icon" data-icon="station"></span>Home</a><a class="ak-sidenav__item ak-sidenav__item--selected"><span class="ak-icon" data-icon="undo"></span>Transfer</a></nav></aside>
+      <div class="ak-page">
+        <header class="ak-topnav"><div class="ak-topnav__context"><span class="ak-topnav__item"><span class="ak-icon" data-icon="station"></span>AllyIQ Practice</span></div><div class="ak-topnav__user"><div class="ak-topnav__who"><div class="ak-topnav__name">Chloe Test</div></div><span class="ak-icon" data-icon="sign-out"></span></div></header>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:0 24px;border-bottom:1px solid var(--ak-border-divider)">
+          <div class="ak-tabs"><button class="ak-tab" aria-selected="true">Incoming Transfers</button><button class="ak-tab">Outgoing Transfers</button><button class="ak-tab">History</button></div>
+          <button class="ak-btn ak-btn--primary"><span class="ak-icon" data-icon="plus"></span>NEW TRANSFER</button>
+        </div>
+        <div class="ak-page__content" style="padding-top:24px;padding-left:20px;padding-right:20px">
+          <div class="ak-search-filter"><div class="ak-search-filter__fields"><span class="ak-input" style="width:320px"><input placeholder="Search by Name or NDC"></span></div><div class="ak-search-filter__actions"><button class="ak-btn ak-btn--lg ak-btn--secondary">RESET</button><button class="ak-btn ak-btn--lg ak-btn--primary">SEARCH</button></div></div>
+        </div>
+        <div class="ak-page__content">
+          <h2 class="ak-section-title">Allocated Products (2)</h2>
+          <table class="ak-table"><thead><tr><th>Product Name</th><th>NDC/AIC<span class="ak-th__sub">Inventory Type</span></th><th>Quantity</th><th>Status</th></tr></thead>
+            <tbody><tr><td><span class="ak-product__name">Alimta 500 mg vial</span><span class="ak-product__generic">pemetrexed disodium</span><span class="ak-product__badges"><span class="ak-badge ak-badge--sdv">SDV</span></span></td><td>00002762301<span class="ak-cell-sub">Purchased</span></td><td>8 vials</td><td><span class="ak-chip">In Progress</span></td></tr>
+            <tr><td><span class="ak-product__name">Botox 100 unit vial</span><span class="ak-product__generic">onabotulinumtoxinA</span><span class="ak-product__badges"><span class="ak-badge ak-badge--civ">CIV</span><span class="ak-badge ak-badge--pack">Pack</span></span></td><td>00023114501<span class="ak-cell-sub">Purchased</span></td><td>3 vials</td><td><span class="ak-chip">Submitted</span></td></tr></tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+</div>
+<script>
+(function () {
+  // Table of contents
+  var toc = document.getElementById('toc');
+  document.querySelectorAll('.g-sec').forEach(function (s) {
+    var a = document.createElement('a'); a.href = '#' + s.id; a.textContent = s.getAttribute('data-title'); toc.appendChild(a);
+  });
+  // Colour swatches from the CSS custom properties
+  var names = ['brand','brand-hover','brand-active','danger','text','text-label','text-muted','text-placeholder','border-input','border-table','border-divider','bg-table-header','bg-subtle','success-bg','success-border','warning-bg','warning-border','danger-bg','info-bg','chip-success','pill-warning','pill-emphasis','tag-sdv','tag-climate','tag-pack','tag-civ','tag-non-serial','door-physical','door-virtual','nav-logo-bg'];
+  var cs = getComputedStyle(document.documentElement), sw = document.getElementById('swatches');
+  names.forEach(function (n) {
+    var v = cs.getPropertyValue('--ak-' + n).trim();
+    var d = document.createElement('div'); d.className = 'g-sw';
+    d.innerHTML = '<i style="background:' + v + '"></i><span><b>--ak-' + n + '</b>' + v + '</span>'; sw.appendChild(d);
+  });
+  // Code snippets: the demo markup, without the icon SVGs the script injected
+  document.querySelectorAll('.g-sec').forEach(function (s) {
+    var pre = s.querySelector('details.g-code pre'), demo = s.querySelector('.g-demo');
+    if (!pre || !demo) return;
+    var c = demo.cloneNode(true);
+    c.querySelectorAll('[data-icon]').forEach(function (e) { e.innerHTML = ''; e.removeAttribute('data-icon-done'); });
+    c.querySelectorAll('.g-frame').forEach(function (f) { while (f.firstChild) f.parentNode.insertBefore(f.firstChild, f); f.remove(); });
+    pre.textContent = c.innerHTML.replace(/^\s*\n/gm, '').replace(/ class="ak-icon"/g, ' class="ak-icon"').trim();
+  });
+})();
+</script>
+</body>
+</html>

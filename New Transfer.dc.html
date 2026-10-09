@@ -14,268 +14,256 @@
 <link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/tokens/fig-tokens.css">
 <link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/styles.css">
 <script src="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/_ds_bundle.js"></script>
+<link rel="stylesheet" href="ally-kit/ally-kit.css">
+<script src="ally-kit/ally-kit.js"></script>
 <style>
-  html, body { margin: 0; padding: 0; background: #ffffff; }
-  body { font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
-  a { color: #095192; text-decoration: none; }
-  a:hover { color: #073f73; text-decoration: underline; }
+  html, body { margin: 0; padding: 0; background: var(--ak-bg); }
+  a { color: var(--ak-brand); text-decoration: none; }
+  a:hover { color: var(--ak-brand-hover); text-decoration: underline; }
   *, *::before, *::after { box-sizing: border-box; }
-  input::placeholder { color: #9aa4b0; }
+  input::placeholder { color: var(--ak-text-placeholder); }
   @keyframes ntSheetIn { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+  /* New Transfer page-only helpers (no kit component) */
+  /* Patient-linked inventory types (Charity Care, Specialty Pharmacy) read purple. */
+  /* Bordered box around tables / sections. */
+  /* Square icon-only button next to 48px inputs (reset / search). */
+  /* Buttons that look disabled but still take the click (to show a toast or a title). */
+  /* Read-only card (no selectable hover). */
+  /* Sort control in table headers: kit sort-alt icon + A-Z state text. */
 </style>
 </helmet>
-<div style="display: flex; align-items: stretch; width: 100%; min-height: 100vh; background: #ffffff; color: #21252b; font-size: 14px; font-weight: 400;">
+<div class="ak" style="display: flex; align-items: stretch; width: 100%; min-height: 100vh; background: var(--ak-bg);">
 
   <sc-if value="{{ discardOpen }}" hint-placeholder-val="{{ false }}">
-    <div onClick="{{ stayHere }}" style="position: fixed; inset: 0; z-index: 7000; background: rgba(14,36,63,0.45); display: flex; align-items: center; justify-content: center; padding: 24px;">
-      <div role="dialog" aria-modal="true" onClick="{{ stopProp }}" style="width: 600px; max-width: 100%; background: #ffffff; border-radius: 4px; box-shadow: 0 20px 40px rgba(16,24,40,0.2); display: flex; flex-direction: column;">
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px 0;">
-          <span style="font-size: 18px; line-height: 28px; font-weight: 600; color: #25282a;">Discard this transfer?</span>
-          <button type="button" onClick="{{ stayHere }}" aria-label="Close" style="flex: 0 0 32px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: #64748b; cursor: pointer;" style-hover="background: #eff1f3;">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
-          </button>
+    <div class="ak-overlay" onClick="{{ stayHere }}">
+      <div class="ak-modal" role="dialog" aria-modal="true" onClick="{{ stopProp }}">
+        <div class="ak-modal__header">
+          <h2 class="ak-modal__title">Discard this transfer?</h2>
+          <button type="button" class="ak-modal__close" onClick="{{ stayHere }}" aria-label="Close" data-icon="times"></button>
         </div>
-        <p style="margin: 0; padding: 16px 24px 48px; font-size: 14px; line-height: 22px; color: #25282a; text-wrap: pretty;">You have added {{ totalScanned }} serial(s) to this transfer. If you leave now, they will be removed and the transfer will not be created.</p>
-        <div style="display: flex; justify-content: flex-end; gap: 16px; padding: 0 24px 24px;">
-          <button type="button" onClick="{{ stayHere }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">No, stay</button>
-          <button type="button" onClick="{{ goHome }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">Yes, discard</button>
+        <div class="ak-modal__body" style="text-wrap: pretty;">You have added {{ totalScanned }} serial(s) to this transfer. If you leave now, they will be removed and the transfer will not be created.</div>
+        <div class="ak-modal__footer">
+          <button type="button" class="ak-btn ak-btn--secondary" onClick="{{ stayHere }}">NO, STAY</button>
+          <button type="button" class="ak-btn ak-btn--primary" onClick="{{ goHome }}">YES, DISCARD</button>
         </div>
       </div>
     </div>
   </sc-if>
 
   <sc-if value="{{ flowSwitchOpen }}" hint-placeholder-val="{{ false }}">
-    <div onClick="{{ flowSwitchStay }}" style="position: fixed; inset: 0; z-index: 7000; background: rgba(14,36,63,0.45); display: flex; align-items: center; justify-content: center; padding: 24px;">
-      <div role="dialog" aria-modal="true" onClick="{{ stopProp }}" style="width: 600px; max-width: 100%; background: #ffffff; border-radius: 4px; box-shadow: 0 20px 40px rgba(16,24,40,0.2); display: flex; flex-direction: column;">
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px 0;">
-          <span style="font-size: 18px; line-height: 28px; font-weight: 600; color: #25282a;">{{ flowSwitchTitle }}</span>
-          <button type="button" onClick="{{ flowSwitchStay }}" aria-label="Close" style="flex: 0 0 32px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: #64748b; cursor: pointer;" style-hover="background: #eff1f3;">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
-          </button>
+    <div class="ak-overlay" onClick="{{ flowSwitchStay }}">
+      <div class="ak-modal" role="dialog" aria-modal="true" onClick="{{ stopProp }}">
+        <div class="ak-modal__header">
+          <h2 class="ak-modal__title">{{ flowSwitchTitle }}</h2>
+          <button type="button" class="ak-modal__close" onClick="{{ flowSwitchStay }}" aria-label="Close" data-icon="times"></button>
         </div>
-        <p style="margin: 0; padding: 16px 24px 48px; font-size: 14px; line-height: 22px; color: #25282a; text-wrap: pretty;">{{ flowSwitchBody }}</p>
-        <div style="display: flex; justify-content: flex-end; gap: 16px; padding: 0 24px 24px;">
-          <button type="button" onClick="{{ flowSwitchStay }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">No, stay</button>
-          <button type="button" onClick="{{ flowSwitchGo }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">Yes, switch</button>
+        <div class="ak-modal__body" style="text-wrap: pretty;">{{ flowSwitchBody }}</div>
+        <div class="ak-modal__footer">
+          <button type="button" class="ak-btn ak-btn--secondary" onClick="{{ flowSwitchStay }}">NO, STAY</button>
+          <button type="button" class="ak-btn ak-btn--primary" onClick="{{ flowSwitchGo }}">YES, SWITCH</button>
         </div>
       </div>
     </div>
   </sc-if>
 
   <sc-if value="{{ toastOpen }}" hint-placeholder-val="{{ false }}">
-    <div role="status" style="position: fixed; top: 72px; right: 24px; z-index: 8000; width: 400px; max-width: calc(100vw - 48px); display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 20px; background: {{ toastBg }}; border-radius: 6px; box-shadow: inset 6px 0 0 {{ toastAccent }}, 0 12px 24px rgba(16,24,40,0.12);">
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="flex: 0 0 22px; color: {{ toastAccent }};"><path d="M19 10.3V11a8 8 0 1 1-4.7-7.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><path d="m19 4-8 8-2.5-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-      <span style="flex: 1; min-width: 0; font-size: 14px; line-height: 20px; color: #25282a;">{{ toastText }}</span>
-      <button type="button" onClick="{{ closeToast }}" aria-label="Dismiss" style="flex: 0 0 32px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: #465161; cursor: pointer;" style-hover="background: rgba(9,81,146,0.08);">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
-      </button>
+    <div class="ak-toast-region" style="z-index: 8000;">
+      <div role="status" class="{{ toastCls }}">
+        <span class="ak-alert__icon" data-icon="{{ toastIcon }}"></span>
+        <div class="ak-alert__text">{{ toastText }}</div>
+        <button type="button" class="ak-alert__close" onClick="{{ closeToast }}" aria-label="Dismiss" data-icon="times"></button>
+      </div>
     </div>
   </sc-if>
 
 
   <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
-    <div onClick="{{ closePanel }}" style="position: fixed; inset: 0; background: rgba(11,42,74,0.28); z-index: 6000;"></div>
-    <div role="dialog" aria-label="Selected for transfer" style="position: fixed; top: 0; right: 0; bottom: 0; width: min(900px, 62vw); min-width: 440px; background: #ffffff; z-index: 6001; display: flex; flex-direction: column; box-shadow: 0 20px 48px rgba(11,42,74,0.24); animation: ntSheetIn 160ms cubic-bezier(0.2,0,0,1); color: #25282a; text-align: left;">
-      <div style="display: flex; align-items: stretch; border-bottom: 1px solid #e3e8ed; flex: 0 0 auto;">
-        <div style="flex: 1; min-width: 0; display: flex; align-items: center; padding: 22px 24px; font-size: 24px; font-weight: 600; letter-spacing: -0.3px;">Selected for Transfer ({{ pnProducts }})</div>
-        <div style="display: flex; align-items: center; padding: 0 24px;">
-          <svg onClick="{{ closePanel }}" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B6B7B" stroke-width="1.6" style="cursor: pointer; flex: 0 0 22px;"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+    <div class="ak-overlay" onClick="{{ closePanel }}" style="display: block;"></div>
+    <aside class="ak-panel" role="dialog" aria-label="Selected for transfer" style="animation: ntSheetIn 160ms cubic-bezier(0.2,0,0,1); text-align: left;">
+      <div class="ak-panel__header">
+        <div class="ak-panel__title-row">
+          <h2 class="ak-panel__title">Selected for Transfer ({{ pnProducts }})</h2>
+          <button type="button" class="ak-panel__close" onClick="{{ closePanel }}" aria-label="Close" data-icon="times"></button>
         </div>
       </div>
 
-      <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding: 20px 24px 16px; flex: 0 0 auto;">
-        <div style="flex: 1 1 200px; display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 12px; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px;">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="color: #6b7480; flex-shrink: 0;"><rect x="2" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="11" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="2" y="11" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><path d="M11 11h2v2h-2zM14 14h2v2h-2zM14 11h2M11 15v1" stroke="currentColor" stroke-width="1.3"></path></svg>
-          <input type="text" value="{{ pnQDraft }}" onChange="{{ pnOnQ }}" onKeyDown="{{ pnOnQKey }}" placeholder="Name/NDC/Serial" style="flex: 1; min-width: 0; height: 100%; border: none; outline: none; font-family: inherit; font-size: 14px; color: #21252b; background: transparent;" />
-        </div>
-        <div style="position: relative; flex: 1 1 160px;">
-          <select value="{{ pnInv }}" onChange="{{ pnOnInv }}" style="width: 100%; height: 40px; padding: 0 36px 0 12px; font-family: inherit; font-size: 14px; color: #21252b; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer;" style-focus="border-color: #095192;">
+      <div class="ak-panel__section" style="display: flex; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <span class="ak-input" style="flex: 1 1 200px; min-width: 0;">
+          <span class="ak-icon" data-icon="qrcode"></span>
+          <input type="text" value="{{ pnQDraft }}" onChange="{{ pnOnQ }}" onKeyDown="{{ pnOnQKey }}" placeholder="Name/NDC/Serial" />
+        </span>
+        <span class="ak-input ak-select" style="flex: 1 1 160px; min-width: 0;">
+          <select value="{{ pnInv }}" onChange="{{ pnOnInv }}">
             <option value="All">Inventory Type: All</option>
             <sc-for list="{{ invOptions }}" as="o" hint-placeholder-count="9">
               <option value="{{ o }}">{{ o }}</option>
             </sc-for>
           </select>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="position: absolute; right: 12px; top: 13px; color: #6b7480; pointer-events: none;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.266Z" fill="currentColor"></path></svg>
-        </div>
-        <div style="position: relative; flex: 1 1 160px;">
-          <select value="{{ pnSrc }}" onChange="{{ pnOnSrc }}" style="width: 100%; height: 40px; padding: 0 36px 0 12px; font-family: inherit; font-size: 14px; color: #21252b; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer;" style-focus="border-color: #095192;">
+        </span>
+        <span class="ak-input ak-select" style="flex: 1 1 160px; min-width: 0;">
+          <select value="{{ pnSrc }}" onChange="{{ pnOnSrc }}">
             <sc-for list="{{ pnSources }}" as="o" hint-placeholder-count="2">
               <option value="{{ o.value }}">{{ o.label }}</option>
             </sc-for>
           </select>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="position: absolute; right: 12px; top: 13px; color: #6b7480; pointer-events: none;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.266Z" fill="currentColor"></path></svg>
-        </div>
+        </span>
         <div style="display: flex; align-items: center; gap: 12px;">
-          <button type="button" onClick="{{ pnReset }}" aria-label="Reset" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">
-            <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M3.2 8a4.8 4.8 0 1 0 1.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path><path d="M4.4 2v2.7h2.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          </button>
-          <button type="button" onClick="{{ pnApply }}" aria-label="Search" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">
-            <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.8" stroke="currentColor" stroke-width="1.5"></circle><path d="m10.6 10.6 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
-          </button>
+          <button type="button" class="ak-btn ak-btn--secondary ak-btn--icon" onClick="{{ pnReset }}" aria-label="Reset"><span class="ak-icon" data-icon="undo"></span></button>
+          <button type="button" class="ak-btn ak-btn--primary ak-btn--icon" onClick="{{ pnApply }}" aria-label="Search"><span class="ak-icon" data-icon="search"></span></button>
         </div>
       </div>
 
-      <div style="flex: 1; min-height: 0; overflow: auto; padding: 0 24px 24px; display: flex; flex-direction: column; gap: 16px;">
+      <div class="ak-panel__body" style="padding: 0 24px 24px; display: flex; flex-direction: column; gap: 16px;">
         <sc-for list="{{ pnCards }}" as="c" hint-placeholder-count="2">
-          <div style="flex: 0 0 auto; border: 1px solid #e3e7ed; border-radius: 4px; background: #ffffff; overflow: hidden;">
-            <div style="display: flex; align-items: center; gap: 16px; padding: 14px 20px; background: #f8fafc; border-bottom: 1px solid #e3e7ed;">
+          <div class="ak-card ak-card--static" style="flex: 0 0 auto;">
+            <div class="ak-card__head">
               <div style="flex: 1; min-width: 0;">
                 <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">
-                  <span style="font-size: 16px; line-height: 24px; font-weight: 500; color: #25282a;">{{ c.name }}</span>
+                  <span class="ak-product__name ak-body ak-medium">{{ c.name }}</span>
                   <sc-for list="{{ c.chips }}" as="chip" hint-placeholder-count="1">
-                    <span style="display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.2px; white-space: nowrap; background: {{ chip.bg }}; color: {{ chip.fg }};">{{ chip.label }}</span>
+                    <span class="{{ chip.cls }}">{{ chip.label }}</span>
                   </sc-for>
                 </div>
-                <div style="margin-top: 2px; font-size: 13px; color: #6b7280;">{{ c.desc }}</div>
+                <span class="ak-product__generic">{{ c.desc }}</span>
               </div>
               <sc-if value="{{ c.hasPatient }}" hint-placeholder-val="{{ false }}">
-                <span title="Patient-specific inventory" style="display: flex;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color: #095192; flex-shrink: 0;"><circle cx="10" cy="5.5" r="3" stroke="currentColor" stroke-width="1.4"></circle><path d="M3.5 17.5c0-3.3 2.9-5.8 6.5-5.8s6.5 2.5 6.5 5.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path><path d="M10 17.6l-1.7-1.6a1.1 1.1 0 0 1 1.7-1.3 1.1 1.1 0 0 1 1.7 1.3Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"></path></svg></span>
+                <span title="Patient-specific inventory" style="display: flex;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color: var(--ak-brand); flex-shrink: 0;"><circle cx="10" cy="5.5" r="3" stroke="currentColor" stroke-width="1.4"></circle><path d="M3.5 17.5c0-3.3 2.9-5.8 6.5-5.8s6.5 2.5 6.5 5.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path><path d="M10 17.6l-1.7-1.6a1.1 1.1 0 0 1 1.7-1.3 1.1 1.1 0 0 1 1.7 1.3Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"></path></svg></span>
               </sc-if>
-              <button type="button" onClick="{{ c.unselect }}" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 8px; font-family: inherit; font-size: 14px; font-weight: 500; color: #D9342B; background: transparent; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap; flex-shrink: 0;" style-hover="background: #fbe5e4;">Unselect</button>
+              <button type="button" class="ak-btn ak-btn--tertiary ak-btn--danger" onClick="{{ c.unselect }}" style="flex-shrink: 0;">Unselect</button>
             </div>
-            <div style="display: flex; flex-wrap: wrap; gap: 12px 48px; padding: 14px 20px;">
-              <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 14px; color: #6b7480;">NDC</span><span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ c.ndc }}</span></div>
-              <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 14px; color: #6b7480;">Inventory Type</span><span style="font-size: 14px; font-weight: 500; color: {{ c.invColor }};">{{ c.invType }}</span></div>
-              <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 14px; color: #6b7480;">Inventory</span><span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ c.invLabel }}</span></div>
+            <div class="ak-card__body ak-stats" style="gap: 48px;">
+              <div class="ak-stat" style="flex: none;"><span class="ak-stat__label">NDC</span><span class="ak-stat__value">{{ c.ndc }}</span></div>
+              <div class="ak-stat" style="flex: none;"><span class="ak-stat__label">Inventory Type</span><span class="ak-stat__value {{ c.invCls }}">{{ c.invType }}</span></div>
+              <div class="ak-stat" style="flex: none;"><span class="ak-stat__label">Inventory</span><span class="ak-stat__value">{{ c.invLabel }}</span></div>
             </div>
           </div>
         </sc-for>
         <sc-if value="{{ pnEmpty }}" hint-placeholder-val="{{ false }}">
-          <div style="padding: 40px 16px; text-align: center; font-size: 14px; color: #6b7480;">{{ pnEmptyText }}</div>
+          <div class="ak-empty" style="padding: 40px 16px;">{{ pnEmptyText }}</div>
         </sc-if>
       </div>
 
-      <div style="flex: 0 0 auto; display: flex; justify-content: flex-end; gap: 16px; padding: 16px 24px; border-top: 1px solid #e3e8ed;">
-        <button type="button" onClick="{{ closePanel }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Close</button>
-        <button type="button" onClick="{{ pnSave }}" aria-disabled="{{ pnClean }}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ pnSaveFg }}; background: {{ pnSaveBg }}; border: 1px solid {{ pnSaveBd }}; border-radius: 4px; cursor: {{ pnSaveCursor }};">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.3" stroke="currentColor" stroke-width="1.4"></circle><path d="m5.3 8.2 1.9 1.9 3.6-3.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          Save
+      <div class="ak-panel__footer">
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--secondary" onClick="{{ closePanel }}">CLOSE</button>
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--primary" onClick="{{ pnSave }}" disabled="{{ pnClean }}">
+          <span class="ak-icon" data-icon="check-circle"></span>
+          SAVE
         </button>
       </div>
-    </div>
+    </aside>
   </sc-if>
 
   <sc-if value="{{ vpOpen }}" hint-placeholder-val="{{ false }}">
-    <div onClick="{{ vpClose }}" style="position: fixed; inset: 0; background: rgba(11,42,74,0.28); z-index: 6000;"></div>
-    <div role="dialog" aria-label="Selected for transfer" style="position: fixed; top: 0; right: 0; bottom: 0; width: min(900px, 62vw); min-width: 440px; background: #ffffff; z-index: 6001; display: flex; flex-direction: column; box-shadow: 0 20px 48px rgba(11,42,74,0.24); animation: ntSheetIn 160ms cubic-bezier(0.2,0,0,1); color: #25282a; text-align: left;">
-      <div style="display: flex; align-items: stretch; border-bottom: 1px solid #e3e8ed; flex: 0 0 auto;">
-        <div style="flex: 1; min-width: 0; display: flex; align-items: center; padding: 22px 24px; font-size: 22px; font-weight: 400;">Selected for Transfer</div>
-        <div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 2px; padding: 12px 24px; border-left: 1px solid #e3e8ed;">
-          <span style="font-size: 14px; color: #6b7480;">Products</span><span style="font-size: 28px; line-height: 34px;">{{ vpProducts }}</span>
-        </div>
-        <div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 2px; padding: 12px 24px; border-left: 1px solid #e3e8ed;">
-          <span style="font-size: 14px; color: #6b7480;">Items</span><span style="font-size: 28px; line-height: 34px;">{{ vpItems }}</span>
+    <div class="ak-overlay" onClick="{{ vpClose }}" style="display: block;"></div>
+    <aside class="ak-panel" role="dialog" aria-label="Selected for transfer" style="animation: ntSheetIn 160ms cubic-bezier(0.2,0,0,1); text-align: left;">
+      <div class="ak-panel__header" style="padding-top: 12px; padding-bottom: 12px;">
+        <div class="ak-panel__title-row">
+          <h2 class="ak-panel__title" style="font-weight: 400;">Selected for Transfer</h2>
+          <div style="display: flex; align-items: stretch;">
+            <div class="ak-counter" style="padding: 0 24px; border-left: 1px solid var(--ak-border-panel);">
+              <span class="ak-stat__label">Products</span><span class="ak-counter__value">{{ vpProducts }}</span>
+            </div>
+            <div class="ak-counter" style="padding: 0 0 0 24px; border-left: 1px solid var(--ak-border-panel);">
+              <span class="ak-stat__label">Items</span><span class="ak-counter__value">{{ vpItems }}</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding: 20px 24px 16px; flex: 0 0 auto;">
-        <div style="flex: 1 1 200px; display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 12px; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px;">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="color: #6b7480; flex-shrink: 0;"><rect x="2" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="11" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="2" y="11" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><path d="M11 11h2v2h-2zM14 14h2v2h-2zM14 11h2M11 15v1" stroke="currentColor" stroke-width="1.3"></path></svg>
-          <input type="text" value="{{ vpQDraft }}" onChange="{{ vpOnQ }}" onKeyDown="{{ vpOnQKey }}" placeholder="Name/NDC/AID/Serial" style="flex: 1; min-width: 0; height: 100%; border: none; outline: none; font-family: inherit; font-size: 14px; color: #21252b; background: transparent;" />
-        </div>
-        <div style="position: relative; flex: 0 1 180px;">
-          <select value="{{ vpInv }}" onChange="{{ vpOnInv }}" style="width: 100%; height: 40px; padding: 0 36px 0 12px; font-family: inherit; font-size: 14px; color: #21252b; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer;">
+      <div class="ak-panel__section" style="display: flex; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <span class="ak-input" style="flex: 1 1 200px; min-width: 0;">
+          <span class="ak-icon" data-icon="qrcode"></span>
+          <input type="text" value="{{ vpQDraft }}" onChange="{{ vpOnQ }}" onKeyDown="{{ vpOnQKey }}" placeholder="Name/NDC/AID/Serial" />
+        </span>
+        <span class="ak-input ak-select" style="flex: 0 1 180px; min-width: 0;">
+          <select value="{{ vpInv }}" onChange="{{ vpOnInv }}">
             <option value="All">Inventory Type</option>
             <sc-for list="{{ invOptions }}" as="o" hint-placeholder-count="9"><option value="{{ o }}">{{ o }}</option></sc-for>
           </select>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="position: absolute; right: 12px; top: 13px; color: #6b7480; pointer-events: none;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.234Z" fill="currentColor"></path></svg>
-        </div>
-        <div style="position: relative; flex: 0 1 180px;">
-          <select value="{{ vpSrc }}" onChange="{{ vpOnSrc }}" style="width: 100%; height: 40px; padding: 0 36px 0 12px; font-family: inherit; font-size: 14px; color: #21252b; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer;">
+        </span>
+        <span class="ak-input ak-select" style="flex: 0 1 180px; min-width: 0;">
+          <select value="{{ vpSrc }}" onChange="{{ vpOnSrc }}">
             <option value="All">Source</option>
             <sc-for list="{{ vpSrcOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o }}">{{ o }}</option></sc-for>
           </select>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="position: absolute; right: 12px; top: 13px; color: #6b7480; pointer-events: none;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.234Z" fill="currentColor"></path></svg>
-        </div>
-        <button type="button" onClick="{{ vpReset }}" aria-label="Reset filters" title="Reset" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">
-          <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M3.2 8a4.8 4.8 0 1 0 1.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path><path d="M4.4 2v2.7h2.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-        </button>
-        <button type="button" onClick="{{ vpApply }}" aria-label="Search" title="Search" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">
-          <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.6" stroke="currentColor" stroke-width="1.5"></circle><path d="m10.5 10.5 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
-        </button>
+        </span>
+        <button type="button" class="ak-btn ak-btn--secondary ak-btn--icon" onClick="{{ vpReset }}" aria-label="Reset filters" title="Reset"><span class="ak-icon" data-icon="undo"></span></button>
+        <button type="button" class="ak-btn ak-btn--primary ak-btn--icon" onClick="{{ vpApply }}" aria-label="Search" title="Search"><span class="ak-icon" data-icon="search"></span></button>
       </div>
 
-      <div style="flex: 1 1 auto; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; padding: 4px 24px 24px;">
+      <div class="ak-panel__body" style="display: flex; flex-direction: column; gap: 20px; padding: 4px 24px 24px;">
         <sc-for list="{{ vpCards }}" as="g" hint-placeholder-count="2">
-          <div style="flex-shrink: 0; border: 1px solid #e3e7ed; border-radius: 4px; overflow: hidden;">
-            <div style="display: flex; align-items: center; gap: 16px; padding: 12px 20px; background: #f8fafc; border-bottom: 1px solid #e3e7ed;">
+          <div class="ak-card ak-card--static" style="flex-shrink: 0;">
+            <div class="ak-card__head">
               <div style="flex: 1; min-width: 0;">
                 <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">
-                  <span style="font-size: 18px; line-height: 26px;">{{ g.name }}</span>
+                  <span class="ak-product__name ak-h5">{{ g.name }}</span>
                   <sc-for list="{{ g.chips }}" as="chip" hint-placeholder-count="1">
-                    <span style="display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.2px; background: {{ chip.bg }}; color: {{ chip.fg }};">{{ chip.label }}</span>
+                    <span class="{{ chip.cls }}">{{ chip.label }}</span>
                   </sc-for>
                 </div>
-                <div style="margin-top: 2px; font-size: 14px; color: #6b7480;">{{ g.desc }}</div>
+                <span class="ak-product__generic">{{ g.desc }}</span>
               </div>
-              <button type="button" onClick="{{ g.toggle }}" aria-expanded="{{ g.open }}" style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 4px; font-family: inherit; font-size: 15px; font-weight: 500; color: #095192; background: transparent; border: none; cursor: pointer; white-space: nowrap;">
+              <button type="button" class="ak-collapsible__toggle" onClick="{{ g.toggle }}" aria-expanded="{{ g.open }}" style="gap: 8px; white-space: nowrap;">
                 <sc-if value="{{ g.hasPatient }}" hint-placeholder-val="{{ false }}">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color: #095192;"><circle cx="10" cy="5.5" r="3" stroke="currentColor" stroke-width="1.4"></circle><path d="M3.5 17.5c0-3.3 2.9-5.8 6.5-5.8s6.5 2.5 6.5 5.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path><path d="M10 17.6l-1.7-1.6a1.1 1.1 0 0 1 1.7-1.3 1.1 1.1 0 0 1 1.7 1.3Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"></path></svg>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="color: var(--ak-brand);"><circle cx="10" cy="5.5" r="3" stroke="currentColor" stroke-width="1.4"></circle><path d="M3.5 17.5c0-3.3 2.9-5.8 6.5-5.8s6.5 2.5 6.5 5.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path><path d="M10 17.6l-1.7-1.6a1.1 1.1 0 0 1 1.7-1.3 1.1 1.1 0 0 1 1.7 1.3Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"></path></svg>
                 </sc-if>
                 {{ g.toggleLabel }}
-                <svg width="12" height="12" viewBox="0 0 14 14" fill="none" style="transform: rotate({{ g.chevRot }});"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span class="ak-icon ak-icon--16 ak-icon--current" data-icon="chevron-down" style="transform: rotate({{ g.chevRot }});"></span>
               </button>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 16px; padding: 14px 20px;">
-              <span style="font-size: 14px; color: #6b7480;">NDC</span>
-              <span style="font-size: 14px; color: #6b7480;">Inventory Type</span>
-              <span style="font-size: 14px; color: #6b7480;">Selected Items</span>
-              <span style="font-size: 15px;">{{ g.ndc }}</span>
-              <span style="font-size: 15px; color: {{ g.invColor }};">{{ g.invType }}</span>
-              <span style="font-size: 15px;">{{ g.countLabel }}</span>
+            <div class="ak-card__body ak-stats">
+              <div class="ak-stat"><span class="ak-stat__label">NDC</span><span class="ak-stat__value">{{ g.ndc }}</span></div>
+              <div class="ak-stat"><span class="ak-stat__label">Inventory Type</span><span class="ak-stat__value {{ g.invCls }}">{{ g.invType }}</span></div>
+              <div class="ak-stat"><span class="ak-stat__label">Selected Items</span><span class="ak-stat__value">{{ g.countLabel }}</span></div>
             </div>
             <sc-if value="{{ g.open }}" hint-placeholder-val="{{ false }}">
-              <div style="display: flex; flex-direction: column; gap: 16px; padding: 0 20px 20px;">
+              <div style="display: flex; flex-direction: column; gap: 16px; padding: 0 16px 16px;">
                 <sc-if value="{{ g.hasPatient }}" hint-placeholder-val="{{ false }}">
-                  <div style="display: flex; align-items: stretch; background: #f8fafc; border: 1px solid #e3e7ed; border-radius: 4px; border-top: 1px solid #e3e7ed;">
-                    <div style="flex: 1; min-width: 0; padding: 12px 20px;">
-                      <div style="font-size: 18px; line-height: 26px;">{{ g.ptLast }}</div>
-                      <div style="font-size: 14px; font-style: italic; color: #6b7480;">{{ g.ptFirst }}</div>
+                  <div class="ak-box" style="display: flex; align-items: stretch; background: var(--ak-bg-table-header);">
+                    <div style="flex: 1; min-width: 0; padding: 12px 16px;">
+                      <div class="ak-h5">{{ g.ptLast }}</div>
+                      <div class="ak-italic ak-muted">{{ g.ptFirst }}</div>
                     </div>
-                    <div style="display: grid; grid-template-columns: auto auto; gap: 2px 8px; align-content: center; padding: 12px 20px; border-left: 1px solid #e3e7ed; font-size: 15px;">
-                      <span style="color: #6b7480;">ID</span><span>{{ g.ptId }}</span>
-                      <span style="color: #6b7480;">DOB</span><span>{{ g.ptDob }}</span>
+                    <div class="ak-body" style="display: grid; grid-template-columns: auto auto; gap: 2px 8px; align-content: center; padding: 12px 16px; border-left: 1px solid var(--ak-border-table);">
+                      <span class="ak-label">ID</span><span>{{ g.ptId }}</span>
+                      <span class="ak-label">DOB</span><span>{{ g.ptDob }}</span>
                     </div>
                   </div>
                 </sc-if>
                 <div style="display: flex; justify-content: flex-end;">
-                  <button type="button" onClick="{{ g.removeChecked }}" aria-disabled="{{ g.noneChecked }}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ g.rmFg }}; background: #ffffff; border: 1px solid {{ g.rmBd }}; border-radius: 4px; cursor: {{ g.rmCursor }};">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"></circle><rect x="2.4" y="6.5" width="11.2" height="3" rx="1.5" fill="#ffffff"></rect></svg>
-                    Remove
+                  <button type="button" class="ak-btn ak-btn--secondary ak-btn--danger" onClick="{{ g.removeChecked }}" disabled="{{ g.noneChecked }}">
+                    <span class="ak-icon" data-icon="minus-circle"></span>
+                    REMOVE
                   </button>
                 </div>
-                <div style="border: 1px solid #e9ecf1; border-radius: 4px; overflow: hidden;">
-                  <table style="width: 100%; border-collapse: collapse;">
+                <div class="ak-box">
+                  <table class="ak-table ak-table--compact">
                     <thead>
-                      <tr style="background: #f8fafc;">
-                        <th style="width: 1%; padding: 12px 8px 12px 16px; border-bottom: 1px solid #e9ecf1;">
-                          <div onClick="{{ g.toggleAll }}" role="checkbox" aria-checked="{{ g.allChecked }}" style="position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ g.allBg }}; border: 1px solid {{ g.allBd }}; cursor: pointer;">
-                            <sc-if value="{{ g.allChecked }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
-                          </div>
+                      <tr>
+                        <th class="ak-cell-check">
+                          <div class="ak-check" onClick="{{ g.toggleAll }}" role="checkbox" aria-checked="{{ g.allChecked }}"></div>
                         </th>
-                        <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; border-bottom: 1px solid #e9ecf1;"><div>Serial</div><div style="margin-top: 2px; font-size: 13px; font-weight: 400; font-style: italic; color: #6b7280;">Lot</div></th>
-                        <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; border-bottom: 1px solid #e9ecf1;">Expiration</th>
-                        <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; border-bottom: 1px solid #e9ecf1;">Source</th>
-                        <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; border-bottom: 1px solid #e9ecf1;">Quantity</th>
-                        <th style="width: 56px; padding: 12px 16px; border-bottom: 1px solid #e9ecf1;"></th>
+                        <th>Serial<span class="ak-th__sub">Lot</span></th>
+                        <th>Expiration</th>
+                        <th>Source</th>
+                        <th>Quantity</th>
+                        <th class="ak-cell-action"></th>
                       </tr>
                     </thead>
                     <tbody>
                       <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="2">
                         <tr>
-                          <td style="padding: 12px 8px 12px 16px; border-bottom: 1px solid #eef1f5;">
-                            <div onClick="{{ r.toggle }}" role="checkbox" aria-checked="{{ r.checked }}" style="position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ r.boxBg }}; border: 1px solid {{ r.boxBd }}; cursor: pointer;">
-                              <sc-if value="{{ r.checked }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
-                            </div>
+                          <td class="ak-cell-check">
+                            <div class="ak-check" onClick="{{ r.toggle }}" role="checkbox" aria-checked="{{ r.checked }}"></div>
                           </td>
-                          <td style="padding: 12px 16px; border-bottom: 1px solid #eef1f5;"><div style="font-size: 14px;">{{ r.serial }}</div><div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ r.lot }}</div></td>
-                          <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; white-space: nowrap;">{{ r.expiration }}</td>
-                          <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5;">{{ r.source }}</td>
-                          <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; white-space: nowrap;">{{ r.qty }}</td>
-                          <td style="padding: 8px 16px; border-bottom: 1px solid #eef1f5;">
-                            <button type="button" onClick="{{ r.remove }}" aria-label="Remove serial" title="Remove" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: #FF3300; cursor: pointer;" style-hover="background: #fbe5e4;">
-                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"></circle><rect x="2.4" y="6.5" width="11.2" height="3" rx="1.5" fill="#ffffff"></rect></svg>
-                            </button>
+                          <td>{{ r.serial }}<span class="ak-cell-sub">{{ r.lot }}</span></td>
+                          <td style="white-space: nowrap;">{{ r.expiration }}</td>
+                          <td>{{ r.source }}</td>
+                          <td style="white-space: nowrap;">{{ r.qty }}</td>
+                          <td class="ak-cell-action">
+                            <button type="button" class="ak-btn ak-btn--tertiary ak-btn--danger" onClick="{{ r.remove }}" aria-label="Remove serial" title="Remove"><span class="ak-icon" data-icon="minus-circle"></span></button>
                           </td>
                         </tr>
                       </sc-for>
@@ -287,18 +275,18 @@
           </div>
         </sc-for>
         <sc-if value="{{ vpEmpty }}" hint-placeholder-val="{{ false }}">
-          <div style="padding: 48px 16px; text-align: center; font-size: 14px; line-height: 22px; color: #6b7480;">{{ vpEmptyText }}</div>
+          <div class="ak-empty" style="padding: 48px 16px;">{{ vpEmptyText }}</div>
         </sc-if>
       </div>
 
-      <div style="display: flex; justify-content: flex-end; gap: 16px; padding: 14px 24px; border-top: 1px solid #e3e8ed; flex: 0 0 auto;">
-        <button type="button" onClick="{{ vpClose }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Close</button>
-        <button type="button" onClick="{{ vpSave }}" aria-disabled="{{ vpClean }}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ vpSaveFg }}; background: {{ vpSaveBg }}; border: 1px solid {{ vpSaveBd }}; border-radius: 4px; cursor: {{ vpSaveCursor }};">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.3" stroke="currentColor" stroke-width="1.4"></circle><path d="m5.3 8.2 1.9 1.9 3.6-3.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          Save
+      <div class="ak-panel__footer">
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--secondary" onClick="{{ vpClose }}">CLOSE</button>
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--primary" onClick="{{ vpSave }}" disabled="{{ vpClean }}">
+          <span class="ak-icon" data-icon="check-circle"></span>
+          SAVE
         </button>
       </div>
-    </div>
+    </aside>
   </sc-if>
 
   <dc-import name="App Side Nav" selected="Transfer" hint-size="70px,100vh"></dc-import>
@@ -308,229 +296,219 @@
 
   <sc-if value="{{ isStep0 }}" hint-placeholder-val="{{ true }}">
   <div style="padding: 0 0 96px;" data-screen-label="Step 0 Select location">
-    <div style="display: flex; flex-direction: column; gap: 4px; padding: 16px 24px; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
-      <div style="font-size: 20px; line-height: 28px; font-weight: 500; color: #25282a;">New Transfer</div>
-      <div style="font-size: 14px; color: #25282a;">Select the receiving location</div>
+    <div class="ak-page-header">
+      <div>
+        <h1 class="ak-page-title">New Transfer</h1>
+        <p class="ak-page-subtitle">Select the receiving location</p>
+      </div>
     </div>
     <div style="display: grid; grid-template-columns: minmax(240px, 360px) minmax(0, 1fr); min-height: calc(100vh - 220px);">
-      <div style="display: flex; flex-direction: column; gap: 20px; padding: 24px; border-right: 1px solid #e3e7ed;">
-        <label style="display: flex; flex-direction: column; gap: 8px;">
-          <span style="font-size: 14px; font-weight: 500; color: #25282a;">Select Practice</span>
-          <div style="position: relative;">
-            <select value="{{ practiceVal }}" onChange="{{ onPractice }}" style="width: 100%; height: 40px; padding: 0 36px 0 12px; font-family: inherit; font-size: 14px; color: #21252b; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer;" style-focus="border-color: #095192;">
+      <div style="display: flex; flex-direction: column; gap: 20px; padding: 24px; border-right: 1px solid var(--ak-border-divider);">
+        <label class="ak-field">
+          <span class="ak-field__label">Select Practice</span>
+          <span class="ak-input ak-select">
+            <select value="{{ practiceVal }}" onChange="{{ onPractice }}">
               <sc-for list="{{ practiceOpts }}" as="o" hint-placeholder-count="2"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
             </select>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="position: absolute; right: 12px; top: 13px; color: #6b7480; pointer-events: none;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.266Z" fill="currentColor"></path></svg>
-          </div>
+          </span>
         </label>
-        <label style="display: flex; flex-direction: column; gap: 8px;">
-          <span style="font-size: 14px; font-weight: 500; color: #25282a;">Select Clinic</span>
-          <div style="position: relative;">
-            <select value="{{ clinicVal }}" onChange="{{ onClinic }}" style="width: 100%; height: 40px; padding: 0 36px 0 12px; font-family: inherit; font-size: 14px; color: #21252b; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer;" style-focus="border-color: #095192;">
+        <label class="ak-field">
+          <span class="ak-field__label">Select Clinic</span>
+          <span class="ak-input ak-select">
+            <select value="{{ clinicVal }}" onChange="{{ onClinic }}">
               <sc-for list="{{ clinicOpts }}" as="o" hint-placeholder-count="3"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
             </select>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="position: absolute; right: 12px; top: 13px; color: #6b7480; pointer-events: none;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.266Z" fill="currentColor"></path></svg>
-          </div>
+          </span>
         </label>
       </div>
       <div style="display: flex; flex-direction: column; gap: 16px; padding: 24px; min-width: 0;">
-        <div style="font-size: 16px; line-height: 24px; font-weight: 500; color: #25282a;">Select Station</div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;">
+        <div class="ak-body ak-medium">Select Station</div>
+        <div class="ak-tiles">
           <sc-for list="{{ stations }}" as="st" hint-placeholder-count="6">
-            <button type="button" onClick="{{ st.select }}" aria-pressed="{{ st.on }}" style="min-height: 88px; padding: 16px; display: flex; align-items: center; justify-content: center; text-align: center; font-family: inherit; font-size: 15px; line-height: 22px; color: {{ st.fg }}; background: {{ st.bg }}; border: 1px solid {{ st.bd }}; border-radius: 4px; cursor: pointer; text-wrap: pretty;" style-hover="background: {{ st.hoverBg }};">{{ st.name }}</button>
+            <button type="button" class="ak-tile" onClick="{{ st.select }}" aria-pressed="{{ st.on }}" style="text-wrap: pretty;">{{ st.name }}</button>
           </sc-for>
         </div>
       </div>
     </div>
-    <div style="position: fixed; bottom: 0; left: 70px; right: 0; z-index: 50; display: flex; align-items: center; justify-content: flex-end; gap: 16px; padding: 14px 24px; background: #ffffff; border-top: 1px solid #e3e7ed; box-shadow: 0 -2px 8px rgba(16,24,40,0.06);">
-      <button type="button" onClick="{{ cancel0 }}" style="white-space: nowrap; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Cancel</button>
-      <button type="button" onClick="{{ onNext0 }}" aria-disabled="{{ next0Disabled }}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ next0Fg }}; background: {{ next0Bg }}; border: 1px solid {{ next0Bd }}; border-radius: 4px; cursor: {{ next0Cursor }};">
-        Next
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h9.5M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-      </button>
+    <div class="ak-bottom-bar">
+      <div class="ak-bottom-bar__actions">
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--secondary" onClick="{{ cancel0 }}">CANCEL</button>
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--primary" onClick="{{ onNext0 }}" disabled="{{ next0Disabled }}">
+          NEXT
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h9.5M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </button>
+      </div>
     </div>
   </div>
   </sc-if>
 
   <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ false }}">
   <div style="padding: 0 0 96px;" data-screen-label="Step 1 Select products">
-    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 24px; padding: 16px 24px; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
-      <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0;">
-        <div style="font-size: 20px; line-height: 28px; font-weight: 500; color: #25282a;">New Transfer</div>
-        <div style="font-size: 14px; color: #25282a;">Select products to transfer</div>
+    <div class="ak-page-header" style="align-items: center; flex-wrap: wrap;">
+      <div style="min-width: 0;">
+        <h1 class="ak-page-title">New Transfer</h1>
+        <p class="ak-page-subtitle">Select products to transfer</p>
       </div>
       <div style="display: flex; align-items: center; gap: 24px; margin-left: auto;">
-        <div style="display: grid; grid-template-columns: auto auto; gap: 6px 12px; align-items: center;">
-          <span style="font-size: 14px; color: #6b7480;">Sending Location</span>
-          <span style="font-size: 14px; font-weight: 500; color: #25282a;">Onco Clinic Center / Onco Station</span>
-          <span style="font-size: 14px; color: #6b7480;">Receiving Location</span>
-          <span onClick="{{ changeLocation }}" role="button" title="Change receiving location" style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; color: #095192; cursor: pointer;" style-hover="color: #073f73;">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12l.6-2.6 7-7a1.2 1.2 0 0 1 1.8 0l.2.2a1.2 1.2 0 0 1 0 1.8l-7 7L2 12Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg>
-            <span style="text-decoration: underline;">{{ recvLabel }}</span>
-          </span>
-        </div>
-        <div onClick="{{ openPanel }}" role="button" title="View selected products" style="display: flex; align-items: center; gap: 12px; padding: 8px 12px 8px 16px; border: 1px solid #e3e7ed; border-radius: 4px; min-width: 140px; cursor: pointer;" style-hover="background: #f5f9fe; border-color: #095192;">
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1;">
-            <span style="font-size: 13px; font-weight: 500; color: #6b7480; white-space: nowrap;">Products Selected</span>
-            <span style="font-size: 18px; font-weight: 500; color: #25282a;">{{ selCount }}</span>
+        <div class="ak-transfer-info">
+          <div class="ak-transfer-info__row">
+            <span class="ak-transfer-info__label">Sending Location</span>
+            <span class="ak-transfer-info__value">Onco Clinic Center / Onco Station</span>
           </div>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="color: #095192; flex-shrink: 0;"><path d="M4.5 2 9.5 7l-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <div class="ak-transfer-info__row">
+            <span class="ak-transfer-info__label">Receiving Location</span>
+            <a class="ak-link ak-transfer-info__value" onClick="{{ changeLocation }}" role="button" title="Change receiving location" style="display: inline-flex; align-items: center; gap: 6px;">
+              <span class="ak-icon ak-icon--16" data-icon="edit"></span>
+              {{ recvLabel }}
+            </a>
+          </div>
+        </div>
+        <div class="{{ selTileCls }}" onClick="{{ openPanel }}" role="button" title="View selected products">
+          <span class="ak-count-tile__label" style="white-space: nowrap;">Products Selected</span>
+          <span>{{ selCount }}</span>
         </div>
       </div>
     </div>
 
     <div style="padding: 24px; display: flex; flex-direction: column; gap: 24px;">
-      <div style="background: #f5f5f5; border: 1px solid #d8d8d8; border-radius: 4px; padding: 24px; display: flex; align-items: center; flex-wrap: wrap; gap: 16px;">
-        <input type="text" value="{{ searchDraft }}" onChange="{{ onSearchDraft }}" onKeyDown="{{ onSearchKey }}" placeholder="Search by Name or NDC" style="width: 240px; height: 40px; padding: 0 12px; font-size: 14px; font-family: inherit; color: #21252b; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; outline: none;" style-focus="border-color: #095192; box-shadow: 0 0 0 2px rgba(9,81,146,0.15);" />
-        <div style="position: relative; width: 240px;">
-          <select value="{{ invDraft }}" onChange="{{ onInvDraft }}" style="width: 100%; height: 40px; padding: 0 36px 0 12px; font-family: inherit; font-size: 14px; color: #21252b; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer;" style-focus="border-color: #095192;">
-            <option value="All">Inventory Type: All</option>
-            <sc-for list="{{ invOptions }}" as="o" hint-placeholder-count="9">
-              <option value="{{ o }}">{{ o }}</option>
-            </sc-for>
-          </select>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="position: absolute; right: 12px; top: 13px; color: #6b7480; pointer-events: none;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.266Z" fill="currentColor"></path></svg>
+      <div class="ak-search-filter" style="flex-wrap: wrap;">
+        <div class="ak-search-filter__fields">
+          <span class="ak-input" style="width: 240px;">
+            <input type="text" value="{{ searchDraft }}" onChange="{{ onSearchDraft }}" onKeyDown="{{ onSearchKey }}" placeholder="Search by Name or NDC" />
+          </span>
+          <span class="ak-input ak-select" style="width: 240px;">
+            <select value="{{ invDraft }}" onChange="{{ onInvDraft }}">
+              <option value="All">Inventory Type: All</option>
+              <sc-for list="{{ invOptions }}" as="o" hint-placeholder-count="9">
+                <option value="{{ o }}">{{ o }}</option>
+              </sc-for>
+            </select>
+          </span>
         </div>
-        <div style="display: flex; align-items: center; gap: 16px; margin-left: auto;">
-          <button type="button" onClick="{{ resetFilters }}" aria-label="Reset" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">
-            <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M3.2 8a4.8 4.8 0 1 0 1.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path><path d="M4.4 2v2.7h2.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          </button>
-          <button type="button" onClick="{{ applyFilters }}" aria-label="Search" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">
-            <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.8" stroke="currentColor" stroke-width="1.5"></circle><path d="m10.6 10.6 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
-          </button>
+        <div class="ak-search-filter__actions">
+          <button type="button" class="ak-btn ak-btn--lg ak-btn--secondary" onClick="{{ resetFilters }}" aria-label="Reset">RESET</button>
+          <button type="button" class="ak-btn ak-btn--lg ak-btn--primary" onClick="{{ applyFilters }}" aria-label="Search">SEARCH</button>
         </div>
       </div>
 
-      <div style="border: 1px solid #e9ecf1; border-radius: 6px; overflow-x: auto;">
-        <table style="width: 100%; min-width: 820px; border-collapse: collapse;">
+      <div class="ak-box" style="overflow-x: auto;">
+        <table class="ak-table" style="min-width: 820px;">
           <thead>
-            <tr style="background: #f8fafc;">
-              <th style="width: 56px; padding: 14px 0 14px 16px; text-align: left; border-bottom: 1px solid #e9ecf1;">
-                <div onClick="{{ toggleAll }}" style="position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ allBoxBg }}; border: 1px solid {{ allBoxBd }}; cursor: pointer;">
-                  <sc-if value="{{ allChecked }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
-                  <sc-if value="{{ someChecked }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; position: absolute;"><path d="M2 5h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></sc-if>
-                </div>
+            <tr>
+              <th class="ak-cell-check">
+                <div class="ak-check" onClick="{{ toggleAll }}" role="checkbox" aria-checked="{{ allAria }}"></div>
               </th>
-              <th style="width: 38%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;"><span onClick="{{ sort_name }}" style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">Product Name {{ ic_name }}</span></th>
-              <th style="width: 22%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1;">
-                <span onClick="{{ sort_ndc }}" style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">NDC/AIC {{ ic_ndc }}</span>
-                <div style="margin-top: 2px; font-size: 12px; font-weight: 400; font-style: italic; color: #6b7280;">Inventory Type</div>
-              </th>
-              <th style="width: 20%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
-                <span onClick="{{ sort_loc }}" style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">Location {{ ic_loc }}</span>
-                <div style="margin-top: 2px; font-size: 12px; font-weight: 400; font-style: italic; color: #6b7280;">Bin</div>
-              </th>
-              <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;"><span onClick="{{ sort_inv }}" style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">Inventory {{ ic_inv }}</span></th>
+              <th style="width: 38%;"><div class="ak-th__inner" onClick="{{ sort_name }}" style="cursor: pointer;"><span>Product Name</span>{{ ic_name }}</div></th>
+              <th style="width: 22%;"><div class="ak-th__inner" onClick="{{ sort_ndc }}" style="cursor: pointer;"><span>NDC/AIC<span class="ak-th__sub">Inventory Type</span></span>{{ ic_ndc }}</div></th>
+              <th style="width: 20%;"><div class="ak-th__inner" onClick="{{ sort_loc }}" style="cursor: pointer;"><span>Location<span class="ak-th__sub">Bin</span></span>{{ ic_loc }}</div></th>
+              <th><div class="ak-th__inner" onClick="{{ sort_inv }}" style="cursor: pointer;"><span>Inventory</span>{{ ic_inv }}</div></th>
             </tr>
           </thead>
           <tbody>
             <sc-for list="{{ pickRows }}" as="row" hint-placeholder-count="6">
-              <tr onClick="{{ row.toggle }}" style="background: {{ row.bg }}; cursor: pointer;" style-hover="background: #f5f9fe;">
-                <td style="padding: 16px 0 16px 16px; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                  <div style="position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ row.boxBg }}; border: 1px solid {{ row.boxBd }};">
-                    <sc-if value="{{ row.checked }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
-                  </div>
+              <tr class="{{ row.cls }}" onClick="{{ row.toggle }}" style="cursor: pointer;">
+                <td class="ak-cell-check">
+                  <div class="ak-check" role="checkbox" aria-checked="{{ row.checked }}"></div>
                 </td>
-                <td style="padding: 16px; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                  <div style="font-size: 14px; font-weight: 500; color: #21252b;">{{ row.name }}</div>
-                  <div style="margin-top: 4px; font-size: 13px; font-style: italic; color: #6b7280; line-height: 1.4;">{{ row.desc }}</div>
-                  <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px;">
+                <td>
+                  <span class="ak-product__name">{{ row.name }}</span>
+                  <span class="ak-product__generic">{{ row.desc }}</span>
+                  <span class="ak-product__badges">
                     <sc-for list="{{ row.chips }}" as="chip" hint-placeholder-count="1">
-                      <span style="display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.2px; white-space: nowrap; background: {{ chip.bg }}; color: {{ chip.fg }};">{{ chip.label }}</span>
+                      <span class="{{ chip.cls }}">{{ chip.label }}</span>
                     </sc-for>
-                  </div>
+                  </span>
                 </td>
-                <td style="padding: 16px; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                  <div style="font-size: 14px; color: #21252b;">{{ row.ndc }}</div>
-                  <div style="margin-top: 2px; font-size: 13px; font-style: italic; color: {{ row.invColor }};">{{ row.invType }}</div>
+                <td>
+                  {{ row.ndc }}
+                  <span class="ak-cell-sub {{ row.invCls }}">{{ row.invType }}</span>
                 </td>
-                <td style="padding: 16px; vertical-align: top; border-bottom: 1px solid #eef1f5;">
+                <td>
                   <sc-if value="{{ row.singleLoc }}" hint-placeholder-val="{{ true }}">
-                    <div style="font-size: 14px; color: #21252b;">Door {{ row.locDoor }}</div>
-                    <div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">Bin {{ row.locBin }}</div>
+                    <div>Door {{ row.locDoor }}</div>
+                    <span class="ak-cell-sub">Bin {{ row.locBin }}</span>
                   </sc-if>
                   <sc-if value="{{ row.multiLoc }}" hint-placeholder-val="{{ false }}">
-                    <div style="font-size: 14px; color: #21252b;">Multiple locations</div>
+                    <div>Multiple locations</div>
                   </sc-if>
                 </td>
-                <td style="padding: 16px; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.inventory }}</td>
+                <td>{{ row.inventory }}</td>
               </tr>
             </sc-for>
             <sc-if value="{{ pickEmpty }}" hint-placeholder-val="{{ false }}">
-              <tr><td colSpan="5" style="padding: 40px 16px; text-align: center; font-size: 14px; color: #6b7480;">No products match your search.</td></tr>
+              <tr><td colSpan="5" class="ak-empty">No products match your search.</td></tr>
             </sc-if>
           </tbody>
         </table>
       </div>
     </div>
 
-    <div style="position: fixed; bottom: 0; left: 70px; right: 0; z-index: 50; display: flex; align-items: center; justify-content: flex-end; gap: 16px; padding: 14px 24px; background: #ffffff; border-top: 1px solid #e3e7ed; box-shadow: 0 -2px 8px rgba(16,24,40,0.06);">
-      <button type="button" onClick="{{ goHome }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Cancel</button>
-      <button type="button" onClick="{{ toStep2 }}" aria-disabled="{{ noneSelected }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ contFg }}; background: {{ contBg }}; border: 1px solid {{ contBd }}; border-radius: 4px; cursor: {{ contCursor }};">Continue</button>
+    <div class="ak-bottom-bar">
+      <div class="ak-bottom-bar__actions">
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--secondary" onClick="{{ goHome }}">CANCEL</button>
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--primary" onClick="{{ toStep2 }}" disabled="{{ noneSelected }}">CONTINUE</button>
+      </div>
     </div>
   </div>
   </sc-if>
 
   <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
   <div style="padding: 0 0 96px;" data-screen-label="Step 2 Scan serials">
-    <div style="display: flex; align-items: center; gap: 24px; padding: 16px 24px; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
+    <div class="ak-page-header" style="align-items: center;">
       <div style="flex: 1; min-width: 0;">
         <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">
-          <span style="font-size: 20px; line-height: 28px; font-weight: 500; color: #25282a;">{{ p.name }}</span>
+          <h1 class="ak-page-title">{{ p.name }}</h1>
           <sc-for list="{{ p.chips }}" as="chip" hint-placeholder-count="1">
-            <span style="display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.2px; white-space: nowrap; background: {{ chip.bg }}; color: {{ chip.fg }};">{{ chip.label }}</span>
+            <span class="{{ chip.cls }}">{{ chip.label }}</span>
           </sc-for>
         </div>
-        <div style="margin-top: 4px; font-size: 13px; font-style: italic; color: #6b7280;">{{ p.desc }}</div>
+        <span class="ak-product__generic" style="margin-top: 4px;">{{ p.desc }}</span>
       </div>
-      <button type="button" onClick="{{ p.openDoor }}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer; flex-shrink: 0;" style-hover="background: rgba(9,81,146,0.06);">
+      <button type="button" class="ak-btn ak-btn--secondary" onClick="{{ p.openDoor }}" style="flex-shrink: 0;">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.4"></rect><path d="M5.5 7V4.8a2.5 2.5 0 0 1 4.9-.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>
-        Open door
+        OPEN DOOR
       </button>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px 40px; padding: 16px 24px; background: #e9eef4; border-bottom: 1px solid #e3e7ed;">
-      <div style="display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; align-content: start; min-width: 0;">
-        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">NDC</span><span style="font-size: 14px; font-weight: 500; color: #21252b; min-width: 0; overflow-wrap: anywhere;">{{ p.ndc }}</span>
-        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Inventory Type</span><span style="font-size: 14px; font-weight: 500; color: {{ p.invColor }};">{{ p.invType }}</span>
+    <div class="ak-info-bar" style="flex-wrap: wrap; padding: 16px 24px; border-bottom: 1px solid var(--ak-border-divider);">
+      <div class="ak-info-bar__col">
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label">NDC</span><span style="overflow-wrap: anywhere;">{{ p.ndc }}</span></div>
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label">Inventory Type</span><span class="{{ p.invCls }}">{{ p.invType }}</span></div>
       </div>
-      <div style="display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; align-content: start; min-width: 0;">
-        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Sending Location</span><span style="font-size: 14px; font-weight: 500; color: #21252b; min-width: 0; overflow-wrap: anywhere;">Onco Clinic Center / Onco Station</span>
+      <div class="ak-info-bar__col">
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label">Sending Location</span><span style="overflow-wrap: anywhere;">Onco Clinic Center / Onco Station</span></div>
       </div>
-      <div style="display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; align-content: start; min-width: 0;">
-        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Created On</span><span style="font-size: 14px; font-weight: 500; color: #21252b; min-width: 0; overflow-wrap: anywhere;">{{ today }}</span>
-        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Created By</span><span style="font-size: 14px; font-weight: 500; color: #21252b; min-width: 0; overflow-wrap: anywhere;">User Super</span>
+      <div class="ak-info-bar__col">
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label">Created On</span><span>{{ today }}</span></div>
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label">Created By</span><span>User Super</span></div>
       </div>
-      <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0;">
-        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 4px 24px;">
+      <div class="ak-info-bar__col">
+        <div class="ak-info-bar__row" style="flex-wrap: wrap; gap: 4px 24px;">
           <span style="display: inline-flex; align-items: center; gap: 8px;">
-            <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Door</span>
-            <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; color: #21252b;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6B7B" stroke-width="1.6" stroke-linecap="round" style="flex-shrink: 0;"><path d="M4 3h16v18H4z M4 9h16 M4 15h16 M9.5 6h2 M9.5 12h2 M9.5 18h2"></path></svg>
-              {{ p.door }}
-            </span>
+            <span class="ak-info-bar__label" style="min-width: 72px;">Door</span>
+            <span class="ak-door"><span class="ak-icon" data-icon="door-physical"></span>{{ p.door }}</span>
           </span>
           <span style="display: inline-flex; align-items: center; gap: 8px;">
-            <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Bin</span>
-            <span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ p.bin }}</span>
+            <span class="ak-label">Bin</span>
+            <span>{{ p.bin }}</span>
           </span>
         </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Inventory</span>
+        <div class="ak-info-bar__row">
+          <span class="ak-info-bar__label" style="min-width: 72px;">Inventory</span>
           <div style="position: relative; min-width: 0;">
             <sc-if value="{{ p.invMulti }}" hint-placeholder-val="{{ false }}">
-              <button type="button" onClick="{{ p.toggleInvPop }}" title="View inventory by bin" style="padding: 0; font-family: inherit; font-size: 14px; font-weight: 500; color: #095192; background: transparent; border: none; text-decoration: underline; text-underline-offset: 3px; cursor: pointer;">{{ p.binInv }}</button>
+              <button type="button" class="ak-link-btn" onClick="{{ p.toggleInvPop }}" title="View inventory by bin" style="padding: 0; font-size: 16px; text-decoration: underline; text-underline-offset: 3px;">{{ p.binInv }}</button>
             </sc-if>
             <sc-if value="{{ p.invSingle }}" hint-placeholder-val="{{ true }}">
-              <span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ p.binInv }}</span>
+              <span>{{ p.binInv }}</span>
             </sc-if>
             <sc-if value="{{ p.invPopOpen }}" hint-placeholder-val="{{ false }}">
               <div onClick="{{ p.closeInvPop }}" style="position: fixed; inset: 0; z-index: 60;"></div>
-              <div role="dialog" aria-label="Bins in this door" style="position: absolute; top: calc(100% + 8px); left: 0; z-index: 61; width: 260px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; background: #ffffff; border: 1px solid #e3e7ed; border-radius: 8px; box-shadow: 0 12px 24px rgba(11,42,74,0.14);">
-                <span style="font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.4px; text-transform: uppercase; color: #64748b;">Bins in this door</span>
+              <div class="ak-popover" role="dialog" aria-label="Bins in this door" style="top: calc(100% + 8px); left: 0; z-index: 61; width: 260px;">
+                <div class="ak-popover__eyebrow">Bins in this door</div>
                 <sc-for list="{{ p.binList }}" as="b" hint-placeholder-count="2">
-                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 14px; line-height: 20px; color: #25282a;">
-                    <span>Bin {{ b.bin }}</span><span style="font-weight: 600;">{{ b.inv }}</span>
+                  <div class="ak-popover__item" style="cursor: default;">
+                    <span>Bin {{ b.bin }}</span><span class="ak-semibold">{{ b.inv }}</span>
                   </div>
                 </sc-for>
               </div>
@@ -540,85 +518,74 @@
       </div>
     </div>
 
-    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 16px 24px; padding: 20px 24px; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
-      <div style="display: flex; align-items: center; gap: 10px; width: 320px; height: 40px; padding: 0 12px; background: {{ p.scanBg }}; border: 1px solid #ced4da; border-radius: 4px;">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="color: {{ p.scanGlyph }}; flex-shrink: 0;"><rect x="2" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="11" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="2" y="11" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><path d="M11 11h2v2h-2zM14 14h2v2h-2zM14 11h2M11 15v1" stroke="currentColor" stroke-width="1.3"></path></svg>
-        <input type="text" value="{{ scanText }}" onChange="{{ onScanText }}" onKeyDown="{{ onScanKey }}" onFocus="{{ onScanFocus }}" readOnly="{{ p.scanLocked }}" placeholder="Scan or type serial" style="flex: 1; min-width: 0; height: 100%; border: none; outline: none; font-family: inherit; font-size: 14px; color: #21252b; background: transparent; cursor: {{ p.scanCursor }};" />
-      </div>
-      <button type="button" onClick="{{ addManual }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ p.addFg }}; background: {{ p.addBg }}; border: 1px solid {{ p.addBd }}; border-radius: 4px; cursor: {{ p.scanCursor }};">Add manually</button>
-      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; margin-left: auto; padding-left: 24px; border-left: 1px solid #e3e7ed;">
-        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Transfer Quantity ({{ p.unitLabel }})</span>
-        <span style="font-size: 32px; line-height: 40px; font-weight: 400; color: #21252b;">{{ p.transferQty }}</span>
+    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 16px 24px; padding: 16px 24px; border-bottom: 1px solid var(--ak-border-divider);">
+      <span class="{{ p.scanCls }}" style="width: 320px;">
+        <span class="ak-icon" data-icon="qrcode"></span>
+        <input type="text" value="{{ scanText }}" onChange="{{ onScanText }}" onKeyDown="{{ onScanKey }}" onFocus="{{ onScanFocus }}" readOnly="{{ p.scanLocked }}" placeholder="Scan or type serial" style="cursor: {{ p.scanCursor }};" />
+      </span>
+      <button type="button" class="ak-btn ak-btn--primary ak-btn--guarded" onClick="{{ addManual }}" aria-disabled="{{ p.scanLocked }}">ADD MANUALLY</button>
+      <div class="ak-counter" style="margin-left: auto; padding: 0 0 0 24px; gap: 4px; border-left: 1px solid var(--ak-border-divider);">
+        <span class="ak-label" style="white-space: nowrap;">Transfer Quantity ({{ p.unitLabel }})</span>
+        <span class="ak-counter__value">{{ p.transferQty }}</span>
       </div>
     </div>
 
-    <div style="padding: 20px 24px;">
-      <div style="border: 1px solid #e9ecf1; border-radius: 6px; overflow-x: auto;">
-        <table style="width: 100%; min-width: 860px; border-collapse: collapse;">
+    <div style="padding: 16px 24px;">
+      <div class="ak-box" style="overflow-x: auto;">
+        <table class="ak-table" style="min-width: 860px;">
           <thead>
-            <tr style="background: #f8fafc;">
-              <th style="width: 24%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1;">
-                <div>Serial</div>
-                <div style="margin-top: 2px; font-size: 12px; font-weight: 400; font-style: italic; color: #6b7280;">Lot</div>
-              </th>
-              <th style="width: 16%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1;">Expiration</th>
-              <th style="width: 18%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1;">Source</th>
+            <tr>
+              <th style="width: 24%;">Serial<span class="ak-th__sub">Lot</span></th>
+              <th style="width: 16%;">Expiration</th>
+              <th style="width: 18%;">Source</th>
               <sc-if value="{{ p.hasPatient }}" hint-placeholder-val="{{ false }}">
-                <th style="width: 18%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1;"><div>Patient</div><div style="margin-top: 2px; font-size: 12px; font-weight: 400; font-style: italic; color: #6b7280;">Patient ID</div></th>
+                <th style="width: 18%;">Patient<span class="ak-th__sub">Patient ID</span></th>
               </sc-if>
-              <th style="width: 16%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1;">Location</th>
-              <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1;">Quantity</th>
-              <th style="width: 56px; padding: 14px 16px; border-bottom: 1px solid #e9ecf1;"></th>
+              <th style="width: 16%;">Location</th>
+              <th>Quantity</th>
+              <th class="ak-cell-action"></th>
             </tr>
           </thead>
           <tbody>
             <sc-for list="{{ p.rows }}" as="s" hint-placeholder-count="0">
-              <tr style="background: {{ s.bg }};">
-                <td style="padding: 14px 16px; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                  <div style="font-size: 14px; color: #21252b;">{{ s.serial }}</div>
-                  <div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ s.lot }}</div>
-                </td>
-                <td style="padding: 14px 16px; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; white-space: nowrap;">{{ s.expiration }}</td>
-                <td style="padding: 14px 16px; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ s.source }}</td>
+              <tr class="{{ s.cls }}">
+                <td>{{ s.serial }}<span class="ak-cell-sub">{{ s.lot }}</span></td>
+                <td style="white-space: nowrap;">{{ s.expiration }}</td>
+                <td>{{ s.source }}</td>
                 <sc-if value="{{ p.hasPatient }}" hint-placeholder-val="{{ false }}">
-                  <td style="padding: 14px 16px; vertical-align: top; border-bottom: 1px solid #eef1f5;"><div style="font-size: 14px; color: #21252b;">{{ s.patientName }}</div><div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ s.patientId }}</div></td>
+                  <td>{{ s.patientName }}<span class="ak-cell-sub">{{ s.patientId }}</span></td>
                 </sc-if>
-                <td style="padding: 14px 16px; vertical-align: top; border-bottom: 1px solid #eef1f5; white-space: nowrap;">
-                  <div style="font-size: 14px; color: #21252b;">Door {{ s.door }}</div>
-                  <div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">Bin {{ s.bin }}</div>
-                </td>
-                <td style="padding: 14px 16px; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; white-space: nowrap;">{{ s.qty }}</td>
-                <td style="padding: 10px 16px; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                  <button type="button" onClick="{{ s.remove }}" aria-disabled="{{ s.lockedRm }}" aria-label="Remove serial" title="{{ s.rmTitle }}" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: {{ s.rmColor }}; cursor: {{ s.rmCursor }};" style-hover="background: {{ s.rmHoverBg }}; color: {{ s.rmHoverFg }};">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"></circle><rect x="2.4" y="6.5" width="11.2" height="3" rx="1.5" fill="#ffffff"></rect></svg>
-                  </button>
+                <td style="white-space: nowrap;">Door {{ s.door }}<span class="ak-cell-sub">Bin {{ s.bin }}</span></td>
+                <td style="white-space: nowrap;">{{ s.qty }}</td>
+                <td class="ak-cell-action">
+                  <button type="button" class="ak-btn ak-btn--tertiary ak-btn--danger ak-btn--guarded" onClick="{{ s.remove }}" aria-disabled="{{ s.lockedRm }}" aria-label="Remove serial" title="{{ s.rmTitle }}"><span class="ak-icon" data-icon="minus-circle"></span></button>
                 </td>
               </tr>
             </sc-for>
             <sc-if value="{{ p.empty }}" hint-placeholder-val="{{ true }}">
-              <tr><td colSpan="{{ p.cols }}" style="padding: 48px 16px; text-align: center; font-size: 14px; line-height: 22px; color: #6b7480;">{{ p.emptyText }}</td></tr>
+              <tr><td colSpan="{{ p.cols }}" class="ak-empty" style="padding: 48px 16px;">{{ p.emptyText }}</td></tr>
             </sc-if>
           </tbody>
         </table>
       </div>
     </div>
 
-    <div style="position: fixed; bottom: 0; left: 70px; right: 0; z-index: 5000; display: flex; flex-wrap: wrap; align-items: stretch; gap: 0 16px; padding: 0 24px 0 0; background: #ffffff; border-top: 1px solid #e3e7ed; box-shadow: 0 -2px 8px rgba(16,24,40,0.06);">
+    <div class="ak-bottom-bar" style="z-index: 5000; align-items: stretch; flex-wrap: wrap; gap: 0 16px; height: auto; padding: 0 40px 0 0;">
       <dc-import name="Product Switcher" products="{{ queueProducts }}" current-id="{{ curId }}" on-select="{{ onProductSelect }}" flow-label="Transfer" done-label="Scanned" allow-revisit-done="{{ true }}" hint-size="170px,66px"></dc-import>
       <dc-import name="Bin Location Switcher" locations="{{ p.locations }}" current-key="{{ p.locKey }}" current-door="{{ p.curDoor }}" open="{{ p.locOpen }}" on-open-change="{{ p.onLocOpen }}" on-select="{{ p.onLocSelect }}" product-name="{{ p.name }}" product-sub="{{ p.desc }}" stats="{{ p.locStats }}" unit="{{ p.unitWord }}" moved-unit="{{ p.unitWord }}" title="Select a Location to Transfer" verb="transfer" moved-label="Inventory" issue-label="Transfer qty" hint-size="200px,66px"></dc-import>
-      <div onClick="{{ openPanel }}" role="button" title="View selected products" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-right: 1px solid #e3e7ed; cursor: pointer;" style-hover="background: #f5f9fe;">
-        <svg width="22" height="22" viewBox="0 0 18 18" fill="none" style="color: #095192;"><rect x="2" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="11" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="2" y="11" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><path d="M11 11h2v2h-2zM14 14h2v2h-2zM14 11h2M11 15v1" stroke="currentColor" stroke-width="1.3"></path></svg>
-        <div style="display: flex; flex-direction: column;">
-          <span style="font-size: 13px; color: #6b7480; white-space: nowrap;">Transfer</span>
-          <span style="font-size: 18px; font-weight: 500; color: #21252b;">{{ productsScanned }}</span>
+      <div class="ak-bar-info__item" onClick="{{ openPanel }}" role="button" title="View selected products" style="padding: 12px 16px; border-right: 1px solid var(--ak-border-bar);">
+        <span class="ak-icon" data-icon="qrcode"></span>
+        <div class="ak-bar-info__text">
+          <span class="ak-bar-info__label">Transfer</span>
+          <span class="ak-bar-info__value ak-bar-info__value--plain">{{ productsScanned }}</span>
         </div>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="color: #095192;"><path d="M4.5 2 9.5 7l-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        <span class="ak-icon" data-icon="chevron-right"></span>
       </div>
-      <div style="display: flex; align-items: center; gap: 12px; margin-left: auto; padding: 12px 0;">
-        <button type="button" onClick="{{ cancelStep2 }}" style="white-space: nowrap; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Cancel</button>
-        <button type="button" onClick="{{ onSkip }}" aria-disabled="{{ skipDisabled }}" style="white-space: nowrap; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ skipFg }}; background: #ffffff; border: 1px solid {{ skipBd }}; border-radius: 4px; cursor: {{ skipCursor }};">{{ skipLabel }}</button>
-        <button type="button" onClick="{{ onSave }}" aria-disabled="{{ saveDisabled }}" style="white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ saveFg }}; background: {{ saveBg }}; border: 1px solid {{ saveBd }}; border-radius: 4px; cursor: {{ saveCursor }};">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.3" stroke="currentColor" stroke-width="1.4"></circle><path d="m5.3 8.2 1.9 1.9 3.6-3.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      <div class="ak-bottom-bar__actions" style="align-items: center; padding: 12px 0;">
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--secondary" onClick="{{ cancelStep2 }}">CANCEL</button>
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--secondary" onClick="{{ onSkip }}" disabled="{{ skipDisabled }}">{{ skipLabel }}</button>
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--primary" onClick="{{ onSave }}" disabled="{{ saveDisabled }}">
+          <span class="ak-icon" data-icon="check-circle"></span>
           {{ saveLabel }}
         </button>
       </div>
@@ -628,209 +595,198 @@
 
   <sc-if value="{{ isStep4 }}" hint-placeholder-val="{{ false }}">
   <div style="padding: 0 0 80px;" data-screen-label="Step V Scan vials (virtual station)">
-    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 24px; padding: 16px 24px; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
-      <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0;">
-        <div style="font-size: 20px; line-height: 28px; font-weight: 500; color: #25282a;">New Transfer</div>
-        <div style="font-size: 14px; color: #25282a;">Scan vials to transfer</div>
+    <div class="ak-page-header" style="align-items: center; flex-wrap: wrap;">
+      <div style="min-width: 0;">
+        <h1 class="ak-page-title">New Transfer</h1>
+        <p class="ak-page-subtitle">Scan vials to transfer</p>
       </div>
       <div style="display: flex; align-items: center; gap: 24px; margin-left: auto;">
-        <div style="display: grid; grid-template-columns: auto auto; gap: 6px 12px; align-items: center;">
-          <span style="font-size: 14px; color: #6b7480;">Sending Location</span>
-          <span style="font-size: 14px; font-weight: 500; color: #25282a;">Onco Clinic Center / Onco Station</span>
-          <span style="font-size: 14px; color: #6b7480;">Receiving Location</span>
-          <span onClick="{{ changeLocation }}" role="button" title="Change receiving location" style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; color: #095192; cursor: pointer;" style-hover="color: #073f73;">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12l.6-2.6 7-7a1.2 1.2 0 0 1 1.8 0l.2.2a1.2 1.2 0 0 1 0 1.8l-7 7L2 12Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg>
-            <span style="text-decoration: underline;">{{ recvLabel }}</span>
-          </span>
+        <div class="ak-transfer-info">
+          <div class="ak-transfer-info__row">
+            <span class="ak-transfer-info__label">Sending Location</span>
+            <span class="ak-transfer-info__value">Onco Clinic Center / Onco Station</span>
+          </div>
+          <div class="ak-transfer-info__row">
+            <span class="ak-transfer-info__label">Receiving Location</span>
+            <a class="ak-link ak-transfer-info__value" onClick="{{ changeLocation }}" role="button" title="Change receiving location" style="display: inline-flex; align-items: center; gap: 6px;">
+              <span class="ak-icon ak-icon--16" data-icon="edit"></span>
+              {{ recvLabel }}
+            </a>
+          </div>
         </div>
-        <div onClick="{{ vpShow }}" role="button" title="View items selected for transfer" style="display: flex; flex-direction: column; gap: 2px; padding: 2px 12px 2px 24px; border-left: 1px solid #e3e7ed; font-size: 14px; line-height: 20px; cursor: pointer; border-radius: 0 4px 4px 0;" style-hover="background: #f5f9fe;">
-          <span style="font-weight: 500; color: #095192;">Transfer Details</span>
-          <span style="color: #6b7480;">Products <b style="font-weight: 600; color: #25282a;">{{ vProducts }}</b></span>
-          <span style="color: #6b7480;">Items <b style="font-weight: 600; color: #25282a;">{{ totalScanned }}</b></span>
+        <div onClick="{{ vpShow }}" role="button" title="View items selected for transfer" style="display: flex; flex-direction: column; gap: 2px; padding: 2px 12px 2px 24px; border-left: 1px solid var(--ak-border-divider); line-height: 20px; cursor: pointer; border-radius: 0 var(--ak-radius) var(--ak-radius) 0;" style-hover="background: var(--ak-bg-table-header);">
+          <span class="ak-medium" style="color: var(--ak-brand);">Transfer Details</span>
+          <span class="ak-label">Products <b class="ak-semibold" style="color: var(--ak-text);">{{ vProducts }}</b></span>
+          <span class="ak-label">Items <b class="ak-semibold" style="color: var(--ak-text);">{{ totalScanned }}</b></span>
         </div>
       </div>
     </div>
 
     <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: calc(100vh - 210px);">
-      <div style="display: flex; flex-direction: column; min-width: 0; border-right: 1px solid #e3e7ed;">
-        <div style="display: flex; align-items: center; flex-wrap: nowrap; gap: 12px; padding: 16px 24px; border-bottom: 1px solid #e3e7ed;">
-          <div style="display: flex; align-items: center; gap: 8px; flex: 1.4 1 0; min-width: 0; height: 40px; padding: 0 10px; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px;">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="color: #6b7480; flex-shrink: 0;"><rect x="2" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="11" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="2" y="11" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><path d="M11 11h2v2h-2zM14 14h2v2h-2zM14 11h2M11 15v1" stroke="currentColor" stroke-width="1.3"></path></svg>
-            <input type="text" value="{{ vScan }}" onChange="{{ vOnScan }}" onKeyDown="{{ vOnScanKey }}" placeholder="Scan serial or Name/NDC/AID" style="flex: 1; min-width: 0; height: 100%; border: none; outline: none; font-family: inherit; font-size: 14px; color: #21252b; background: transparent;" />
+      <div style="display: flex; flex-direction: column; min-width: 0; border-right: 1px solid var(--ak-border-divider);">
+        <div style="display: flex; align-items: center; flex-wrap: nowrap; gap: 12px; padding: 16px 24px; border-bottom: 1px solid var(--ak-border-divider);">
+          <span class="ak-input" style="flex: 1.4 1 0; min-width: 0;">
+            <span class="ak-icon" data-icon="qrcode"></span>
+            <input type="text" value="{{ vScan }}" onChange="{{ vOnScan }}" onKeyDown="{{ vOnScanKey }}" placeholder="Scan serial or Name/NDC/AID" />
             <sc-if value="{{ vHasQuery }}" hint-placeholder-val="{{ false }}">
-              <button type="button" onClick="{{ vClearQuery }}" aria-label="Clear search" title="Clear" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; padding: 0; background: transparent; border: none; color: #465161; cursor: pointer;"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></button>
+              <button type="button" class="ak-btn ak-btn--tertiary" onClick="{{ vClearQuery }}" aria-label="Clear search" title="Clear" style="color: var(--ak-text-label);"><span class="ak-icon ak-icon--16" data-icon="times"></span></button>
             </sc-if>
-          </div>
-          <div style="position: relative; flex: 1 1 0; min-width: 0;">
-            <select value="{{ vInv }}" onChange="{{ vOnInv }}" style="width: 100%; min-width: 0; height: 40px; padding: 0 32px 0 12px; text-overflow: ellipsis; font-family: inherit; font-size: 14px; color: #21252b; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer;">
+          </span>
+          <span class="ak-input ak-select" style="flex: 1 1 0; min-width: 0;">
+            <select value="{{ vInv }}" onChange="{{ vOnInv }}" style="text-overflow: ellipsis;">
               <option value="All">Inventory Type</option>
               <sc-for list="{{ invOptions }}" as="o" hint-placeholder-count="9"><option value="{{ o }}">{{ o }}</option></sc-for>
             </select>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="position: absolute; right: 12px; top: 13px; color: #6b7480; pointer-events: none;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.234Z" fill="currentColor"></path></svg>
-          </div>
-          <div style="position: relative; flex: 1 1 0; min-width: 0;">
-            <select value="{{ vSrc }}" onChange="{{ vOnSrc }}" style="width: 100%; min-width: 0; height: 40px; padding: 0 32px 0 12px; text-overflow: ellipsis; font-family: inherit; font-size: 14px; color: #21252b; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer;">
+          </span>
+          <span class="ak-input ak-select" style="flex: 1 1 0; min-width: 0;">
+            <select value="{{ vSrc }}" onChange="{{ vOnSrc }}" style="text-overflow: ellipsis;">
               <option value="All">Source</option>
               <sc-for list="{{ vSrcOptions }}" as="o" hint-placeholder-count="4"><option value="{{ o }}">{{ o }}</option></sc-for>
             </select>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="position: absolute; right: 12px; top: 13px; color: #6b7480; pointer-events: none;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.234Z" fill="currentColor"></path></svg>
-          </div>
+          </span>
           <div style="display: flex; align-items: center; gap: 12px; flex: none;">
-            <button type="button" onClick="{{ vReset }}" aria-label="Reset" title="Reset" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">
-              <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M3.2 8a4.8 4.8 0 1 0 1.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path><path d="M4.4 2v2.7h2.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-            </button>
-            <button type="button" onClick="{{ vSearch }}" aria-label="Scan or search" title="Scan or search" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">
-              <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.6" stroke="currentColor" stroke-width="1.5"></circle><path d="m10.5 10.5 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
-            </button>
+            <button type="button" class="ak-btn ak-btn--secondary ak-btn--icon" onClick="{{ vReset }}" aria-label="Reset" title="Reset"><span class="ak-icon" data-icon="undo"></span></button>
+            <button type="button" class="ak-btn ak-btn--primary ak-btn--icon" onClick="{{ vSearch }}" aria-label="Scan or search" title="Scan or search"><span class="ak-icon" data-icon="search"></span></button>
           </div>
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px 24px;">
           <sc-if value="{{ vHasResults }}" hint-placeholder-val="{{ false }}">
-            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 14px; color: #6b7480;">
+            <div class="ak-label" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
               <span>{{ vListTitle }}</span>
             </div>
           </sc-if>
           <sc-for list="{{ vCards }}" as="c" hint-placeholder-count="1">
-            <div onClick="{{ c.select }}" role="button" aria-pressed="{{ c.on }}" style="border: 2px solid {{ c.bd }}; border-radius: 4px; overflow: hidden; background: #ffffff; cursor: pointer;" style-hover="border-color: {{ c.hoverBd }};">
-              <div style="display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: {{ c.hdBg }}; color: {{ c.hdFg }};">
+            <div class="{{ c.cls }}" onClick="{{ c.select }}" role="button" aria-pressed="{{ c.on }}" style="cursor: pointer;">
+              <div class="ak-card__head">
                 <div style="flex: 1; min-width: 0;">
                   <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">
-                    <span style="font-size: 18px; line-height: 26px; font-weight: 400;">{{ c.name }}</span>
+                    <span class="ak-product__name ak-h5 ak-regular">{{ c.name }}</span>
                     <sc-for list="{{ c.chips }}" as="chip" hint-placeholder-count="1">
-                      <span style="display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.2px; background: {{ chip.bg }}; color: {{ chip.fg }}; box-shadow: 0 0 0 1px {{ c.chipRing }};">{{ chip.label }}</span>
+                      <span class="{{ chip.cls }}">{{ chip.label }}</span>
                     </sc-for>
                   </div>
-                  <div style="margin-top: 2px; font-size: 14px; color: {{ c.subFg }};">{{ c.desc }}</div>
+                  <span class="ak-product__generic">{{ c.desc }}</span>
                 </div>
-                <svg width="16" height="16" viewBox="0 0 14 14" fill="none" style="flex-shrink: 0;"><path d="M4.5 2 9.5 7l-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span class="ak-icon ak-icon--current" data-icon="chevron-right"></span>
               </div>
-              <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 20px; border-bottom: 1px solid #e3e7ed;">
-                <span style="display: inline-flex; align-items: center; gap: 8px; padding: 3px 10px; font-size: 14px; color: #25282a; border: 1px solid #c4cad2; border-radius: 3px;">
-                  <sc-if value="{{ c.hasExpired }}" hint-placeholder-val="{{ false }}"><span style="width: 10px; height: 10px; border-radius: 50%; background: #D9342B;"></span></sc-if>
+              <div class="ak-card__body" style="display: flex; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid var(--ak-border-table);">
+                <span class="ak-tag">
+                  <sc-if value="{{ c.hasExpired }}" hint-placeholder-val="{{ false }}"><span class="ak-tag__dot"></span></sc-if>
                   {{ c.exp }}
                 </span>
                 <sc-if value="{{ c.hasTag }}" hint-placeholder-val="{{ true }}">
-                  <span style="display: inline-block; padding: 3px 10px; font-size: 14px; color: #095192; background: #eef4fa; border-radius: 3px;">{{ c.tag }}</span>
+                  <span class="ak-tag ak-tag--brand">{{ c.tag }}</span>
                 </sc-if>
               </div>
-              <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 16px; padding: 12px 20px 16px;">
-                <span style="font-size: 14px; color: #6b7480;">NDC</span>
-                <span style="font-size: 14px; color: #6b7480;">Inventory Type</span>
-                <span style="font-size: 14px; color: #6b7480;">Inventory</span>
-                <span style="font-size: 15px; color: #21252b;">{{ c.ndc }}</span>
-                <span style="font-size: 15px; color: {{ c.invColor }};">{{ c.invType }}</span>
-                <span style="font-size: 15px; color: #21252b;">{{ c.inv }}</span>
+              <div class="ak-card__body ak-stats">
+                <div class="ak-stat"><span class="ak-stat__label">NDC</span><span class="ak-stat__value">{{ c.ndc }}</span></div>
+                <div class="ak-stat"><span class="ak-stat__label">Inventory Type</span><span class="ak-stat__value {{ c.invCls }}">{{ c.invType }}</span></div>
+                <div class="ak-stat"><span class="ak-stat__label">Inventory</span><span class="ak-stat__value">{{ c.inv }}</span></div>
               </div>
             </div>
           </sc-for>
           <sc-if value="{{ vEmpty }}" hint-placeholder-val="{{ true }}">
-            <div style="display: flex; align-items: center; justify-content: center; min-height: 150px; padding: 24px; text-align: center; font-size: 15px; line-height: 22px; color: #6b7480; border: 1px dashed #c4cad2; border-radius: 4px;">{{ vEmptyText }}</div>
+            <div class="ak-empty-box">{{ vEmptyText }}</div>
           </sc-if>
         </div>
       </div>
 
       <div style="display: flex; flex-direction: column; min-width: 0;">
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 73px; padding: 16px 24px; border-bottom: 1px solid #e3e7ed;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 81px; padding: 16px 24px; border-bottom: 1px solid var(--ak-border-divider);">
           <div style="display: flex; flex-direction: column; min-width: 0;">
-            <span style="font-size: 18px; line-height: 26px; color: #25282a;">Selected Items</span>
+            <span class="ak-h5">Selected Items</span>
           </div>
           <div style="display: flex; align-items: center; gap: 12px;">
             <sc-if value="{{ vPicking }}" hint-placeholder-val="{{ false }}">
-              <button type="button" onClick="{{ vPickCancel }}" style="height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; border-radius: 4px; color: #095192; background: #ffffff; border: 1px solid #095192; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Cancel</button>
-              <button type="button" onClick="{{ vPickSave }}" aria-disabled="{{ vPickNone }}" style="height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; border-radius: 4px; color: {{ vPickFg }}; background: {{ vPickBg }}; border: 1px solid {{ vPickBd }}; cursor: {{ vPickCursor }};">{{ vPickSaveLabel }}</button>
+              <button type="button" class="ak-btn ak-btn--secondary" onClick="{{ vPickCancel }}">CANCEL</button>
+              <button type="button" class="ak-btn ak-btn--primary" onClick="{{ vPickSave }}" disabled="{{ vPickNone }}">{{ vPickSaveLabel }}</button>
             </sc-if>
             <sc-if value="{{ vNotPicking }}" hint-placeholder-val="{{ true }}">
-              <button type="button" onClick="{{ vAddManual }}" aria-disabled="{{ vAddOff }}" title="{{ vAddHint }}" style="height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; border-radius: 4px; color: {{ vAddFg }}; background: #ffffff; border: 1px solid {{ vAddBd }}; cursor: {{ vAddCursor }};" style-hover="background: {{ vAddHover }};">Add manually</button>
+              <button type="button" class="ak-btn ak-btn--secondary ak-btn--guarded" onClick="{{ vAddManual }}" aria-disabled="{{ vAddOff }}" title="{{ vAddHint }}">ADD MANUALLY</button>
             </sc-if>
           </div>
         </div>
         <sc-if value="{{ vPicking }}" hint-placeholder-val="{{ false }}">
         <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px 24px;">
           <sc-if value="{{ vPickDirty }}" hint-placeholder-val="{{ false }}">
-            <div role="status" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #EFE3FB; border-radius: 4px; box-shadow: inset 5px 0 0 #8B3FD9;">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex: 0 0 20px; color: #8B3FD9;"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"></circle><path d="M10 6v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><circle cx="10" cy="13.8" r="0.9" fill="currentColor"></circle></svg>
-              <span style="font-size: 14px; font-weight: 600; color: #0E243F;">Please save selection before continuing.</span>
+            <div class="ak-inline-alert" role="status">
+              <span class="ak-icon" data-icon="info-circle"></span>
+              <div class="ak-inline-alert__text ak-semibold">Please save selection before continuing.</div>
             </div>
           </sc-if>
-          <div style="border: 1px solid #e9ecf1; border-radius: 4px; overflow: hidden;">
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #e9eef4;">
-              <span style="font-size: 14px; font-weight: 500; color: #6b7480;">Available Items</span>
-              <button type="button" onClick="{{ vAvailToggle }}" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px; font-family: inherit; font-size: 14px; font-weight: 500; color: #095192; background: transparent; border: none; cursor: pointer;">{{ vAvailToggleLabel }}<svg width="12" height="12" viewBox="0 0 14 14" fill="none" style="transform: rotate({{ vAvailChev }});"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          <div class="ak-box">
+            <div class="ak-collapsible">
+              <span>Available Items</span>
+              <button type="button" class="ak-collapsible__toggle" onClick="{{ vAvailToggle }}">{{ vAvailToggleLabel }}<span class="ak-icon ak-icon--16 ak-icon--current" data-icon="chevron-down" style="transform: rotate({{ vAvailChev }});"></span></button>
             </div>
             <sc-if value="{{ vAvailOpen }}" hint-placeholder-val="{{ true }}">
-              <table style="width: 100%; border-collapse: collapse;">
+              <table class="ak-table ak-table--compact">
                 <thead>
-                  <tr style="background: #f8fafc;">
-                    <th style="width: 1%; padding: 12px 8px 12px 16px; border-bottom: 1px solid #e9ecf1;">
-                      <div onClick="{{ vPickAll }}" role="checkbox" aria-checked="{{ vPickAllOn }}" style="position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ vPickAllBg }}; border: 1px solid {{ vPickAllBd }}; cursor: pointer;">
-                        <sc-if value="{{ vPickAllOn }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
-                      </div>
+                  <tr>
+                    <th class="ak-cell-check">
+                      <div class="ak-check" onClick="{{ vPickAll }}" role="checkbox" aria-checked="{{ vPickAllOn }}"></div>
                     </th>
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;"><div>Serial</div><div style="margin-top: 2px; font-size: 13px; font-weight: 400; font-style: italic; color: #6b7280;">Lot</div></th>
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Source</th>
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Expiration</th>
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Quantity</th>
+                    <th>Serial<span class="ak-th__sub">Lot</span></th>
+                    <th>Source</th>
+                    <th>Expiration</th>
+                    <th>Quantity</th>
                   </tr>
                 </thead>
                 <tbody>
                   <sc-for list="{{ vAvailRows }}" as="r" hint-placeholder-count="2">
-                    <tr title="{{ r.hint }}" style="background: {{ r.bg }}; color: {{ r.fg }}; cursor: {{ r.cursor }};">
-                      <td style="padding: 12px 8px 12px 16px; border-bottom: 1px solid #eef1f5;">
+                    <tr class="{{ r.cls }}" title="{{ r.hint }}" style="cursor: {{ r.cursor }};">
+                      <td class="ak-cell-check">
                         <sc-if value="{{ r.selectable }}" hint-placeholder-val="{{ true }}">
-                          <div onClick="{{ r.toggle }}" role="checkbox" aria-checked="{{ r.checked }}" style="position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ r.boxBg }}; border: 1px solid {{ r.boxBd }}; cursor: pointer;">
-                            <sc-if value="{{ r.checked }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
-                          </div>
+                          <div class="ak-check" onClick="{{ r.toggle }}" role="checkbox" aria-checked="{{ r.checked }}"></div>
                         </sc-if>
                       </td>
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5;"><div>{{ r.serial }}</div><div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ r.lot }}</div></td>
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5;">{{ r.source }}</td>
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; white-space: nowrap;">
+                      <td>{{ r.serial }}<span class="ak-cell-sub">{{ r.lot }}</span></td>
+                      <td>{{ r.source }}</td>
+                      <td style="white-space: nowrap;">
                         <div>{{ r.expiration }}</div>
-                        <sc-if value="{{ r.expired }}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; margin-top: 4px; padding: 1px 8px; font-size: 12px; line-height: 18px; font-weight: 500; color: #ffffff; background: #D9342B; border-radius: 999px;">Expired</span></sc-if>
+                        <sc-if value="{{ r.expired }}" hint-placeholder-val="{{ false }}"><span class="ak-chip ak-chip--danger" style="margin-top: 4px;">Expired</span></sc-if>
                       </td>
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; min-width: 96px;">{{ r.qty }}</td>
+                      <td style="min-width: 96px;">{{ r.qty }}</td>
                     </tr>
                   </sc-for>
                 </tbody>
               </table>
-              <sc-if value="{{ vAvailEmpty }}" hint-placeholder-val="{{ false }}"><div style="padding: 32px 16px; text-align: center; font-size: 14px; color: #6b7480;">No more items of this product are available.</div></sc-if>
+              <sc-if value="{{ vAvailEmpty }}" hint-placeholder-val="{{ false }}"><div class="ak-empty" style="padding: 32px 16px;">No more items of this product are available.</div></sc-if>
             </sc-if>
           </div>
           <sc-if value="{{ vHasPrev }}" hint-placeholder-val="{{ false }}">
-          <div style="border: 1px solid #e9ecf1; border-radius: 4px; overflow: hidden;">
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #e9eef4;">
-              <span style="font-size: 14px; font-weight: 500; color: #6b7480;">{{ vPrevLabel }}</span>
-              <button type="button" onClick="{{ vPrevToggle }}" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px; font-family: inherit; font-size: 14px; font-weight: 500; color: #095192; background: transparent; border: none; cursor: pointer;">{{ vPrevToggleLabel }}<svg width="12" height="12" viewBox="0 0 14 14" fill="none" style="transform: rotate({{ vPrevChev }});"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          <div class="ak-box">
+            <div class="ak-collapsible">
+              <span>{{ vPrevLabel }}</span>
+              <button type="button" class="ak-collapsible__toggle" onClick="{{ vPrevToggle }}">{{ vPrevToggleLabel }}<span class="ak-icon ak-icon--16 ak-icon--current" data-icon="chevron-down" style="transform: rotate({{ vPrevChev }});"></span></button>
             </div>
             <sc-if value="{{ vPrevOpen }}" hint-placeholder-val="{{ false }}">
-              <table style="width: 100%; border-collapse: collapse;">
+              <table class="ak-table ak-table--compact">
                 <thead>
-                  <tr style="background: #f8fafc;">
-                    <th style="width: 1%; padding: 12px 8px 12px 16px; border-bottom: 1px solid #e9ecf1;"></th>
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;"><div>Serial</div><div style="margin-top: 2px; font-size: 13px; font-weight: 400; font-style: italic; color: #6b7280;">Lot</div></th>
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Source</th>
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Expiration</th>
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Quantity</th>
+                  <tr>
+                    <th class="ak-cell-check"></th>
+                    <th>Serial<span class="ak-th__sub">Lot</span></th>
+                    <th>Source</th>
+                    <th>Expiration</th>
+                    <th>Quantity</th>
                   </tr>
                 </thead>
                 <tbody>
                   <sc-for list="{{ vPrevRows }}" as="r" hint-placeholder-count="2">
-                    <tr title="{{ r.hint }}" style="background: {{ r.bg }}; color: {{ r.fg }}; cursor: {{ r.cursor }};">
-                      <td style="padding: 12px 8px 12px 16px; border-bottom: 1px solid #eef1f5;">
+                    <tr class="{{ r.cls }}" title="{{ r.hint }}" style="cursor: {{ r.cursor }};">
+                      <td class="ak-cell-check">
                         <sc-if value="{{ r.selectable }}" hint-placeholder-val="{{ true }}">
-                          <div onClick="{{ r.toggle }}" role="checkbox" aria-checked="{{ r.checked }}" style="position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ r.boxBg }}; border: 1px solid {{ r.boxBd }}; cursor: pointer;">
-                            <sc-if value="{{ r.checked }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
-                          </div>
+                          <div class="ak-check" onClick="{{ r.toggle }}" role="checkbox" aria-checked="{{ r.checked }}"></div>
                         </sc-if>
                       </td>
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5;"><div>{{ r.serial }}</div><div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ r.lot }}</div></td>
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5;">{{ r.source }}</td>
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; white-space: nowrap;">
+                      <td>{{ r.serial }}<span class="ak-cell-sub">{{ r.lot }}</span></td>
+                      <td>{{ r.source }}</td>
+                      <td style="white-space: nowrap;">
                         <div>{{ r.expiration }}</div>
-                        <sc-if value="{{ r.expired }}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; margin-top: 4px; padding: 1px 8px; font-size: 12px; line-height: 18px; font-weight: 500; color: #ffffff; background: #D9342B; border-radius: 999px;">Expired</span></sc-if>
+                        <sc-if value="{{ r.expired }}" hint-placeholder-val="{{ false }}"><span class="ak-chip ak-chip--danger" style="margin-top: 4px;">Expired</span></sc-if>
                       </td>
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; min-width: 96px;">{{ r.qty }}</td>
+                      <td style="min-width: 96px;">{{ r.qty }}</td>
                     </tr>
                   </sc-for>
                 </tbody>
@@ -842,28 +798,26 @@
         </sc-if>
         <sc-if value="{{ vShowSelList }}" hint-placeholder-val="{{ false }}">
           <div style="padding: 16px 24px;">
-            <div style="border: 1px solid #e9ecf1; border-radius: 4px; overflow: hidden;">
-              <table style="width: 100%; border-collapse: collapse;">
+            <div class="ak-box">
+              <table class="ak-table ak-table--compact">
                 <thead>
-                  <tr style="background: #f8fafc;">
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;"><div>Serial</div><div style="margin-top: 2px; font-size: 13px; font-weight: 400; font-style: italic; color: #6b7280;">Lot</div></th>
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Source</th>
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Expiration</th>
-                    <th style="padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 500; color: #25282a; border-bottom: 1px solid #e9ecf1;">Quantity</th>
-                    <th style="width: 56px; padding: 12px 16px; border-bottom: 1px solid #e9ecf1;"></th>
+                  <tr>
+                    <th>Serial<span class="ak-th__sub">Lot</span></th>
+                    <th>Source</th>
+                    <th>Expiration</th>
+                    <th>Quantity</th>
+                    <th class="ak-cell-action"></th>
                   </tr>
                 </thead>
                 <tbody>
                   <sc-for list="{{ vSelRows }}" as="r" hint-placeholder-count="1">
-                    <tr style="background: {{ r.bg }};">
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; color: #21252b;"><div>{{ r.serial }}</div><div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ r.lot }}</div></td>
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; color: #21252b;">{{ r.source }}</td>
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; color: #21252b; white-space: nowrap;">{{ r.expiration }}</td>
-                      <td style="padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #eef1f5; color: #21252b; min-width: 96px;">{{ r.qty }}</td>
-                      <td style="padding: 8px 16px; border-bottom: 1px solid #eef1f5;">
-                        <button type="button" onClick="{{ r.remove }}" aria-label="Remove serial" title="Remove from transfer" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: #FF3300; cursor: pointer;" style-hover="background: #fbe5e4;">
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="currentColor"></circle><rect x="2.4" y="6.5" width="11.2" height="3" rx="1.5" fill="#ffffff"></rect></svg>
-                        </button>
+                    <tr class="{{ r.cls }}">
+                      <td>{{ r.serial }}<span class="ak-cell-sub">{{ r.lot }}</span></td>
+                      <td>{{ r.source }}</td>
+                      <td style="white-space: nowrap;">{{ r.expiration }}</td>
+                      <td style="min-width: 96px;">{{ r.qty }}</td>
+                      <td class="ak-cell-action">
+                        <button type="button" class="ak-btn ak-btn--tertiary ak-btn--danger" onClick="{{ r.remove }}" aria-label="Remove serial" title="Remove from transfer"><span class="ak-icon" data-icon="minus-circle"></span></button>
                       </td>
                     </tr>
                   </sc-for>
@@ -874,43 +828,45 @@
         </sc-if>
         <sc-if value="{{ vShowRightEmpty }}" hint-placeholder-val="{{ true }}">
           <div style="padding: 16px 24px;">
-            <div style="display: flex; align-items: center; justify-content: center; min-height: 150px; padding: 24px; text-align: center; font-size: 15px; line-height: 22px; color: #6b7480; border: 1px dashed #c4cad2; border-radius: 4px;">{{ vRightEmptyText }}</div>
+            <div class="ak-empty-box">{{ vRightEmptyText }}</div>
           </div>
         </sc-if>
       </div>
     </div>
 
-    <div style="position: fixed; bottom: 0; left: 70px; right: 0; z-index: 50; display: flex; align-items: center; justify-content: flex-end; gap: 16px; padding: 14px 24px; background: #ffffff; border-top: 1px solid #e3e7ed; box-shadow: 0 -2px 8px rgba(16,24,40,0.06);">
-      <button type="button" onClick="{{ vCancel }}" style="white-space: nowrap; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Cancel</button>
-      <button type="button" onClick="{{ vContinue }}" aria-disabled="{{ vContDisabled }}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ vContFg }}; background: {{ vContBg }}; border: 1px solid {{ vContBd }}; border-radius: 4px; cursor: {{ vContCursor }};">
-        Transfer &amp; view summary
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h9.5M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-      </button>
+    <div class="ak-bottom-bar">
+      <div class="ak-bottom-bar__actions">
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--secondary" onClick="{{ vCancel }}">CANCEL</button>
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--primary ak-btn--guarded" onClick="{{ vContinue }}" aria-disabled="{{ vContDisabled }}">
+          TRANSFER &amp; VIEW SUMMARY
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h9.5M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </button>
+      </div>
     </div>
   </div>
   </sc-if>
 
   <sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
   <div style="padding: 0 0 96px;" data-screen-label="Step 3 Transfer summary">
-    <div style="display: flex; align-items: stretch; flex-wrap: wrap; gap: 0; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
+    <div style="display: flex; align-items: stretch; flex-wrap: wrap; border-bottom: 1px solid var(--ak-border-divider);">
       <div style="flex: 1; min-width: 240px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 16px 24px;">
-        <div style="font-size: 20px; line-height: 28px; font-weight: 500; color: #25282a;">{{ sumTitle }}</div>
-        <span style="display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 999px; background: #ffffff; box-shadow: inset 0 0 0 1px #465161; font-size: 13px; font-weight: 500; color: #25282a;">Pending Transfer</span>
+        <h1 class="ak-page-title">{{ sumTitle }}</h1>
+        <span class="ak-status ak-status--pending">Pending Transfer</span>
         <sc-if value="{{ hasNote }}" hint-placeholder-val="{{ false }}">
-          <div style="display: flex; gap: 6px; max-width: 720px; font-size: 14px; line-height: 20px; color: #25282a; text-wrap: pretty;"><span style="color: #6b7480; flex-shrink: 0;">Note:</span><span>{{ note }}</span></div>
+          <div style="display: flex; gap: 6px; max-width: 720px; line-height: 20px; text-wrap: pretty;"><span class="ak-label" style="flex-shrink: 0;">Note:</span><span>{{ note }}</span></div>
         </sc-if>
       </div>
-      <div style="display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 16px 24px; border-left: 1px solid #e3e7ed;">
-        <span style="font-size: 14px; color: #6b7480;">Sending Location</span>
-        <span style="font-size: 14px; font-weight: 500; color: #25282a;">Onco Clinic Center / Onco Station</span>
+      <div class="ak-stat" style="flex: none; justify-content: center; padding: 16px 24px; border-left: 1px solid var(--ak-border-divider);">
+        <span class="ak-stat__label">Sending Location</span>
+        <span class="ak-stat__value">Onco Clinic Center / Onco Station</span>
       </div>
-      <div style="display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 16px 24px; border-left: 1px solid #e3e7ed;">
-        <span style="font-size: 14px; color: #6b7480;">Transfer Location</span>
-        <span style="font-size: 14px; font-weight: 500; color: #25282a;">{{ recvLabel }}</span>
+      <div class="ak-stat" style="flex: none; justify-content: center; padding: 16px 24px; border-left: 1px solid var(--ak-border-divider);">
+        <span class="ak-stat__label">Transfer Location</span>
+        <span class="ak-stat__value">{{ recvLabel }}</span>
       </div>
-      <div style="display: flex; align-items: center; padding: 16px 24px; border-left: 1px solid #e3e7ed;">
-        <button type="button" onClick="{{ openNote }}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer; white-space: nowrap;" style-hover="background: rgba(9,81,146,0.06);">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 1.8h5.2L12.5 5v9.2H4Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path><path d="M9 1.8V5h3.5" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+      <div style="display: flex; align-items: center; padding: 16px 24px; border-left: 1px solid var(--ak-border-divider);">
+        <button type="button" class="ak-btn ak-btn--secondary" onClick="{{ openNote }}">
+          <span class="ak-icon" data-icon="file-o"></span>
           {{ noteBtnLabel }}
         </button>
       </div>
@@ -918,65 +874,56 @@
 
     <div style="padding: 24px; display: flex; flex-direction: column; gap: 16px;">
       <sc-for list="{{ sumProducts }}" as="sp" hint-placeholder-count="2">
-        <div style="border: 1px solid #e3e7ed; border-radius: 4px; background: #ffffff; overflow: hidden;">
-          <div style="padding: 14px 20px; background: #f8fafc; border-bottom: 1px solid #e3e7ed;">
-            <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">
-              <span style="font-size: 16px; line-height: 24px; font-weight: 500; color: #25282a;">{{ sp.name }}</span>
-              <sc-for list="{{ sp.chips }}" as="chip" hint-placeholder-count="1">
-                <span style="display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.2px; white-space: nowrap; background: {{ chip.bg }}; color: {{ chip.fg }};">{{ chip.label }}</span>
-              </sc-for>
+        <div class="ak-card ak-card--static">
+          <div class="ak-card__head">
+            <div style="flex: 1; min-width: 0;">
+              <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">
+                <span class="ak-product__name ak-body ak-medium">{{ sp.name }}</span>
+                <sc-for list="{{ sp.chips }}" as="chip" hint-placeholder-count="1">
+                  <span class="{{ chip.cls }}">{{ chip.label }}</span>
+                </sc-for>
+              </div>
+              <span class="ak-product__generic">{{ sp.desc }}</span>
             </div>
-            <div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ sp.desc }}</div>
           </div>
-          <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 16px 48px; padding: 14px 20px;">
-            <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 14px; color: #6b7480;">NDC</span><span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ sp.ndc }}</span></div>
-            <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 14px; color: #6b7480;">Inventory Type</span><span style="font-size: 14px; font-weight: 500; color: {{ sp.invColor }};">{{ sp.invType }}</span></div>
-            <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 14px; color: #6b7480;">Transferred Items</span><span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ sp.countLabel }}</span></div>
-            <button type="button" onClick="{{ sp.toggle }}" style="margin-left: auto; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 8px; font-family: inherit; font-size: 14px; font-weight: 500; color: #095192; background: transparent; border: none; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">
+          <div class="ak-card__body" style="display: flex; align-items: center; flex-wrap: wrap; gap: 16px 48px;">
+            <div class="ak-stat" style="flex: none;"><span class="ak-stat__label">NDC</span><span class="ak-stat__value">{{ sp.ndc }}</span></div>
+            <div class="ak-stat" style="flex: none;"><span class="ak-stat__label">Inventory Type</span><span class="ak-stat__value {{ sp.invCls }}">{{ sp.invType }}</span></div>
+            <div class="ak-stat" style="flex: none;"><span class="ak-stat__label">Transferred Items</span><span class="ak-stat__value">{{ sp.countLabel }}</span></div>
+            <button type="button" class="ak-collapsible__toggle" onClick="{{ sp.toggle }}" style="margin-left: auto;">
               {{ sp.toggleLabel }}
-              <svg width="12" height="12" viewBox="0 0 14 14" fill="none" style="transform: rotate({{ sp.chevRot }}); transition: transform 160ms cubic-bezier(0.2,0,0,1);"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.266Z" fill="currentColor"></path></svg>
+              <span class="ak-icon ak-icon--16 ak-icon--current" data-icon="chevron-down" style="transform: rotate({{ sp.chevRot }}); transition: transform 160ms cubic-bezier(0.2,0,0,1);"></span>
             </button>
           </div>
           <sc-if value="{{ sp.open }}" hint-placeholder-val="{{ true }}">
-            <div style="padding: 0 20px 20px;">
-              <div style="border: 1px solid #e9ecf1; border-radius: 4px; overflow-x: auto;">
-                <table style="width: 100%; min-width: 760px; border-collapse: collapse;">
+            <div style="padding: 0 16px 16px;">
+              <div class="ak-box" style="overflow-x: auto;">
+                <table class="ak-table" style="min-width: 760px;">
                   <thead>
-                    <tr style="background: #f8fafc;">
-                      <th style="width: 24%; padding: 12px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1;">
-                        <div>Serial</div>
-                        <div style="margin-top: 2px; font-size: 12px; font-weight: 400; font-style: italic; color: #6b7280;">Lot</div>
-                      </th>
-                      <th style="width: 15%; padding: 12px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1;">Expiration</th>
-                      <th style="width: 17%; padding: 12px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1;">Source</th>
-                      <th style="width: 14%; padding: 12px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1;">Location</th>
+                    <tr>
+                      <th style="width: 24%;">Serial<span class="ak-th__sub">Lot</span></th>
+                      <th style="width: 15%;">Expiration</th>
+                      <th style="width: 17%;">Source</th>
+                      <th style="width: 14%;">Location</th>
                       <sc-if value="{{ sp.hasPatient }}" hint-placeholder-val="{{ false }}">
-                        <th style="padding: 12px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1;"><div>Patient</div><div style="margin-top: 2px; font-size: 12px; font-weight: 400; font-style: italic; color: #6b7280;">Patient ID</div></th>
+                        <th>Patient<span class="ak-th__sub">Patient ID</span></th>
                       </sc-if>
-                      <th style="padding: 12px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1;">Inventory</th>
-                      <th style="padding: 12px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1;">Status</th>
+                      <th>Inventory</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     <sc-for list="{{ sp.rows }}" as="s" hint-placeholder-count="2">
-                      <tr style="background: #ffffff;">
-                        <td style="padding: 12px 16px; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                          <div style="font-size: 14px; color: #21252b;">{{ s.serial }}</div>
-                          <div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ s.lot }}</div>
-                        </td>
-                        <td style="padding: 12px 16px; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; white-space: nowrap;">{{ s.expiration }}</td>
-                        <td style="padding: 12px 16px; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ s.source }}</td>
-                        <td style="padding: 12px 16px; vertical-align: top; border-bottom: 1px solid #eef1f5; white-space: nowrap;">
-                          <div style="font-size: 14px; color: #21252b;">Door {{ s.door }}</div>
-                          <div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">Bin {{ s.bin }}</div>
-                        </td>
+                      <tr>
+                        <td>{{ s.serial }}<span class="ak-cell-sub">{{ s.lot }}</span></td>
+                        <td style="white-space: nowrap;">{{ s.expiration }}</td>
+                        <td>{{ s.source }}</td>
+                        <td style="white-space: nowrap;">Door {{ s.door }}<span class="ak-cell-sub">Bin {{ s.bin }}</span></td>
                         <sc-if value="{{ sp.hasPatient }}" hint-placeholder-val="{{ false }}">
-                          <td style="padding: 12px 16px; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;"><div>{{ s.patientName }}</div><div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ s.patientId }}</div></td>
+                          <td>{{ s.patientName }}<span class="ak-cell-sub">{{ s.patientId }}</span></td>
                         </sc-if>
-                        <td style="padding: 12px 16px; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; white-space: nowrap;">{{ s.qty }}</td>
-                        <td style="padding: 10px 16px; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                          <span style="display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 999px; background: #ffffff; box-shadow: inset 0 0 0 1px #465161; font-size: 13px; font-weight: 500; color: #25282a; white-space: nowrap;">Pending Transfer</span>
-                        </td>
+                        <td style="white-space: nowrap;">{{ s.qty }}</td>
+                        <td><span class="ak-status ak-status--pending">Pending Transfer</span></td>
                       </tr>
                     </sc-for>
                   </tbody>
@@ -988,25 +935,25 @@
       </sc-for>
     </div>
 
-    <div style="position: fixed; bottom: 0; left: 70px; right: 0; z-index: 50; display: flex; align-items: center; justify-content: flex-end; gap: 16px; padding: 14px 24px; background: #ffffff; border-top: 1px solid #e3e7ed; box-shadow: 0 -2px 8px rgba(16,24,40,0.06);">
-      <button type="button" onClick="{{ onDone }}" style="height: 40px; padding: 0 24px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">Done</button>
+    <div class="ak-bottom-bar">
+      <div class="ak-bottom-bar__actions">
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--primary" onClick="{{ onDone }}">DONE</button>
+      </div>
     </div>
 
     <sc-if value="{{ noteOpen }}" hint-placeholder-val="{{ false }}">
-      <div onClick="{{ closeNote }}" style="position: fixed; inset: 0; z-index: 7000; background: rgba(14,36,63,0.45); display: flex; align-items: center; justify-content: center; padding: 24px;">
-        <div role="dialog" aria-modal="true" onClick="{{ stopProp }}" style="width: 520px; max-width: 100%; background: #ffffff; border-radius: 4px; box-shadow: 0 20px 40px rgba(16,24,40,0.2); display: flex; flex-direction: column;">
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px 0;">
-            <span style="font-size: 18px; line-height: 28px; font-weight: 600; color: #25282a;">Add note</span>
-            <button type="button" onClick="{{ closeNote }}" aria-label="Close" style="flex: 0 0 32px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: #64748b; cursor: pointer;" style-hover="background: #eff1f3;">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
-            </button>
+      <div class="ak-overlay" onClick="{{ closeNote }}">
+        <div class="ak-modal" role="dialog" aria-modal="true" onClick="{{ stopProp }}">
+          <div class="ak-modal__header">
+            <h2 class="ak-modal__title">Add note</h2>
+            <button type="button" class="ak-modal__close" onClick="{{ closeNote }}" aria-label="Close" data-icon="times"></button>
           </div>
-          <div style="padding: 16px 24px 24px;">
-            <textarea value="{{ noteDraft }}" onChange="{{ onNoteDraft }}" rows="4" placeholder="Add a note for the receiving location" style="width: 100%; padding: 10px 12px; font-family: inherit; font-size: 14px; line-height: 20px; color: #21252b; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; outline: none; resize: vertical;" style-focus="border-color: #095192; box-shadow: 0 0 0 2px rgba(9,81,146,0.15);"></textarea>
+          <div class="ak-modal__body">
+            <textarea class="ak-textarea" value="{{ noteDraft }}" onChange="{{ onNoteDraft }}" rows="4" placeholder="Add a note for the receiving location"></textarea>
           </div>
-          <div style="display: flex; justify-content: flex-end; gap: 16px; padding: 0 24px 24px;">
-            <button type="button" onClick="{{ closeNote }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Cancel</button>
-            <button type="button" onClick="{{ saveNote }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">Save note</button>
+          <div class="ak-modal__footer">
+            <button type="button" class="ak-btn ak-btn--secondary" onClick="{{ closeNote }}">CANCEL</button>
+            <button type="button" class="ak-btn ak-btn--primary" onClick="{{ saveNote }}">SAVE NOTE</button>
           </div>
         </div>
       </div>
@@ -1032,10 +979,11 @@ class Component extends DCLogic {
     { id: 8, name: "Avastin 1.25 MG/0.05 ML SYRINGE (OF-REPACK)", desc: "bevacizumab 1.25 mg/0.05 mL intravitreal syringe", chips: ["SDV", "CLIMATE"], ndc: "81483004105", invType: "Purchased", unit: "vials", strength: "1.25 mg / 0.05 mL", sources: ["Leiters"], bins: [["2", "B3", 4]], exp: "10/31/2026" },
     { id: 9, name: "EYLEA HD 8 MG/0.07 ML VIAL", desc: "aflibercept 8 mg/0.07 mL intravitreal solution for injection", chips: ["SDV", "CLIMATE"], ndc: "61755005051", invType: "Purchased", unit: "vials", strength: "8 mg / 0.07 mL", sources: ["XBioCareSD_DEMO"], bins: [["5", "E2", 5]], exp: "05/31/2031" }
   ];
-  static CHIP = { SDV: ["#282e38", "#ffffff"], MDV: ["#282e38", "#ffffff"], CLIMATE: ["#06b6d4", "#ffffff"], PACK: ["#465161", "#ffffff"], CIV: ["#eec038", "#25282a"], "NON SERIALIZED": ["#fe4603", "#ffffff"] };
+  // Product type chip -> kit Product Badge modifier.
+  static CHIP = { SDV: "sdv", MDV: "mdv", "MDV-WNB": "mdv-wnb", CLIMATE: "climate", PACK: "pack", CIV: "civ", "NON SERIALIZED": "non-serial" };
   static PATIENTS = [["Hernandez, Maria", "3248209348"], ["Okafor, James", "5521908734"], ["Nguyen, Linh", "7710342296"]];
   static isPt(t) { return t === "Specialty Pharmacy" || t === "Charity Care"; }
-  static invColor(t) { return Component.isPt(t) ? "#8B3FD9" : "#21252b"; }
+  static invCls(t) { return Component.isPt(t) ? "ak-patient" : ""; }
   static INV_TYPES = ["Purchased", "Charity Care", "Sample", "Specialty Pharmacy", "Clinical Research", "Non-Billable", "Supplemental", "Contingency", "Purchased - RES"];
   static PRACTICES = [
     { name: "Onco Health Partners", clinics: [
@@ -1064,7 +1012,7 @@ class Component extends DCLogic {
     this._t = setTimeout(() => this.setState({ toast: null }), 4000);
   }
 
-  chips(p) { return p.chips.map(c => { const m = Component.CHIP[c] || ["#465161", "#ffffff"]; return { label: c, bg: m[0], fg: m[1] }; }); }
+  chips(p) { return p.chips.map(c => ({ label: c, cls: "ak-badge ak-badge--" + (Component.CHIP[c] || "pack") })); }
   total(p) { return p.bins.reduce((a, b) => a + b[2], 0); }
   unitOf(p, n) { return p.unit === "each" ? "each" : (n === 1 ? p.unit.replace(/s$/, "") : p.unit); }
 
@@ -1086,22 +1034,14 @@ class Component extends DCLogic {
   doorsOf(p) { return Array.from(new Set(p.bins.map(b => b[0]))); }
   needsPick(id, lp) { const p = Component.PRODUCTS[id]; return !!p && this.doorsOf(p).length > 1 && !(lp || {})[id]; }
 
+  // Sort control: kit sort-alt icon (brand when active, flipped for descending) + A-Z / Z-A on Product Name.
   sortIcon(key) {
-    const active = (this.state.s1Key || "name") === key, dir = this.state.s1Dir || "asc";
+    const active = (this.state.s1Key || "name") === key, desc = active && this.state.s1Dir === "desc";
     const e = React.createElement;
-    const stroke = { stroke: "currentColor", strokeWidth: 1.2, strokeLinecap: "round" };
-    const props = { width: 12, height: 12, viewBox: "0 0 12 12", fill: "none", style: { color: active ? "#095192" : "#25282a", flexShrink: 0 } };
-    if (key === "name") {
-      const up = active && dir === "desc" ? "M9 1.5V10M9 10 7.2 8.2M9 10l1.8-1.8" : "M9 10.5V2M9 2 7.2 3.8M9 2l1.8 1.8";
-      return e("span", { style: { display: "inline-flex", alignItems: "center", gap: "2px", color: active ? "#095192" : "#25282a", flexShrink: 0 } }, [
-        e("svg", Object.assign({ key: "s" }, props, { style: { color: "inherit", flexShrink: 0 } }), e("path", Object.assign({ key: "p", d: up }, stroke))),
-        e("span", { key: "t", style: { fontSize: "11px", fontWeight: 600, letterSpacing: "0.2px", lineHeight: 1 } }, active && dir === "desc" ? "Z-A" : "A-Z")
-      ]);
-    }
-    if (!active) return e("svg", props, e("path", Object.assign({ d: "M3 2v8M3 10 1.5 8.4M3 10l1.5-1.6M9 10V2M9 2 7.5 3.6M9 2l1.5 1.6" }, stroke)));
-    const arrow = dir === "asc" ? "M3.5 10.5V2M3.5 2 1.5 4M3.5 2l2 2" : "M3.5 1.5V10M3.5 10 1.5 8M3.5 10l2-2";
-    const bars = dir === "asc" ? ["M7 3.5h2", "M7 6h3", "M7 8.5h4"] : ["M7 3.5h4", "M7 6h3", "M7 8.5h2"];
-    return e("svg", props, [e("path", Object.assign({ key: "a", d: arrow }, stroke))].concat(bars.map((d, i) => e("path", Object.assign({ key: "b" + i, d }, stroke)))));
+    return e("span", { className: "ak-sort" + (active ? " ak-sort--on" : "") + (desc ? " ak-sort--desc" : "") }, [
+      e("span", { key: "i", className: "ak-th__sort ak-icon--current", "data-icon": "sort-alt" }),
+      key === "name" ? e("span", { key: "t" }, desc ? "Z-A" : "A-Z") : null
+    ]);
   }
 
   goHome() { window.location.href = "Inventory Products.dc.html"; }
@@ -1111,8 +1051,8 @@ class Component extends DCLogic {
     const common = {
       isStep1: s.step === 1, isStep2: s.step === 2, isStep3: s.step === 3, isStep4: s.step === 4,
       toastOpen: !!s.toast, toastText: s.toast || "",
-      toastBg: s.toastTone === "warning" ? "#EFDABB" : "#B0E4DD",
-      toastAccent: s.toastTone === "warning" ? "#A36E1E" : "#008774",
+      toastCls: "ak-alert ak-alert--" + (s.toastTone === "warning" ? "warning" : "success"),
+      toastIcon: s.toastTone === "warning" ? "exclamation-triangle" : "check-circle",
       closeToast: () => { clearTimeout(this._t); this.setState({ toast: null }); },
       stopProp: e => e.stopPropagation(),
       goHome: () => this.goHome(),
@@ -1141,9 +1081,7 @@ class Component extends DCLogic {
       onPractice: e => this.setState({ practice: Number(e.target.value), clinic: 0, station: null }),
       clinicOpts: pr.clinics.map((c, i) => ({ value: String(i), label: c.name })), clinicVal: String(s.clinic),
       onClinic: e => this.setState({ clinic: Number(e.target.value), station: null }),
-      stations: cl.stations.map((name, i) => { const on = s.station === i; return { name, on,
-        fg: on ? "#ffffff" : "#21252b", bg: on ? "#095192" : "#ffffff", bd: on ? "#095192" : "#d8d8d8", hoverBg: on ? "#073f73" : "#f5f9fe",
-        select: () => this.setState({ station: i }) }; }),
+      stations: cl.stations.map((name, i) => ({ name, on: s.station === i, select: () => this.setState({ station: i }) })),
       flowSwitchOpen: !!s.flowSwitch,
       flowSwitchTitle: s.flowSwitch ? "Switch to a " + s.flowSwitch.flow + " station?" : "",
       flowSwitchBody: s.flowSwitch ? (s.flowSwitch.flow === "virtual" ? "Virtual stations use the scan-first flow, so this starts a new transfer. " : "Physical stations use the pick-products, open-door flow, so this starts a new transfer. ")
@@ -1152,7 +1090,6 @@ class Component extends DCLogic {
       flowSwitchStay: () => { const r = this.state.recv; this.setState(Object.assign({ flowSwitch: null, step: this.state.flow === "virtual" ? 4 : 1 }, r ? { practice: r.practice, clinic: r.clinic, station: r.station } : {})); window.scrollTo(0, 0); },
       flowSwitchGo: () => { const f = this.state.flowSwitch; if (f) f.go(); },
       next0Disabled: !ok,
-      next0Fg: ok ? "#ffffff" : "#BCC3CD", next0Bg: ok ? "#095192" : "#F3F5F7", next0Bd: ok ? "#095192" : "#DADEE3", next0Cursor: ok ? "pointer" : "not-allowed",
       onNext0: () => {
         if (!ok) return;
         const flow = Component.isVirtual(cl.stations[s.station]) ? "virtual" : "physical";
@@ -1185,27 +1122,25 @@ class Component extends DCLogic {
     return {
       ic_name: this.sortIcon("name"), ic_ndc: this.sortIcon("ndc"), ic_loc: this.sortIcon("loc"), ic_inv: this.sortIcon("inv"),
       sort_name: sorter("name"), sort_ndc: sorter("ndc"), sort_loc: sorter("loc"), sort_inv: sorter("inv"),
-      selCount,
+      selCount, selTileCls: "ak-count-tile" + (selCount ? " ak-count-tile--active" : ""),
       searchDraft: s.searchDraft, invDraft: s.invDraft,
       onSearchDraft: e => this.setState({ searchDraft: e.target.value }),
       onSearchKey: e => { if (e.key === "Enter") this.setState(st => ({ search: st.searchDraft, inv: st.invDraft })); },
       onInvDraft: e => { const v = e.target.value; this.setState({ invDraft: v, inv: v, search: this.state.searchDraft }); },
       applyFilters: () => this.setState(st => ({ search: st.searchDraft, inv: st.invDraft })),
       resetFilters: () => this.setState({ searchDraft: "", invDraft: "All", search: "", inv: "All" }),
-      allChecked: all, someChecked: some,
-      allBoxBg: all || some ? "#095192" : "#ffffff", allBoxBd: all || some ? "#095192" : "#bcc3cd",
+      allAria: all ? "true" : some ? "mixed" : "false",
       toggleAll: () => this.setState(st => { const n = Object.assign({}, st.picked); list.forEach(p => { n[p.id] = !all; }); return { picked: n }; }),
       pickRows: list.map(p => {
         const on = !!s.picked[p.id], t = this.total(p);
-        return { name: p.name, desc: p.desc, chips: this.chips(p), ndc: p.ndc, invType: p.invType, invColor: Component.isPt(p.invType) ? "#8B3FD9" : "#6b7280",
+        return { name: p.name, desc: p.desc, chips: this.chips(p), ndc: p.ndc, invType: p.invType, invCls: Component.invCls(p.invType),
           inventory: t + " " + (p.unit === "each" ? "each" : (t === 1 ? "Vial" : "Vials")),
           singleLoc: p.bins.length === 1, multiLoc: p.bins.length > 1, locDoor: p.bins[0][0], locBin: p.bins[0][1],
-          checked: on, boxBg: on ? "#095192" : "#ffffff", boxBd: on ? "#095192" : "#bcc3cd", bg: on ? "#f8fafc" : "#ffffff",
+          checked: on, cls: on ? "is-selected" : "",
           toggle: () => toggle(p.id) };
       }),
       pickEmpty: list.length === 0,
       noneSelected: selCount === 0,
-      contFg: selCount ? "#ffffff" : "#BCC3CD", contBg: selCount ? "#095192" : "#F3F5F7", contBd: selCount ? "#095192" : "#DADEE3", contCursor: selCount ? "pointer" : "not-allowed",
       toStep2: () => {
         if (!selCount) return;
         const queue = P.filter(p => s.picked[p.id]).map(p => p.id);
@@ -1235,7 +1170,7 @@ class Component extends DCLogic {
     const sources = Array.from(new Set(allIds.reduce((a, id) => a.concat(P[id].sources), [])));
     const cards = ids.map(id => P[id]).filter(p => (!q || p.name.toLowerCase().includes(q) || p.ndc.includes(q)) && (s.pInv === "All" || p.invType === s.pInv) && (s.pSrc === "All" || p.sources.includes(s.pSrc))).map(p => {
       const t = this.total(p);
-      return { name: p.name, desc: p.desc, chips: this.chips(p), ndc: p.ndc, invType: p.invType, invColor: Component.invColor(p.invType), hasPatient: Component.isPt(p.invType),
+      return { name: p.name, desc: p.desc, chips: this.chips(p), ndc: p.ndc, invType: p.invType, invCls: Component.invCls(p.invType), hasPatient: Component.isPt(p.invType),
         invLabel: t + " " + this.unitOf(p, t),
         unselect: () => this.setState(st => ({ pUnsel: Object.assign({}, st.pUnsel, { [p.id]: true }) })) };
     });
@@ -1253,7 +1188,6 @@ class Component extends DCLogic {
       pnCards: cards, pnEmpty: cards.length === 0,
       pnEmptyText: ids.length ? "No products match your filters." : "All products have been unselected. Save to confirm.",
       pnClean: clean,
-      pnSaveFg: clean ? "#BCC3CD" : "#ffffff", pnSaveBg: clean ? "#F3F5F7" : "#095192", pnSaveBd: clean ? "#DADEE3" : "#095192", pnSaveCursor: clean ? "not-allowed" : "pointer",
       pnSave: () => {
         if (clean) return;
         const kill = Object.keys(unsel).filter(k => unsel[k]).map(Number);
@@ -1344,15 +1278,14 @@ class Component extends DCLogic {
     };
     const cards = listIds.map(id => { const p = P[id], on = id === sel, n = (s.scanned[id] || []).length, ex = expInfo(p);
       return {
-        name: p.name, desc: p.desc, chips: this.chips(p), ndc: p.ndc, invType: p.invType, invColor: Component.invColor(p.invType),
+        name: p.name, desc: p.desc, chips: this.chips(p), ndc: p.ndc, invType: p.invType, invCls: Component.invCls(p.invType),
         inv: this.total(p) + " " + this.unitOf(p, this.total(p)), exp: ex.label, hasExpired: ex.expired, tag: n ? n + " in transfer" : "", hasTag: n > 0, on,
-        hdBg: on ? "#0E243F" : "#F8FAFC", hdFg: on ? "#ffffff" : "#21252b", subFg: on ? "rgba(255,255,255,0.85)" : "#6b7280",
-        bd: on ? "#0E243F" : "#e3e7ed", hoverBd: on ? "#0E243F" : "#9fb4cc", chipRing: on ? "rgba(255,255,255,0.6)" : "transparent",
+        cls: "ak-card" + (on ? " ak-card--selected" : ""),
         select: () => { if (id === sel && (mode !== "search" || pick != null)) return; this.setState({ vSel: id, vPick: mode === "search" ? id : null, vPickChk: {}, vPickDrop: {}, vPickPane: "avail" }); } }; });
     // Selected product's items in the transfer (shown until the user moves on to another product).
     const selRows = sel == null || pick != null ? [] : (s.scanned[sel] || []).map(id => { const x = byId(id), p = P[sel], ser = serialized(p); return {
       serial: ser ? x.serial : "--", lot: x.lot, source: x.source, expiration: x.expiration, qty: "1 " + this.unitOf(p, 1) + " / " + p.strength,
-      bg: id === s.lastAdded ? "#F4F8FC" : "#ffffff",
+      cls: id === s.lastAdded ? "is-selected" : "",
       remove: () => { this.setState(st => { const l = (st.scanned[sel] || []).filter(v => v !== id); return { scanned: Object.assign({}, st.scanned, { [sel]: l }), queue: l.length ? st.queue : st.queue.filter(q => q !== sel) }; }); this.toast((ser ? "Serial " + x.serial : "Lot " + x.lot) + " removed from the transfer.", "warning"); } }; });
     // Add manually: "Available Items" (not yet in the transfer) to tick, and "Previously Selected Items" (already in
     // it, ticked; untick to remove). One accordion open at a time. Save selection applies both; Cancel goes back.
@@ -1363,8 +1296,7 @@ class Component extends DCLogic {
       const rowOf = (x, checked, selectable, toggle) => ({ serial: ser ? x.serial : "--", lot: x.lot, source: x.source, expiration: x.expiration, qty: "1 " + this.unitOf(p, 1) + " / " + p.strength,
         expired: isExpired(x), selectable, checked,
         hint: isExpired(x) ? "Expired on " + x.expiration + ". Expired vials can't be selected for transfer." : "", cursor: selectable ? "default" : "not-allowed",
-        bg: !selectable ? "#eceef1" : checked ? "#f5f9fe" : "#ffffff", fg: !selectable ? "#6b7480" : "#21252b",
-        boxBg: checked ? "#095192" : "#ffffff", boxBd: checked ? "#095192" : "#bcc3cd", toggle });
+        cls: !selectable ? "is-disabled" : checked ? "is-selected" : "", toggle });
       const avail = this.serialsOf(p).filter(x => !inT.includes(x.id) && (vsrc === "All" || x.source === vsrc))
         .sort((a, b) => isExpired(a) - isExpired(b))   // expired vials go to the bottom
         .map(x => { const ok2 = !isExpired(x), on = ok2 && !!chk[x.id]; return Object.assign(rowOf(x, on, ok2, () => this.setState(st => ({ vPickChk: Object.assign({}, st.vPickChk, { [x.id]: !on }) }))), { id: x.id }); });
@@ -1377,10 +1309,9 @@ class Component extends DCLogic {
         vAvailToggle: () => flip("avail"), vAvailToggleLabel: pane === "avail" ? "Hide Items" : "Show Items", vAvailChev: pane === "avail" ? "180deg" : "0deg",
         vHasPrev: prev.length > 0, vPrevRows: prev, vPrevOpen: pane === "prev", vPrevLabel: "Previously Selected Items (" + prev.length + ")",
         vPrevToggle: () => flip("prev"), vPrevToggleLabel: pane === "prev" ? "Hide Items" : "Show Items", vPrevChev: pane === "prev" ? "180deg" : "0deg",
-        vPickAllOn: allOn, vPickAllBg: allOn ? "#095192" : "#ffffff", vPickAllBd: allOn ? "#095192" : "#bcc3cd",
+        vPickAllOn: allOn,
         vPickAll: () => this.setState(() => { const c = {}; if (!allOn) open.forEach(r => { c[r.id] = true; }); return { vPickChk: c }; }),
-        vPickNone: none, vPickDirty: !none, vPickSaveLabel: "Save selection",
-        vPickFg: none ? "#BCC3CD" : "#ffffff", vPickBg: none ? "#F3F5F7" : "#095192", vPickBd: none ? "#DADEE3" : "#095192", vPickCursor: none ? "not-allowed" : "pointer",
+        vPickNone: none, vPickDirty: !none, vPickSaveLabel: "SAVE SELECTION",
         vPickSave: () => {
           if (none) return;
           const next = addIds.concat(inT.filter(id => !drop[id]));
@@ -1412,12 +1343,11 @@ class Component extends DCLogic {
       vShowSelList: selRows.length > 0, vSelRows: selRows,
       vShowRightEmpty: pick == null && !selRows.length,
       vRightEmptyText: sel != null ? "Use Add manually to pick items of the selected product" : "Items will appear here once a product is scanned or selected",
-      vAddOff: !addOn, vAddFg: addOn ? "#095192" : "#BCC3CD", vAddBd: addOn ? "#095192" : "#DADEE3", vAddCursor: addOn ? "pointer" : "not-allowed", vAddHover: addOn ? "rgba(9,81,146,0.06)" : "#ffffff",
+      vAddOff: !addOn,
       vAddHint: addOn ? "Pick items of the selected product" : "Select a product card first",
       vAddManual: () => { if (addOn) this.setState({ vPick: sel, vPickChk: {}, vPickDrop: {}, vPickPane: "avail" }); },
       vCancel: () => { if (totalScanned) this.setState({ discard: true }); else this.goHome(); },
       vContDisabled: !ok,
-      vContFg: ok ? "#ffffff" : "#BCC3CD", vContBg: ok ? "#095192" : "#F3F5F7", vContBd: ok ? "#095192" : "#DADEE3", vContCursor: ok ? "pointer" : "not-allowed",
       vContinue: () => { if (pv.vPickDirty) { this.toast("Save or cancel your selection before continuing.", "warning"); return; } if (!ok) return; this.setState({ step: 3, collapsed: {}, note: "", noteOpen: false, lastAdded: null }); window.scrollTo(0, 0); }
     });
   }
@@ -1450,17 +1380,17 @@ class Component extends DCLogic {
       const [last, first] = g.pt ? g.x.patientName.split(", ") : ["", ""];
       const d = String(g.x.patientId).replace(/\D/g, "");
       return {
-        name: g.p.name, desc: g.p.desc, chips: this.chips(g.p), ndc: g.p.ndc, invType: g.p.invType, invColor: Component.invColor(g.p.invType),
+        name: g.p.name, desc: g.p.desc, chips: this.chips(g.p), ndc: g.p.ndc, invType: g.p.invType, invCls: Component.invCls(g.p.invType),
         countLabel: items.length + " " + this.unitOf(g.p, items.length), hasPatient: g.pt,
         ptLast: last, ptFirst: first, ptId: d, ptDob: d ? ("0" + (1 + Number(d[0]) % 9)).slice(-2) + "/" + ("0" + (10 + Number(d.slice(1, 3)) % 18)).slice(-2) + "/19" + (60 + Number(d.slice(3, 5)) % 35) : "",
         open: isOpen, toggleLabel: isOpen ? "Hide Items" : "Show Items", chevRot: isOpen ? "180deg" : "0deg",
         toggle: () => this.setState(st => ({ vpOpenG: Object.assign({}, st.vpOpenG, { [g.key]: !isOpen }) })),
-        allChecked: all, allBg: all ? "#095192" : "#ffffff", allBd: all ? "#095192" : "#bcc3cd",
+        allChecked: all,
         toggleAll: () => setChk(ids2, !all),
-        noneChecked: nChk === 0, rmFg: nChk ? "#D9342B" : "#BCC3CD", rmBd: nChk ? "#D9342B" : "#DADEE3", rmCursor: nChk ? "pointer" : "not-allowed",
+        noneChecked: nChk === 0,
         removeChecked: () => { if (nChk) stage(ids2.filter(id => chk[id])); },
         rows: items.map(x => ({ serial: x.serial, lot: x.lot, expiration: x.expiration, source: x.source, qty: "1 " + this.unitOf(g.p, 1),
-          checked: !!chk[x.id], boxBg: chk[x.id] ? "#095192" : "#ffffff", boxBd: chk[x.id] ? "#095192" : "#bcc3cd",
+          checked: !!chk[x.id],
           toggle: () => setChk([x.id], !chk[x.id]), remove: () => stage([x.id]) }))
       };
     }).filter(Boolean);
@@ -1481,7 +1411,6 @@ class Component extends DCLogic {
       vpCards: cards, vpEmpty: !cards.length,
       vpEmptyText: !groups.length ? (ids.length ? "All items are marked for removal. Save to confirm." : "No items have been scanned yet.") : "No items match your filters.",
       vpClean: clean,
-      vpSaveFg: clean ? "#BCC3CD" : "#ffffff", vpSaveBg: clean ? "#F3F5F7" : "#095192", vpSaveBd: clean ? "#DADEE3" : "#095192", vpSaveCursor: clean ? "not-allowed" : "pointer",
       vpSave: () => {
         if (clean) return;
         this.setState(st => {
@@ -1500,7 +1429,7 @@ class Component extends DCLogic {
       const p = P[id], all = this.serialsOf(p), byId = {}; all.forEach(x => { byId[x.id] = x; });
       const list = s.scanned[id].slice().reverse(), n = list.length, open = !(s.collapsed || {})[id];
       const qty = (p.unit === "each" ? "1 each / " : "1 vial / ") + p.strength;
-      return { name: p.name, desc: p.desc, chips: this.chips(p), ndc: p.ndc, invType: p.invType, invColor: Component.invColor(p.invType), hasPatient: Component.isPt(p.invType),
+      return { name: p.name, desc: p.desc, chips: this.chips(p), ndc: p.ndc, invType: p.invType, invCls: Component.invCls(p.invType), hasPatient: Component.isPt(p.invType),
         countLabel: n + " " + this.unitOf(p, n), open, toggleLabel: open ? "Hide items" : "Show items", chevRot: open ? "180deg" : "0deg",
         toggle: () => this.setState(st => ({ collapsed: Object.assign({}, st.collapsed, { [id]: open }) })),
         rows: list.map(k => Object.assign({}, byId[k], { qty })) };
@@ -1508,7 +1437,7 @@ class Component extends DCLogic {
     return {
       sumTitle: ids.length + (ids.length === 1 ? " Product Transferred" : " Products Transferred"),
       sumProducts,
-      hasNote: !!s.note, note: s.note || "", noteBtnLabel: s.note ? "Edit note" : "Add note",
+      hasNote: !!s.note, note: s.note || "", noteBtnLabel: s.note ? "EDIT NOTE" : "ADD NOTE",
       noteOpen: !!s.noteOpen, noteDraft: s.noteDraft || "",
       openNote: () => this.setState(st => ({ noteOpen: true, noteDraft: st.note || "" })),
       closeNote: () => this.setState({ noteOpen: false }),
@@ -1572,7 +1501,7 @@ class Component extends DCLogic {
     const saveOk = picked && pendingN > 0, skipOk = picked && pendingN === 0;
     return {
       p: {
-        name: p.name, desc: p.desc, chips: this.chips(p), ndc: p.ndc, invType: p.invType, invColor: Component.invColor(p.invType),
+        name: p.name, desc: p.desc, chips: this.chips(p), ndc: p.ndc, invType: p.invType, invCls: Component.invCls(p.invType),
         hasPatient: Component.isPt(p.invType), cols: Component.isPt(p.invType) ? 7 : 6,
         door: picked ? cd.door : "--", bin: picked ? (multi ? "Multiple" : cd.bins[0].bin) : "--",
         binInv: picked ? cd.count + " " + this.unitOf(p, cd.count) : "--",
@@ -1584,18 +1513,15 @@ class Component extends DCLogic {
         binList: cd.bins.map(b => ({ bin: b.bin, inv: b.count + " " + this.unitOf(p, b.count), added: inBin(b.key) })),
         doorAdded: cd.bins.reduce((a, b) => a + inBin(b.key), 0),
         emptyText: picked ? "No serials added yet. Scan a serial or add one manually from Door " + cd.door + (multi ? " (bins " + cd.bins.map(b => b.bin).join(", ") + ")." : " · Bin " + cd.bins[0].bin + ".") : "Select a location to start adding serials for this product.",
-        scanLocked: !picked, scanBg: picked ? "#ffffff" : "#F3F5F7", scanGlyph: picked ? "#6b7480" : "#BCC3CD", scanCursor: picked ? "text" : "not-allowed",
-        addFg: picked ? "#ffffff" : "#BCC3CD", addBg: picked ? "#095192" : "#F3F5F7", addBd: picked ? "#095192" : "#DADEE3",
+        scanLocked: !picked, scanCls: "ak-input" + (picked ? "" : " ak-input--disabled"), scanCursor: picked ? "text" : "not-allowed",
         locOpen: doors.length > 1 && !!s.locOpen,
         onLocOpen: v => this.setState({ locOpen: !!v }),
         unitLabel: p.unit === "each" ? "Each" : "Vials",
         unitWord: p.unit,
         transferQty: n,
         openDoor: () => picked ? this.toast("Door " + cd.door + " is unlocked now") : needLoc(),
-        rows: ids.map(id => { const x = byId[id]; const canRm = picked && x.door === cd.door; return Object.assign({}, x, { qty: qtyLabel, bg: id === s.lastAdded ? "#F4F8FC" : "#ffffff",
+        rows: ids.map(id => { const x = byId[id]; const canRm = picked && x.door === cd.door; return Object.assign({}, x, { qty: qtyLabel, cls: id === s.lastAdded ? "is-selected" : "",
           lockedRm: !canRm, rmTitle: canRm ? "Remove" : "Open Door " + x.door + " to remove this serial",
-          rmColor: canRm ? "#FF3300" : "#BCC3CD", rmCursor: canRm ? "pointer" : "not-allowed",
-          rmHoverBg: canRm ? "#fbe5e4" : "transparent", rmHoverFg: canRm ? "#FF3300" : "#BCC3CD",
           remove: () => { if (!canRm) { this.toast("Switch to Door " + x.door + " to remove this serial.", "warning"); return; } setScanned(l => l.filter(v => v !== id)); this.setState(st => ({ saved: Object.assign({}, st.saved, { [p.id]: ((st.saved || {})[p.id] || []).filter(v => v !== id) }) })); } }); }),
         empty: n === 0,
         locations: bins.map((b, i) => ({ door: b.door, bin: b.bin, size: "1×1", expiration: Component.EXPS[i % 5], inventory: b.count, moved: b.count, issue: inBin(b.key), doorType: "physical" })),
@@ -1619,11 +1545,9 @@ class Component extends DCLogic {
       curId: String(p.id),
       onProductSelect: x => { const i = s.queue.indexOf(Number(x.id)); if (i >= 0) { commit(); this.setState({ cur: i, scanText: "", lastAdded: null, invPop: false, locOpen: this.needsPick(s.queue[i], s.locPicked) }); window.scrollTo(0, 0); } },
       cancelStep2: () => { if (totalScanned) this.setState({ discard: true }); else this.goHome(); },
-      saveLabel: final ? "Transfer & view summary" : "Transfer & continue",
-      skipLabel: final ? "Skip & view summary" : "Skip & continue",
+      saveLabel: final ? "TRANSFER & VIEW SUMMARY" : "TRANSFER & CONTINUE",
+      skipLabel: final ? "SKIP & VIEW SUMMARY" : "SKIP & CONTINUE",
       saveDisabled: !saveOk, skipDisabled: !skipOk,
-      saveFg: saveOk ? "#ffffff" : "#BCC3CD", saveBg: saveOk ? "#095192" : "#F3F5F7", saveBd: saveOk ? "#095192" : "#DADEE3", saveCursor: saveOk ? "pointer" : "not-allowed",
-      skipFg: skipOk ? "#095192" : "#BCC3CD", skipBd: skipOk ? "#095192" : "#DADEE3", skipCursor: skipOk ? "pointer" : "not-allowed",
       onSave: () => { if (!saveOk) return; commit(); if (!final) this.toast(pendingN + " " + this.unitOf(p, pendingN) + " added to the transfer."); advance(); },
       onSkip: () => { if (skipOk) advance(); }
     };

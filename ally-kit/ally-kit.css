@@ -1,0 +1,585 @@
+/* ==========================================================================
+   Ally prototype kit
+   Components for HTML prototypes, built from the AllyGPO Design System
+   library as used in the Transfer Figma file (eT6HcGEMl1keXbU21Yp7q8).
+   Every value below comes from the Figma component, not from an old prototype.
+   Class names follow the Figma component names. See gallery.html.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
+
+/* --------------------------------------------------------------------------
+   Tokens
+   -------------------------------------------------------------------------- */
+:root {
+  /* Brand + action (Button set) */
+  --ak-brand: #095192;
+  --ak-brand-hover: #173a63;
+  --ak-brand-active: #122e50;
+  --ak-brand-disabled: rgba(32, 81, 140, 0.6);
+  --ak-danger: #d9342b;
+  --ak-danger-hover: #c32f27;
+  --ak-danger-active: #ae2a22;
+  --ak-danger-disabled: rgba(217, 52, 43, 0.6);
+
+  /* Text */
+  --ak-text: #25282a;            /* text/default */
+  --ak-text-label: #64748b;      /* field labels, counters */
+  --ak-text-muted: #757575;      /* secondary/italic cell text */
+  --ak-text-placeholder: #9fa9b7;
+  --ak-text-tab-idle: #767676;
+  --ak-text-empty: #6b7280;
+  --ak-text-on-brand: #ffffff;
+
+  /* Surfaces + borders */
+  --ak-bg: #ffffff;
+  --ak-bg-subtle: #f5f5f5;       /* Search Filter */
+  --ak-bg-table-header: #f5f7fa;
+  --ak-bg-disabled: #fafafa;
+  --ak-border-input: #bcc3cd;
+  --ak-border-table: #dadee3;
+  --ak-border-tile: #d8d8d8;
+  --ak-border-divider: #e0e0e0;
+  --ak-border-bar: #d9d9d9;
+  --ak-border-panel: #e5e7eb;
+  --ak-border-tab-idle: #e9eef4;
+  --ak-border-card: #eeeeee;
+  --ak-overlay: rgba(26, 31, 38, 0.4);
+
+  /* Nav */
+  --ak-nav-bg: #095192;
+  --ak-nav-logo-bg: #0e243f;
+  --ak-nav-muted: #9fb4ce;
+
+  /* Feedback (Alert / Inline Alert) */
+  --ak-success-bg: #d9f2ef;  --ak-success-border: #009883;  --ak-success-icon: #007f6d;
+  --ak-warning-bg: #f7edde;  --ak-warning-border: #b87b21;
+  --ak-danger-bg: #f9e1df;   --ak-danger-border: #d9342b;
+  --ak-info-bg: #ead6fd;
+
+  /* Status Badge pills (Badge / Category) */
+  --ak-pill-success: #008774;
+  --ak-pill-warning: #eec038;
+  --ak-pill-danger: #c32f27;
+  --ak-pill-info: #3b83f7;
+  --ak-pill-emphasis: #a855f7;
+  --ak-pill-neutral: #465161;
+
+  /* Solid status chips */
+  --ak-chip-success: #00a991;  --ak-chip-success-border: #006557;
+  --ak-chip-danger: #d9342b;   --ak-chip-danger-border: #8c221c;
+
+  /* Product Badge (Components/tag/bg-*) */
+  --ak-tag-sdv: #282e38;
+  --ak-tag-climate: #06b6d4;
+  --ak-tag-pack: #465161;
+  --ak-tag-civ: #eec038;
+  --ak-tag-non-serial: #fe4603;
+
+  /* Door Type */
+  --ak-door-physical: #5b6b7b;
+  --ak-door-virtual: #8b3fd9;
+
+  /* Radius + elevation */
+  --ak-radius: 4px;
+  --ak-radius-lg: 6px;
+  --ak-radius-pill: 25px;
+  --ak-shadow-modal: 0 2px 1px -1px rgba(0,0,0,.02), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+  --ak-shadow-bar: 0 -4px 8px rgba(0,0,0,.10);
+  --ak-focus-ring: 0 0 3px 4px #095192;   /* Input / Text Area, State=Active */
+
+  /* Layout (1512 x 1024 artboards) */
+  --ak-sidenav-w: 70px;
+  --ak-topnav-h: 54px;
+  --ak-gutter: 24px;              /* content edge = side nav + 24 = 94 */
+  --ak-bottom-bar-h: 68px;
+
+  /* Type */
+  --ak-font: "Inter", -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   Base + DS text styles (H1 35 ... XS 12; line height auto unless stated)
+   -------------------------------------------------------------------------- */
+.ak, .ak * { box-sizing: border-box; }
+.ak { font-family: var(--ak-font); color: var(--ak-text); font-size: 14px; -webkit-font-smoothing: antialiased; }
+.ak button, .ak input, .ak select, .ak textarea { font-family: inherit; }
+
+.ak-h1 { font-size: 35px; } .ak-h2 { font-size: 28px; } .ak-h3 { font-size: 24px; }
+.ak-h4 { font-size: 21px; } .ak-h5 { font-size: 18px; } .ak-body { font-size: 16px; }
+.ak-small { font-size: 14px; } .ak-xs { font-size: 12px; }
+.ak-regular { font-weight: 400; } .ak-medium { font-weight: 500; }
+.ak-semibold { font-weight: 600; } .ak-bold { font-weight: 700; }
+.ak-italic { font-style: italic; }
+.ak-label { color: var(--ak-text-label); }
+.ak-muted { color: var(--ak-text-muted); }
+.ak-link { color: var(--ak-brand); text-decoration: none; cursor: pointer; }
+.ak-link:hover { text-decoration: underline; }
+
+/* --------------------------------------------------------------------------
+   Icons: <span class="ak-icon" data-icon="search"></span> (filled by ally-kit.js)
+   -------------------------------------------------------------------------- */
+.ak-icon { display: inline-flex; width: 24px; height: 24px; flex: none; align-items: center; justify-content: center; }
+.ak-icon svg { width: 100%; height: 100%; display: block; }
+.ak-icon--14 { width: 14px; height: 14px; } .ak-icon--16 { width: 16px; height: 16px; }
+.ak-icon--17 { width: 17px; height: 17px; } .ak-icon--20 { width: 20px; height: 20px; }
+.ak-icon--21 { width: 21px; height: 21px; } .ak-icon--28 { width: 28px; height: 28px; }
+.ak-icon--current svg path { fill: currentColor; }
+.ak-icon[data-icon="check-circle"], [data-icon="check-circle"] { color: var(--ak-success-icon); }
+.ak-btn [data-icon="check-circle"] { color: inherit; }
+
+/* --------------------------------------------------------------------------
+   Button (Standard, 36) and _Large Button (44)
+   Figma: Button / _Large Button  ·  Type = Primary | Secondary | Tertiary
+   -------------------------------------------------------------------------- */
+.ak-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 36px; padding: 8px 12px; border-radius: var(--ak-radius);
+  border: 1px solid transparent; background: transparent;
+  font-size: 14px; line-height: 20px; font-weight: 600; white-space: nowrap;
+  cursor: pointer; text-decoration: none;
+}
+.ak-btn--lg { height: 44px; padding: 8px 16px; }
+.ak-btn .ak-icon { width: 20px; height: 20px; }
+.ak-btn .ak-icon svg path { fill: currentColor; }
+
+.ak-btn--primary { background: var(--ak-brand); color: #fff; }
+.ak-btn--primary:hover { background: var(--ak-brand-hover); }
+.ak-btn--primary:active { background: var(--ak-brand-active); }
+.ak-btn--secondary { border-color: var(--ak-brand); color: var(--ak-brand); background: #fff; }
+.ak-btn--secondary:hover { border-color: var(--ak-brand-hover); color: var(--ak-brand-hover); }
+.ak-btn--secondary:active { border-color: var(--ak-brand-active); color: var(--ak-brand-active); }
+.ak-btn--tertiary { padding-left: 0; padding-right: 0; gap: 4px; color: var(--ak-brand); }
+.ak-btn--tertiary:not(.ak-btn--lg) { height: 20px; padding: 0; }
+.ak-btn--tertiary:hover { color: var(--ak-brand-hover); }
+.ak-btn--tertiary:active { color: var(--ak-brand-active); }
+
+.ak-btn--danger.ak-btn--primary { background: var(--ak-danger); }
+.ak-btn--danger.ak-btn--primary:hover { background: var(--ak-danger-hover); }
+.ak-btn--danger.ak-btn--primary:active { background: var(--ak-danger-active); }
+.ak-btn--danger.ak-btn--secondary { border-color: var(--ak-danger); color: var(--ak-danger); }
+.ak-btn--danger.ak-btn--secondary:hover { border-color: var(--ak-danger-hover); color: var(--ak-danger-hover); }
+.ak-btn--danger.ak-btn--tertiary { color: var(--ak-danger); }
+
+.ak-btn:disabled, .ak-btn[aria-disabled="true"] { cursor: not-allowed; pointer-events: none; }
+.ak-btn--primary:disabled, .ak-btn--primary[aria-disabled="true"] { background: var(--ak-brand-disabled); }
+.ak-btn--secondary:disabled, .ak-btn--secondary[aria-disabled="true"] { border-color: var(--ak-brand-disabled); color: var(--ak-brand-disabled); }
+.ak-btn--tertiary:disabled, .ak-btn--tertiary[aria-disabled="true"] { color: var(--ak-brand-disabled); }
+.ak-btn--danger.ak-btn--primary:disabled { background: var(--ak-danger-disabled); }
+.ak-btn--danger.ak-btn--secondary:disabled { border-color: var(--ak-danger-disabled); color: var(--ak-danger-disabled); }
+
+/* Link Button (Table Cell Variants · Link Button), e.g. "Select" in a table */
+.ak-link-btn { display: inline-flex; align-items: center; gap: 4px; padding: 2px; border-radius: var(--ak-radius); border: 0; background: none; color: var(--ak-brand); font-size: 14px; line-height: 20px; font-weight: 500; cursor: pointer; }
+.ak-link-btn:hover { text-decoration: underline; }
+
+/* --------------------------------------------------------------------------
+   Input (48), _Input Group Add-Ons, Dropdown, Text Area
+   -------------------------------------------------------------------------- */
+.ak-field { display: flex; flex-direction: column; gap: 4px; }
+.ak-field__label { font-size: 16px; font-weight: 500; color: var(--ak-text); }
+.ak-field__help { font-size: 14px; color: var(--ak-text-label); }
+.ak-field--error .ak-field__label, .ak-field--error .ak-field__help { color: var(--ak-danger); }
+
+.ak-input {
+  display: flex; align-items: center; gap: 8px; height: 48px; padding: 12px;
+  background: #fff; border: 1px solid var(--ak-border-input); border-radius: var(--ak-radius);
+  font-size: 16px; color: var(--ak-text);
+}
+.ak-input input, input.ak-input, .ak-input select {
+  flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; padding: 0;
+  font: inherit; font-size: 16px; color: var(--ak-text);
+}
+input.ak-input { width: 100%; padding: 12px; }
+.ak-input input::placeholder, input.ak-input::placeholder, .ak-textarea::placeholder { color: var(--ak-text-placeholder); }
+.ak-input:focus-within, input.ak-input:focus { border-color: var(--ak-text-placeholder); box-shadow: var(--ak-focus-ring); }
+.ak-input--disabled, .ak-input:has(input:disabled) { background: var(--ak-bg-disabled); }
+.ak-input--error { border-color: var(--ak-danger); }
+.ak-input--error input::placeholder { color: var(--ak-danger); }
+.ak-input--warning { border-color: var(--ak-warning-border); }
+.ak-input .ak-icon svg path { fill: var(--ak-text-label); }
+
+/* Input + add-on button (search) */
+.ak-input-group { display: flex; align-items: stretch; }
+.ak-input-group .ak-input { border-top-right-radius: 0; border-bottom-right-radius: 0; flex: 1; }
+.ak-addon {
+  width: 52px; height: 48px; display: inline-flex; align-items: center; justify-content: center;
+  background: var(--ak-brand); border: 1px solid var(--ak-brand); border-radius: 0 var(--ak-radius) var(--ak-radius) 0;
+  color: #fff; cursor: pointer;
+}
+.ak-addon:hover { background: var(--ak-brand-hover); }
+.ak-addon .ak-icon { width: 20px; height: 20px; }
+
+/* Dropdown: Input look with clear (times) + chevron-down */
+.ak-select { position: relative; }
+.ak-select select { appearance: none; -webkit-appearance: none; cursor: pointer; padding-right: 32px; }
+.ak-select::after {
+  content: ""; position: absolute; right: 12px; top: 50%; width: 24px; height: 24px; margin-top: -12px; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12.01 15.2a.75.75 0 0 1-.53-.22l-5-5a.75.75 0 0 1 1.06-1.03l4.47 4.44 4.47-4.44a.75.75 0 0 1 1.06 1L12.54 14.95a.75.75 0 0 1-.53.25Z' fill='%2364748B'/%3E%3C/svg%3E") no-repeat center;
+}
+
+.ak-textarea {
+  display: block; width: 100%; min-height: 108px; padding: 12px; resize: vertical;
+  background: #fff; border: 1px solid var(--ak-border-input); border-radius: var(--ak-radius);
+  font: inherit; font-size: 16px; color: var(--ak-text); outline: 0;
+}
+.ak-textarea:focus { border-color: var(--ak-text-label); box-shadow: var(--ak-focus-ring); }
+
+/* Checkbox (Table Cell Variants · Checkbox) */
+.ak-checkbox { appearance: none; -webkit-appearance: none; width: 16px; height: 16px; margin: 0; border: 1px solid var(--ak-border-input); border-radius: 2px; background: #fff; cursor: pointer; display: inline-grid; place-content: center; vertical-align: middle; }
+.ak-checkbox:checked, .ak-checkbox:indeterminate { background: var(--ak-brand); border-color: var(--ak-brand); }
+.ak-checkbox:checked::after { content: ""; width: 9px; height: 5px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
+.ak-checkbox:indeterminate::after { content: ""; width: 8px; height: 2px; background: #fff; }
+
+/* --------------------------------------------------------------------------
+   Search Filter (grey bar with inputs + RESET / SEARCH)
+   -------------------------------------------------------------------------- */
+.ak-search-filter {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 16px 24px; background: var(--ak-bg-subtle); border: 1px solid var(--ak-border-divider); border-radius: var(--ak-radius);
+}
+.ak-search-filter__fields { display: flex; gap: 14px; align-items: center; }
+.ak-search-filter__actions { display: flex; gap: 16px; align-items: center; }
+
+/* --------------------------------------------------------------------------
+   Tabs (_Tab Row / _Tabs)
+   -------------------------------------------------------------------------- */
+.ak-tabs { display: flex; }
+.ak-tab {
+  display: inline-flex; align-items: center; gap: 4px; height: 64px; padding: 20px;
+  border: 0; border-bottom: 2px solid var(--ak-border-tab-idle); background: none;
+  font-size: 16px; line-height: 24px; font-weight: 700; color: var(--ak-text-tab-idle); cursor: pointer; white-space: nowrap;
+}
+.ak-tab:hover { color: var(--ak-text-label); border-bottom-color: var(--ak-text-label); }
+.ak-tab[aria-selected="true"], .ak-tab--selected { color: var(--ak-brand); border-bottom-color: var(--ak-brand); }
+.ak-tab:disabled { color: var(--ak-text-placeholder); border-bottom-color: var(--ak-text-placeholder); cursor: not-allowed; }
+.ak-tab__count { min-width: 20px; height: 20px; padding: 4px 6px; border-radius: 10px; background: var(--ak-brand); color: #fff; font-size: 12px; line-height: 12px; font-weight: 700; }
+
+/* --------------------------------------------------------------------------
+   Table (Table Cell: Table Header / Table Cell / Nested Table)
+   No column dividers; each cell has a bottom border only.
+   -------------------------------------------------------------------------- */
+.ak-table {
+  width: 100%; background: #fff; font-size: 14px; line-height: 20px;
+  border: 1px solid var(--ak-border-table); border-radius: var(--ak-radius);
+  border-collapse: separate; border-spacing: 0; overflow: hidden;   /* Figma table frame: 1px #dadee3, radius 4, clips */
+}
+.ak-table thead tr:first-child th:first-child { border-top-left-radius: var(--ak-radius); }
+.ak-table thead tr:first-child th:last-child { border-top-right-radius: var(--ak-radius); }
+.ak-table tbody tr:last-child td { border-bottom: 0; }
+.ak-table--boxed { /* same as default; kept for older markup */ }
+.ak-table--flush, .ak-box > .ak-table, .ak-box > div > .ak-table, .ak-card .ak-table { border: 0; border-radius: 0; }
+.ak-table th, .ak-th {
+  height: 56px; padding: 8px; text-align: left; vertical-align: top;
+  background: var(--ak-bg-table-header); border-bottom: 1px solid var(--ak-border-table);
+  font-weight: 500; color: var(--ak-text); white-space: nowrap;
+}
+.ak-table--compact th { height: 36px; }
+.ak-th__inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.ak-th__sub { display: block; font-style: italic; font-weight: 400; color: var(--ak-text-muted); }
+.ak-th__sort { width: 20px; height: 20px; flex: none; cursor: pointer; }
+.ak-table td, .ak-td {
+  padding: 8px; vertical-align: top; background: #fff; border-bottom: 1px solid var(--ak-border-table);
+  font-weight: 400; color: var(--ak-text);
+}
+.ak-table tbody tr:hover td { background: #f8fafc; }
+.ak-table tbody tr.is-selected td { background: #eef4fa; }
+.ak-table tbody tr.is-disabled td { color: var(--ak-text-placeholder); }
+.ak-cell-sub { display: block; font-style: italic; color: var(--ak-text-muted); }
+.ak-cell-check { width: 40px; }
+.ak-cell-action { width: 48px; text-align: center; vertical-align: middle !important; }
+
+/* Product Name cell: NAME / generic name / badges */
+.ak-product__name { display: block; text-transform: uppercase; color: var(--ak-text); }
+.ak-product__generic { display: block; font-style: italic; color: var(--ak-text-muted); }
+.ak-product__badges { display: flex; flex-wrap: wrap; gap: 4px; padding-top: 4px; }
+
+/* Empty row ("No products match your search") */
+.ak-empty { padding: 20px 0; text-align: center; font-size: 14px; line-height: 20px; font-weight: 500; color: var(--ak-text-empty); }
+
+/* --------------------------------------------------------------------------
+   Product Badge  (SDV · CLIMATE · PACK · CIV · NON SERIAL)
+   -------------------------------------------------------------------------- */
+.ak-badge {
+  display: inline-flex; align-items: center; height: 20px; padding: 2px 8px; border-radius: var(--ak-radius);
+  font-size: 12px; line-height: 16px; font-weight: 500; text-transform: uppercase; white-space: nowrap;
+  background: var(--ak-tag-pack); color: #fff;
+}
+.ak-badge--sdv, .ak-badge--mdv { background: var(--ak-tag-sdv); }
+.ak-badge--climate { background: var(--ak-tag-climate); }
+.ak-badge--pack, .ak-badge--mdv-wnb { background: var(--ak-tag-pack); }
+.ak-badge--civ { background: var(--ak-tag-civ); color: var(--ak-text); }
+.ak-badge--non-serial { background: var(--ak-tag-non-serial); }
+
+/* --------------------------------------------------------------------------
+   Status Badge (Badge / Category): white, grey border, coloured pill
+   -------------------------------------------------------------------------- */
+.ak-status {
+  display: inline-flex; align-items: center; gap: 4px; height: 20px; padding: 4px; border-radius: var(--ak-radius);
+  background: #fff; border: 1px solid var(--ak-border-tile);
+  font-size: 12px; line-height: 16px; font-weight: 500; color: var(--ak-text); white-space: nowrap;
+}
+.ak-status::before { content: ""; width: 4px; height: 12px; border-radius: 20px; background: var(--ak-pill-neutral); }
+.ak-status--positive::before { background: var(--ak-pill-success); }
+.ak-status--pending::before { background: var(--ak-pill-warning); }
+.ak-status--negative::before { background: var(--ak-pill-danger); }
+.ak-status--complete::before { background: var(--ak-pill-info); }
+.ak-status--patient::before { background: var(--ak-pill-emphasis); }
+.ak-status--incomplete::before { background: var(--ak-pill-neutral); }
+.ak-status--tag::before { display: none; }
+.ak-status--tag { padding: 4px; }
+
+/* Solid status chip (In Progress / Submitted / Error · Solid) */
+.ak-chip {
+  display: inline-flex; align-items: center; height: 24px; padding: 2px 10px; border-radius: var(--ak-radius-pill);
+  border: 1.5px solid var(--ak-chip-success-border); background: var(--ak-chip-success); color: #fff;
+  font-size: 14px; font-weight: 500; white-space: nowrap;
+}
+.ak-table .ak-chip { height: 20px; }
+.ak-chip--danger { background: var(--ak-chip-danger); border-color: var(--ak-chip-danger-border); }
+
+/* --------------------------------------------------------------------------
+   Alert (toast) and Inline Alert
+   -------------------------------------------------------------------------- */
+.ak-toast-region { position: fixed; top: 24px; right: 24px; z-index: 9000; display: flex; flex-direction: column; gap: 12px; }
+.ak-alert {
+  display: flex; align-items: flex-start; gap: 8px; width: 578px; max-width: calc(100vw - 48px);
+  padding: 16px 24px; border-radius: var(--ak-radius-lg); border-left: 8px solid var(--ak-success-border);
+  background: var(--ak-success-bg); color: var(--ak-text); font-size: 14px;
+}
+.ak-alert__icon { width: 21px; height: 21px; flex: none; }
+.ak-alert__text { flex: 1; padding-top: 2px; }
+.ak-alert__title { font-weight: 700; margin-right: 4px; }
+.ak-alert__close { width: 14px; height: 14px; margin-top: 4px; flex: none; border: 0; padding: 0; background: none; cursor: pointer; }
+.ak-alert--warning { background: var(--ak-warning-bg); border-left-color: var(--ak-warning-border); }
+.ak-alert--danger { background: var(--ak-danger-bg); border-left-color: var(--ak-danger-border); }
+.ak-alert--info { background: var(--ak-info-bg); border-left-color: var(--ak-pill-emphasis); }
+.ak-alert--tablet { font-size: 16px; }
+
+.ak-inline-alert {
+  display: flex; align-items: flex-start; gap: 8px; padding: 16px; border-radius: var(--ak-radius-lg);
+  background: var(--ak-info-bg); color: var(--ak-text); font-size: 14px;
+}
+.ak-inline-alert .ak-icon { width: 21px; height: 21px; }
+.ak-inline-alert__text { flex: 1; padding-top: 2px; }
+.ak-inline-alert--success { background: var(--ak-success-bg); }
+.ak-inline-alert--warning { background: var(--ak-warning-bg); }
+.ak-inline-alert--danger { background: var(--ak-danger-bg); }
+
+/* --------------------------------------------------------------------------
+   Modal (600)
+   -------------------------------------------------------------------------- */
+.ak-overlay { position: fixed; inset: 0; z-index: 7000; background: var(--ak-overlay); display: flex; align-items: center; justify-content: center; padding: 24px; }
+.ak-modal { width: 600px; max-width: 100%; background: #fff; border-radius: var(--ak-radius-lg); box-shadow: var(--ak-shadow-modal); display: flex; flex-direction: column; }
+.ak-modal__header { position: relative; padding: 48px 32px 16px; }
+.ak-modal__title { margin: 0; font-size: 18px; font-weight: 700; color: var(--ak-text); }
+.ak-modal__close { position: absolute; top: 16px; right: 16px; width: 28px; height: 28px; border: 0; padding: 0; background: none; cursor: pointer; }
+.ak-modal__body { padding: 8px 32px 32px; font-size: 16px; line-height: 24px; font-weight: 500; }
+.ak-modal__footer { display: flex; justify-content: flex-end; gap: 16px; padding: 24px 40px 24px 32px; }
+
+/* --------------------------------------------------------------------------
+   Side panel (815, right) — header / sections / footer with Large Close
+   -------------------------------------------------------------------------- */
+.ak-panel { position: fixed; top: 0; right: 0; bottom: 0; z-index: 7100; width: 815px; max-width: 100vw; background: #fff; display: flex; flex-direction: column; }
+.ak-panel__header { padding: 24px 24px 16px; border-bottom: 1px solid var(--ak-border-panel); display: flex; flex-direction: column; gap: 4px; }
+.ak-panel__title-row { display: flex; align-items: center; justify-content: space-between; }
+.ak-panel__title { margin: 0; font-size: 24px; font-weight: 500; }
+.ak-panel__close { width: 24px; height: 24px; border: 0; padding: 0; background: none; cursor: pointer; }
+.ak-panel__section { padding: 16px 24px; }
+.ak-panel__section-title { margin: 0 0 12px; font-size: 16px; font-weight: 500; }
+.ak-panel__body { flex: 1; overflow: auto; }
+.ak-panel__footer { padding: 12px 24px; border-top: 1px solid var(--ak-border-panel); display: flex; justify-content: flex-end; gap: 16px; }
+
+/* Stat row inside panels: small label over semibold value */
+.ak-stats { display: flex; }
+.ak-stat { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.ak-stat__label { font-size: 14px; color: var(--ak-text-label); }
+.ak-stat__value { font-size: 16px; font-weight: 600; }
+
+/* --------------------------------------------------------------------------
+   Bottom Action Bar (68) + Product / Location / Transfer counters
+   -------------------------------------------------------------------------- */
+.ak-bottom-bar {
+  position: fixed; left: var(--ak-sidenav-w); right: 0; bottom: 0; z-index: 50; height: var(--ak-bottom-bar-h);
+  display: flex; align-items: center; justify-content: space-between; padding: 12px 40px 12px 29px;
+  background: #fff; border-top: 1px solid var(--ak-border-bar);
+}
+.ak-bottom-bar__actions { display: flex; gap: 24px; margin-left: auto; }
+.ak-bar-info { display: flex; align-items: center; gap: 20px; }
+.ak-bar-info__item { display: flex; align-items: center; gap: 16px; }
+.ak-bar-info__text { display: flex; flex-direction: column; gap: 8px; }
+.ak-bar-info__label { font-size: 14px; font-weight: 500; color: var(--ak-text-label); }
+.ak-bar-info__value { font-size: 18px; font-weight: 600; color: var(--ak-brand); }
+.ak-bar-info__value--plain { color: var(--ak-text); }
+.ak-bar-info__divider { width: 1px; height: 67px; background: var(--ak-border-bar); }
+.ak-bar-info__item[role="button"] { cursor: pointer; }
+
+/* --------------------------------------------------------------------------
+   Page header, info bar, transfer info, counters
+   -------------------------------------------------------------------------- */
+.ak-page { position: relative; margin-left: var(--ak-sidenav-w); min-height: 100vh; background: #fff; }
+.ak-page__content { padding: 0 var(--ak-gutter); }
+.ak-page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding: 16px var(--ak-gutter) 16px; border-bottom: 1px solid var(--ak-border-divider); }
+.ak-page-title { margin: 0; font-size: 24px; font-weight: 400; }
+.ak-page-subtitle { margin: 7px 0 0; font-size: 16px; font-weight: 500; }
+.ak-section-title { margin: 24px 0 16px; font-size: 18px; font-weight: 600; }
+
+/* Info bar: columns of label/value rows (NDC, Inventory Type, ... Door/Bin) */
+.ak-info-bar { display: flex; justify-content: space-between; gap: 24px; padding: 16px 0; font-size: 16px; }
+.ak-info-bar__col { display: flex; flex-direction: column; gap: 8px; }
+.ak-info-bar__row { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.ak-info-bar__label { min-width: 100px; color: var(--ak-text-label); }
+
+/* Transfer Info: "Sending Location / Receiving Location" pairs in page headers */
+.ak-transfer-info { display: flex; flex-direction: column; gap: 8px; font-size: 16px; }
+.ak-transfer-info__row { display: flex; gap: 8px; }
+.ak-transfer-info__label { width: 156px; font-weight: 500; color: var(--ak-text-label); }
+.ak-transfer-info__value { font-weight: 600; }
+
+/* Counter: "Target vs Scanned" label + big number */
+.ak-counter { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; padding: 8px; }
+.ak-counter__value { font-size: 28px; font-weight: 400; }
+
+/* Door Type icon before a door number */
+.ak-door { display: inline-flex; align-items: center; gap: 8px; }
+.ak-door .ak-icon { width: 16px; height: 16px; }
+.ak-table .ak-door .ak-icon { width: 17px; height: 17px; }
+
+/* --------------------------------------------------------------------------
+   Station Tile (local component) and Products Selected tile
+   -------------------------------------------------------------------------- */
+.ak-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(242px, 1fr)); gap: 12px; }
+.ak-tile {
+  height: 86px; padding: 0 12px; display: flex; align-items: center; justify-content: center; text-align: center;
+  background: #fff; border: 1px solid var(--ak-border-tile); border-radius: var(--ak-radius);
+  font-size: 14px; color: var(--ak-text); cursor: pointer;
+}
+.ak-tile:hover { border-color: var(--ak-brand); }
+.ak-tile[aria-pressed="true"], .ak-tile--selected { background: var(--ak-brand); border-color: var(--ak-brand); color: #fff; }
+
+.ak-count-tile {
+  display: inline-flex; flex-direction: column; gap: 8px; width: 129px; padding: 8px;
+  background: #fff; border: 1px solid var(--ak-border-card); border-radius: var(--ak-radius);
+  font-size: 12px; font-weight: 600; color: var(--ak-text); cursor: pointer;
+}
+.ak-count-tile__label { color: var(--ak-text-label); }
+.ak-count-tile--active, .ak-count-tile--active .ak-count-tile__label { border-color: var(--ak-brand); color: var(--ak-brand); }
+
+/* --------------------------------------------------------------------------
+   App shell: Side Nav (70) and top Navigation (54)
+   -------------------------------------------------------------------------- */
+.ak-sidenav { position: fixed; top: 0; left: 0; bottom: 0; z-index: 60; width: var(--ak-sidenav-w); background: var(--ak-nav-bg); display: flex; flex-direction: column; }
+.ak-sidenav__logo { height: 54px; background: var(--ak-nav-logo-bg); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; }
+.ak-sidenav__items { flex: 1; display: flex; flex-direction: column; overflow: auto; }
+.ak-sidenav__item { height: 54px; padding: 8px 0; display: flex; flex-direction: column; align-items: center; gap: 2px; color: #fff; font-size: 10px; text-decoration: none; cursor: pointer; }
+.ak-sidenav__item .ak-icon svg path { fill: currentColor; }
+.ak-sidenav__item--selected { background: #fff; color: var(--ak-brand); }
+.ak-sidenav__foot { display: flex; flex-direction: column; align-items: center; padding-bottom: 16px; }
+.ak-sidenav__help { padding: 6px 0; font-size: 7px; font-weight: 500; line-height: 8px; text-align: center; color: var(--ak-nav-muted); }
+.ak-sidenav__version { padding: 5px 0; font-size: 12px; color: #fff; }
+
+.ak-topnav { height: var(--ak-topnav-h); display: flex; align-items: center; justify-content: space-between; padding: 0 24px 0 16px; border-bottom: 1px solid var(--ak-border-divider); background: #fff; }
+.ak-topnav__context { display: flex; align-items: center; gap: 16px; }
+.ak-topnav__item { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 500; color: var(--ak-brand); }
+.ak-topnav__divider { width: 2px; height: 32px; background: var(--ak-border-divider); }
+.ak-topnav__user { display: flex; align-items: center; gap: 16px; }
+.ak-topnav__who { text-align: right; font-size: 14px; line-height: 17px; }
+.ak-topnav__name { font-weight: 700; }
+.ak-topnav__email { font-weight: 500; }
+
+/* --------------------------------------------------------------------------
+   Popover (e.g. "Bins in this door", product switcher)
+   -------------------------------------------------------------------------- */
+.ak-popover { position: absolute; z-index: 8000; min-width: 240px; background: #fff; border: 1px solid var(--ak-border-table); border-radius: var(--ak-radius-lg); box-shadow: 0 8px 24px rgba(16,24,40,.16); padding: 8px 0; font-size: 14px; }
+.ak-popover__title { padding: 8px 16px; font-weight: 600; }
+.ak-popover__item { padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; cursor: pointer; }
+.ak-popover__item:hover { background: var(--ak-bg-table-header); }
+.ak-popover__item--active { color: var(--ak-brand); font-weight: 600; }
+
+/* ==========================================================================
+   Prototype-only patterns
+   These come from the Transfer prototype and have no AllyGPO library
+   component yet. They use kit tokens, so they sit well with the rest; flag
+   them to design when a screen relies on them.
+   ========================================================================== */
+
+/* Tooltip (dark) */
+.ak-tooltip { position: absolute; z-index: 8100; max-width: 320px; padding: 8px 12px; border-radius: var(--ak-radius); background: var(--ak-tag-pack); color: #f5f5f5; font-size: 14px; line-height: 20px; box-shadow: 0 1px 2px rgba(228,229,231,.24), 0 12px 24px rgba(136,140,152,.12); }
+
+/* Popover title in the "Bins in this door" style */
+.ak-popover__eyebrow { padding: 8px 16px 4px; font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: .4px; text-transform: uppercase; color: var(--ak-text-label); }
+
+/* Selectable product card (virtual flow) */
+.ak-card { border: 2px solid var(--ak-border-card); border-radius: var(--ak-radius); background: #fff; overflow: hidden; }
+.ak-card:hover { border-color: var(--ak-nav-muted); }
+.ak-card__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; background: var(--ak-bg-table-header); }
+.ak-card__body { padding: 12px 16px; }
+.ak-card--selected { border-color: var(--ak-nav-logo-bg); }
+.ak-card--selected .ak-card__head { background: var(--ak-nav-logo-bg); color: #fff; }
+.ak-card--selected .ak-product__name { color: #fff; }
+.ak-card--selected .ak-product__generic { color: #c9d4e2; }
+
+/* Collapsible section header (Available / Previously selected) */
+.ak-collapsible { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--ak-border-tab-idle); font-size: 14px; font-weight: 500; color: var(--ak-text-label); }
+.ak-collapsible__toggle { display: inline-flex; align-items: center; gap: 4px; border: 0; background: none; color: var(--ak-brand); font: inherit; font-weight: 500; cursor: pointer; }
+
+/* Outline tag (expiry date / "in transfer" tags on cards) */
+.ak-tag { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border: 1px solid var(--ak-border-input); border-radius: var(--ak-radius); font-size: 14px; color: var(--ak-text); background: #fff; }
+.ak-tag--brand { border-color: transparent; background: #eef4fa; color: var(--ak-brand); }
+.ak-tag__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ak-danger); }
+
+/* Dashed empty box (empty workspace / nothing scanned yet) */
+.ak-empty-box { display: flex; align-items: center; justify-content: center; min-height: 150px; padding: 24px; border: 1px dashed var(--ak-border-input); border-radius: var(--ak-radius); text-align: center; font-size: 16px; color: var(--ak-text-label); }
+
+/* ==========================================================================
+   Added from the Transfer migration (2026-10-09)
+   ========================================================================== */
+
+/* Div checkbox for custom rows: role="checkbox" aria-checked="true|false|mixed".
+   .is-on / .is-disabled also work when the state comes as a class. */
+.ak-check { position: relative; width: 16px; height: 16px; flex: none; display: inline-grid; place-content: center; vertical-align: middle; border: 1px solid var(--ak-border-input); border-radius: 2px; background: var(--ak-bg); cursor: pointer; }
+.ak-check:hover { border-color: var(--ak-brand); }
+.ak-check[aria-checked="true"], .ak-check[aria-checked="mixed"], .ak-check.is-on { background: var(--ak-brand); border-color: var(--ak-brand); }
+.ak-check[aria-checked="true"]::after { content: ""; width: 9px; height: 5px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
+.ak-check[aria-checked="mixed"]::after { content: ""; width: 8px; height: 2px; background: #fff; }
+.ak-check.is-disabled, .ak-check[aria-disabled="true"] { background: var(--ak-bg-disabled); border-color: var(--ak-border-table); cursor: not-allowed; }
+.ak-check .ak-icon { width: 12px; height: 12px; }
+
+/* Icon-only button: square, same height as an input (48) or a Standard button with --sm (36) */
+.ak-btn.ak-btn--icon { width: 48px; height: 48px; padding: 0; flex: none; }
+.ak-btn.ak-btn--icon.ak-btn--sm { width: 36px; height: 36px; }
+
+/* Disabled-looking but still clickable, so the click can explain why (toast/tooltip).
+   Use with aria-disabled="true"; keep the guard in the handler. */
+.ak-btn.ak-btn--guarded[aria-disabled="true"] { pointer-events: auto; cursor: not-allowed; }
+.ak-btn--danger.ak-btn--tertiary:disabled, .ak-btn--danger.ak-btn--tertiary[aria-disabled="true"] { color: var(--ak-danger-disabled); }
+
+/* Disabled input group: grey glyphs + faded add-on */
+.ak-input--disabled .ak-icon svg path { fill: var(--ak-border-input); }
+.ak-addon:disabled, .ak-addon[aria-disabled="true"] { background: var(--ak-brand-disabled); border-color: transparent; cursor: not-allowed; }
+
+/* Dropdown with a chosen value (e.g. row status): brand border */
+.ak-select--set { border-color: var(--ak-brand); }
+
+/* Link Button disabled (e.g. "Current bin") */
+.ak-link-btn:disabled, .ak-link-btn[aria-disabled="true"] { color: var(--ak-text-placeholder); cursor: default; text-decoration: none; }
+
+/* Sortable header label: <span class="ak-sort ak-sort--on ak-sort--desc">A-Z <span class="ak-th__sort" data-icon="sort-alt"></span></span> */
+.ak-sort { display: inline-flex; align-items: center; gap: 2px; font-size: 12px; font-weight: 600; color: var(--ak-text); cursor: pointer; }
+.ak-sort--on { color: var(--ak-brand); }
+.ak-sort--on .ak-th__sort svg path { fill: var(--ak-brand); }
+.ak-sort--desc .ak-th__sort { transform: scaleY(-1); }
+
+/* Bordered box around a table or section */
+.ak-box { border: 1px solid var(--ak-border-table); border-radius: var(--ak-radius); background: var(--ak-bg); overflow: hidden; }
+
+/* Patient-linked inventory types (Charity Care, Specialty Pharmacy) */
+.ak .ak-patient { color: var(--ak-door-virtual); }
+
+/* Card states: read-only (no hover), current, done */
+.ak-card.ak-card--static:hover { border-color: var(--ak-border-card); }
+.ak-card.is-current, .ak-card.is-current:hover { border-color: var(--ak-brand); background: #eef4fa; }
+.ak-card.is-done { background: var(--ak-bg-table-header); }
+
+/* Icon recolour: follow the text colour (fill and stroke) */
+.ak-icon--current svg path { stroke: currentColor; }
+.ak-icon--current svg path[stroke="none"], .ak-icon--current svg path:not([stroke]) { stroke: none; }

@@ -19,3 +19,15 @@ python3 build-bundle.py
 ```
 
 `_bundle.js` embeds every page so shared components (side nav, top nav, switchers) load without a server. Commit it along with your changes.
+
+## Styling
+
+Pages are styled with the Ally prototype kit in `ally-kit/`:
+- `ally-kit.css` holds the tokens and `ak-*` components, built from the AllyGPO Design System components in the Transfer Figma file.
+- `ally-kit.js` inlines the library icons and adds a toast helper.
+- `gallery.html` shows every component with its markup.
+
+The rules for using it:
+- Use kit classes instead of inline styles.
+- Page-only styles go in the page's `<helmet>` with a `tp-` prefix.
+- Update the kit in the `ally-proto-kit` skill and copy it here, so other prototypes stay in step.

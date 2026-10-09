@@ -15,94 +15,96 @@
 <link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/styles.css">
 <script src="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/_ds_bundle.js"></script>
 <style>
-  html, body { margin: 0; padding: 0; background: #ffffff; }
-  body { font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
-  a { color: #095192; text-decoration: none; }
-  a:hover { color: #073f73; text-decoration: underline; }
+  html, body { margin: 0; padding: 0; background: var(--ak-bg); }
+  a { color: var(--ak-brand); text-decoration: none; }
+  a:hover { color: var(--ak-brand-hover); text-decoration: underline; }
   *, *::before, *::after { box-sizing: border-box; }
-  input::placeholder { color: #9aa4b0; }
+  input::placeholder { color: var(--ak-text-placeholder); }
+  /* Custom (div) checkbox: kit look, 16px, radius 2, brand when on */
+  /* Recolour a kit icon that has a fixed white fill + stroke (check) */
+  /* Buttons whose label comes from the logic in sentence case */
+  .tp-caps { text-transform: uppercase; }
+  /* Accept stays clickable while aria-disabled, so "Select a transfer location first" still shows */
+  /* Status dropdown with a value set */
+  /* Locked scan field + add-on (before a bin is picked) */
   /* Two identical keyframes so switching names restarts the highlight on every bin change. */
   @keyframes binFlash0 { 0%, 35% { background: #fde68a; } 100% { background: transparent; } }
   @keyframes binFlash1 { 0%, 35% { background: #fde68a; } 100% { background: transparent; } }
 </style>
+<link rel="stylesheet" href="ally-kit/ally-kit.css">
+<script src="ally-kit/ally-kit.js"></script>
 </helmet>
-<div style="display: flex; align-items: stretch; width: 100%; min-height: 100vh; background: #ffffff; color: #21252b; font-size: 14px; font-weight: 400;">
+<div class="ak" style="display: flex; align-items: stretch; width: 100%; min-height: 100vh; background: var(--ak-bg);">
 
   <sc-if value="{{ confirmCloseOpen }}" hint-placeholder-val="{{ false }}">
-    <div onClick="{{ stayAccept }}" style="position: fixed; inset: 0; z-index: 7000; background: rgba(14,36,63,0.45); display: flex; align-items: center; justify-content: center; padding: 24px;">
-      <div role="dialog" aria-modal="true" onClick="{{ stopProp }}" style="width: 600px; max-width: 100%; background: #ffffff; border-radius: 4px; box-shadow: 0 20px 40px rgba(16,24,40,0.2); display: flex; flex-direction: column;">
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px 0;">
-          <span style="font-size: 18px; line-height: 28px; font-weight: 600; color: #25282a;">Are you sure?</span>
-          <button type="button" onClick="{{ stayAccept }}" aria-label="Close" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: #64748b; cursor: pointer;" style-hover="background: #eff1f3;">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
-          </button>
+    <div class="ak-overlay" onClick="{{ stayAccept }}">
+      <div class="ak-modal" role="dialog" aria-modal="true" onClick="{{ stopProp }}">
+        <div class="ak-modal__header">
+          <h2 class="ak-modal__title">Are you sure?</h2>
+          <button type="button" class="ak-modal__close" onClick="{{ stayAccept }}" aria-label="Close" data-icon="times"></button>
         </div>
-        <p style="margin: 0; padding: 16px 24px 48px; font-size: 14px; line-height: 22px; color: #25282a; text-wrap: pretty;">{{ closeBody }}</p>
-        <div style="display: flex; justify-content: flex-end; gap: 16px; padding: 0 24px 24px;">
-          <button type="button" onClick="{{ stayAccept }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">No, stay</button>
-          <button type="button" onClick="{{ confirmClose }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">Yes, continue</button>
+        <p class="ak-modal__body" style="margin: 0; text-wrap: pretty;">{{ closeBody }}</p>
+        <div class="ak-modal__footer">
+          <button type="button" class="ak-btn ak-btn--secondary" onClick="{{ stayAccept }}">NO, STAY</button>
+          <button type="button" class="ak-btn ak-btn--primary" onClick="{{ confirmClose }}">YES, CONTINUE</button>
         </div>
       </div>
     </div>
   </sc-if>
 
   <sc-if value="{{ acc.leaveOpen }}" hint-placeholder-val="{{ false }}">
-    <div onClick="{{ acc.leaveStay }}" style="position: fixed; inset: 0; z-index: 7000; background: rgba(14,36,63,0.45); display: flex; align-items: center; justify-content: center; padding: 24px;">
-      <div role="dialog" aria-modal="true" onClick="{{ stopProp }}" style="width: 600px; max-width: 100%; background: #ffffff; border-radius: 4px; box-shadow: 0 20px 40px rgba(16,24,40,0.2); display: flex; flex-direction: column;">
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px 0;">
-          <span style="font-size: 18px; line-height: 28px; font-weight: 600; color: #25282a;">{{ acc.leaveTitle }}</span>
-          <button type="button" onClick="{{ acc.leaveStay }}" aria-label="Close" style="flex: 0 0 32px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: #64748b; cursor: pointer;" style-hover="background: #eff1f3;">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
-          </button>
+    <div class="ak-overlay" onClick="{{ acc.leaveStay }}">
+      <div class="ak-modal" role="dialog" aria-modal="true" onClick="{{ stopProp }}">
+        <div class="ak-modal__header">
+          <h2 class="ak-modal__title">{{ acc.leaveTitle }}</h2>
+          <button type="button" class="ak-modal__close" onClick="{{ acc.leaveStay }}" aria-label="Close" data-icon="times"></button>
         </div>
-        <p style="margin: 0; padding: 16px 24px 48px; font-size: 14px; line-height: 22px; color: #25282a; text-wrap: pretty;">{{ acc.leaveBody }}</p>
-        <div style="display: flex; justify-content: flex-end; gap: 16px; padding: 0 24px 24px;">
-          <button type="button" onClick="{{ acc.leaveDiscard }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; border-radius: 4px; cursor: pointer; color: #095192; background: #ffffff; border: 1px solid #095192;" style-hover="background: rgba(9,81,146,0.06);">Discard</button>
-          <button type="button" onClick="{{ acc.leaveSave }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; border-radius: 4px; cursor: pointer; color: #ffffff; background: #095192; border: 1px solid #095192;" style-hover="background: #073f73;">Save</button>
+        <p class="ak-modal__body" style="margin: 0; text-wrap: pretty;">{{ acc.leaveBody }}</p>
+        <div class="ak-modal__footer">
+          <button type="button" class="ak-btn ak-btn--secondary" onClick="{{ acc.leaveDiscard }}">DISCARD</button>
+          <button type="button" class="ak-btn ak-btn--primary" onClick="{{ acc.leaveSave }}">SAVE</button>
         </div>
       </div>
     </div>
   </sc-if>
 
   <sc-if value="{{ confirmSkipOpen }}" hint-placeholder-val="{{ false }}">
-    <div onClick="{{ staySkip }}" style="position: fixed; inset: 0; z-index: 7000; background: rgba(14,36,63,0.45); display: flex; align-items: center; justify-content: center; padding: 24px;">
-      <div role="dialog" aria-modal="true" onClick="{{ stopProp }}" style="width: 600px; max-width: 100%; background: #ffffff; border-radius: 4px; box-shadow: 0 20px 40px rgba(16,24,40,0.2); display: flex; flex-direction: column;">
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px 0;">
-          <span style="font-size: 18px; line-height: 28px; font-weight: 600; color: #25282a;">Are you sure you want to skip this product?</span>
-          <button type="button" onClick="{{ staySkip }}" aria-label="Close" style="flex: 0 0 32px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: 4px; color: #64748b; cursor: pointer;" style-hover="background: #eff1f3;">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
-          </button>
+    <div class="ak-overlay" onClick="{{ staySkip }}">
+      <div class="ak-modal" role="dialog" aria-modal="true" onClick="{{ stopProp }}">
+        <div class="ak-modal__header">
+          <h2 class="ak-modal__title">Are you sure you want to skip this product?</h2>
+          <button type="button" class="ak-modal__close" onClick="{{ staySkip }}" aria-label="Close" data-icon="times"></button>
         </div>
-        <p style="margin: 0; padding: 16px 24px 48px; font-size: 14px; line-height: 22px; color: #25282a; text-wrap: pretty;">If you continue, "{{ acc.name }}" will be skipped from the transfer workflow.</p>
-        <div style="display: flex; justify-content: flex-end; gap: 16px; padding: 0 24px 24px;">
-          <button type="button" onClick="{{ staySkip }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">No, stay</button>
-          <button type="button" onClick="{{ confirmSkip }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">Yes, continue</button>
+        <p class="ak-modal__body" style="margin: 0; text-wrap: pretty;">If you continue, "{{ acc.name }}" will be skipped from the transfer workflow.</p>
+        <div class="ak-modal__footer">
+          <button type="button" class="ak-btn ak-btn--secondary" onClick="{{ staySkip }}">NO, STAY</button>
+          <button type="button" class="ak-btn ak-btn--primary" onClick="{{ confirmSkip }}">YES, CONTINUE</button>
         </div>
       </div>
     </div>
   </sc-if>
 
   <sc-if value="{{ toastOpen }}" hint-placeholder-val="{{ false }}">
-    <div role="status" style="position: fixed; top: 72px; right: 24px; z-index: 8000; width: 400px; max-width: calc(100vw - 48px); display: flex; align-items: {{ toastAlign }}; gap: 12px; padding: 12px 12px 12px 20px; background: {{ toastBg }}; border-radius: 6px; box-shadow: inset 6px 0 0 {{ toastAccent }}, 0 12px 24px rgba(16,24,40,0.12);">
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="flex: 0 0 22px; margin-top: {{ toastIconTop }}; color: {{ toastAccent }};"><path d="M19 10.3V11a8 8 0 1 1-4.7-7.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path><path d="m19 4-8 8-2.5-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;">
-        <sc-if value="{{ toastHasTitle }}" hint-placeholder-val="{{ true }}">
-          <span style="font-size: 14px; line-height: 20px; font-weight: 600; color: #25282a;">{{ toastTitle }}</span>
-        </sc-if>
-        <span style="font-size: 14px; line-height: 20px; color: #25282a;">{{ toastText }}</span>
+    <div class="ak-toast-region">
+      <div role="status" class="{{ toastClass }}">
+        <span class="ak-alert__icon ak-icon" data-icon="{{ toastIcon }}"></span>
+        <div class="ak-alert__text">
+          <sc-if value="{{ toastHasTitle }}" hint-placeholder-val="{{ true }}">
+            <span class="ak-alert__title">{{ toastTitle }}</span>
+          </sc-if>
+          <span>{{ toastText }}</span>
+        </div>
+        <button type="button" class="ak-alert__close" onClick="{{ closeToast }}" aria-label="Dismiss" data-icon="times"></button>
       </div>
-      <button type="button" onClick="{{ closeToast }}" aria-label="Dismiss" style="flex: 0 0 32px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; margin-top: {{ toastBtnTop }}; background: transparent; border: none; border-radius: 4px; color: #2f5d34; cursor: pointer;" style-hover="background: rgba(0,135,116,0.1);">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
-      </button>
     </div>
   </sc-if>
 
   <dc-import name="App Side Nav" selected="Transfer" hint-size="70px,100vh"></dc-import>
 
   <div onClick="{{ toggleGuided }}" role="switch" aria-checked="{{ guidedOn }}" aria-label="Guided workflow" title="Guided workflow: select products with checkboxes and start one transfer" style="position: fixed; left: 0; bottom: 34px; width: 70px; z-index: 90; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; cursor: pointer; user-select: none;">
-    <span style="font-size: 9px; font-weight: 500; letter-spacing: 0.02em; color: #ffffff; opacity: 0.85;">Guided</span>
+    <span style="font-size: 9px; font-weight: 500; letter-spacing: 0.02em; color: var(--ak-text-on-brand); opacity: 0.85;">Guided</span>
     <span style="position: relative; width: 30px; height: 16px; border-radius: 999px; background: {{ guidedTrack }}; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.45); transition: background-color 150ms ease;">
-      <span style="position: absolute; top: 2px; left: {{ guidedKnob }}; width: 12px; height: 12px; border-radius: 50%; background: #ffffff; transition: left 150ms ease;"></span>
+      <span style="position: absolute; top: 2px; left: {{ guidedKnob }}; width: 12px; height: 12px; border-radius: 50%; background: var(--ak-bg); transition: left 150ms ease;"></span>
     </span>
   </div>
 
@@ -113,119 +115,94 @@
   <div style="width: 100%; min-width: 0;">
 
   <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
-  <div style="background: #ffffff; border-bottom: 1px solid #e3e7ed; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
-    <div style="display: flex; gap: 0;">
-      <div style="padding: 18px 8px; margin-right: 24px; font-size: 14px; font-weight: 600; color: #095192; box-shadow: inset 0 -3px 0 #095192; cursor: pointer;">Incoming Transfers</div>
-      <div style="padding: 18px 8px; margin-right: 24px; font-size: 14px; font-weight: 400; color: #4b5563; cursor: pointer;" style-hover="color: #21252b;">Outgoing Transfers</div>
-      <div onClick="{{ goHistory }}" style="padding: 18px 8px; font-size: 14px; font-weight: 400; color: #4b5563; cursor: pointer;" style-hover="color: #21252b;">History</div>
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 24px; background: var(--ak-bg); border-bottom: 1px solid var(--ak-border-divider);">
+    <div class="ak-tabs" role="tablist">
+      <button type="button" class="ak-tab" role="tab" aria-selected="true">Incoming Transfers</button>
+      <button type="button" class="ak-tab" role="tab" aria-selected="false">Outgoing Transfers</button>
+      <button type="button" class="ak-tab" role="tab" aria-selected="false" onClick="{{ goHistory }}">History</button>
     </div>
-    <button type="button" onClick="{{ goNewTransfer }}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer; flex-shrink: 0;" style-hover="background: #073f73; border-color: #073f73;">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5v11M1.5 7h11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
-      New transfer
+    <button type="button" class="ak-btn ak-btn--primary" onClick="{{ goNewTransfer }}" style="flex-shrink: 0;">
+      <span class="ak-icon" data-icon="plus"></span>
+      NEW TRANSFER
     </button>
   </div>
 
-  <div style="padding: 24px; background: #ffffff;">
+  <div style="padding: 24px; background: var(--ak-bg);">
     <div>
 
       <div>
 
-        <div style="background: #f5f5f5; border: 1px solid #d8d8d8; border-radius: 4px; padding: 24px;">
-          <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 16px;">
-            <input type="text" placeholder="Search by Name or NDC" style="width: 208px; height: 40px; padding: 0 12px; font-size: 14px; font-family: inherit; color: #21252b; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; outline: none;" style-focus="border-color: #095192; box-shadow: 0 0 0 2px rgba(9,81,146,0.15);" />
-
-            <div style="width: 208px; height: 40px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; background: #ffffff; border: 1px solid #ced4da; border-radius: 4px; cursor: pointer;">
-              <span style="font-size: 14px; color: #9aa4b0;">Status</span>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="color: #6b7480; flex-shrink: 0;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.266Z" fill="currentColor"></path></svg>
+        <div class="ak-search-filter">
+          <div class="ak-search-filter__fields">
+            <span class="ak-input" style="width: 208px;"><input type="text" placeholder="Search by Name or NDC" /></span>
+            <div class="ak-input ak-select" style="width: 208px; cursor: pointer;">
+              <span style="color: var(--ak-text-placeholder);">Status</span>
             </div>
-
-
-            <div style="display: flex; align-items: center; gap: 16px; margin-left: auto;">
-            <button type="button" onClick="{{ reset }}" style="height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Reset</button>
-            <button type="button" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73; border-color: #073f73;">Search</button>
-            </div>
+          </div>
+          <div class="ak-search-filter__actions">
+            <button type="button" class="ak-btn ak-btn--lg ak-btn--secondary" onClick="{{ reset }}">RESET</button>
+            <button type="button" class="ak-btn ak-btn--lg ak-btn--primary">SEARCH</button>
           </div>
         </div>
 
-        <div style="margin-top: 24px; font-size: 16px; font-weight: 500; line-height: 24px; color: #25282a;">Allocated Products ({{ count }})</div>
+        <div class="ak-body ak-medium" style="margin-top: 24px; line-height: 24px;">Allocated Products ({{ count }})</div>
 
-        <div style="margin-top: 12px; border: 1px solid #e9ecf1; border-radius: 6px;">
-          <table style="width: 100%; min-width: 1200px; border-collapse: collapse; ">
+        <div style="margin-top: 12px;">
+          <table class="ak-table" style="min-width: 1200px;">
             <thead>
-              <tr style="background: #f8fafc;">
-                <th style="display: {{ boxCol }}; width: 1%; padding: 14px 0 14px 16px; text-align: left; border-bottom: 1px solid #e9ecf1;">
-                  <div onClick="{{ toggleAll }}" style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ allBoxBg }}; border: 1px solid {{ allBoxBd }}; cursor: pointer; position: relative;">
-                    <svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; opacity: {{ allTick }}; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                    <svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; opacity: {{ allDash }}; position: absolute;"><path d="M2 5h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+              <tr>
+                <th class="ak-cell-check" style="display: {{ boxCol }}; width: 1%;">
+                  <div onClick="{{ toggleAll }}" class="{{ allBoxClass }}">
+                    <sc-if value="{{ allTickOn }}" hint-placeholder-val="{{ false }}"><span class="ak-icon ak-icon--14" data-icon="check"></span></sc-if>
+                    <sc-if value="{{ allDashOn }}" hint-placeholder-val="{{ false }}"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="color: var(--ak-text-on-brand);"><path d="M2 5h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></sc-if>
                   </div>
                 </th>
-                <th style="width: 28%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
-                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;" onClick="{{ sort_name }}">Product Name
-                    {{ icon_name }}
-                  </span>
+                <th style="width: 28%;">
+                  <div class="ak-th__inner" onClick="{{ sort_name }}" style="cursor: pointer;"><span>Product Name</span>{{ icon_name }}</div>
                 </th>
-                <th style="width: 16%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
-                  <span style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer;" onClick="{{ sort_ndc }}">
-                    <span style="display: flex; flex-direction: column; gap: 2px;">
-                      <span>NDC/AIC</span>
-                      <span style="font-size: 12px; font-weight: 400; font-style: italic; color: #6b7280;">Inventory Type</span>
-                    </span>
-                    {{ icon_ndc }}
-                  </span>
+                <th style="width: 16%;">
+                  <div class="ak-th__inner" onClick="{{ sort_ndc }}" style="cursor: pointer;"><span>NDC/AIC<span class="ak-th__sub">Inventory Type</span></span>{{ icon_ndc }}</div>
                 </th>
-                                <th style="width: 13%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
-                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;" onClick="{{ sort_sendLoc }}">Sending Location
-                    {{ icon_sendLoc }}
-                  </span>
+                <th style="width: 13%;">
+                  <div class="ak-th__inner" onClick="{{ sort_sendLoc }}" style="cursor: pointer;"><span>Sending Location</span>{{ icon_sendLoc }}</div>
                 </th>
-                <th style="width: 13%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
-                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;" onClick="{{ sort_qty }}">Quantity
-                    {{ icon_qty }}
-                  </span>
+                <th style="width: 13%;">
+                  <div class="ak-th__inner" onClick="{{ sort_qty }}" style="cursor: pointer;"><span>Quantity</span>{{ icon_qty }}</div>
                 </th>
-                <th style="width: 9%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
-                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;" onClick="{{ sort_created }}">Created On
-                    {{ icon_created }}
-                  </span>
+                <th style="width: 9%;">
+                  <div class="ak-th__inner" onClick="{{ sort_created }}" style="cursor: pointer;"><span>Created On</span>{{ icon_created }}</div>
                 </th>
-                <th style="width: 8%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
-                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;" onClick="{{ sort_status }}">Status
-                    {{ icon_status }}
-                  </span>
+                <th style="width: 8%;">
+                  <div class="ak-th__inner" onClick="{{ sort_status }}" style="cursor: pointer;"><span>Status</span>{{ icon_status }}</div>
                 </th>
-                <th style="width: 3%; padding: 14px 16px; border-bottom: 1px solid #e9ecf1;"></th>
+                <th class="ak-cell-action" style="width: 3%;"></th>
               </tr>
             </thead>
             <tbody>
               <sc-for list="{{ rows }}" as="row" hint-placeholder-count="7">
-                <tr onClick="{{ row.rowClick }}" style="background: {{ row.rowBg }}; cursor: {{ row.rowCursor }};" style-hover="background: #f5f9fe;">
-                  <td style="display: {{ boxCol }}; padding: 14px 0 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                    <div onClick="{{ row.toggleSel }}" style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ row.boxBg }}; border: 1px solid {{ row.boxBd }}; cursor: pointer;" style-hover="border-color: #095192;">
-                      <svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; opacity: {{ row.tickOpacity }};"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <tr onClick="{{ row.rowClick }}" class="{{ row.rowClass }}" style="cursor: {{ row.rowCursor }};">
+                  <td class="ak-cell-check" style="display: {{ boxCol }};">
+                    <div onClick="{{ row.toggleSel }}" class="{{ row.boxClass }}">
+                      <sc-if value="{{ row.on }}" hint-placeholder-val="{{ false }}"><span class="ak-icon ak-icon--14" data-icon="check"></span></sc-if>
                     </div>
                   </td>
-                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                    <div onClick="{{ row.nameClick }}" style="display: inline-block; font-size: 14px; font-weight: 400; line-height: 20px; text-transform: uppercase; color: #25282a; cursor: pointer;" style-hover="color: #095192;">{{ row.name }}</div>
-                    <div style="display: block; font-size: 14px; font-style: italic; color: #757575; line-height: 20px;">{{ row.desc }}</div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px;">
+                  <td>
+                    <span onClick="{{ row.nameClick }}" class="ak-product__name" style="display: inline-block; cursor: pointer;" style-hover="color: var(--ak-brand);">{{ row.name }}</span>
+                    <span class="ak-product__generic">{{ row.desc }}</span>
+                    <div class="ak-product__badges">
                       <sc-for list="{{ row.chips }}" as="chip" hint-placeholder-count="2">
-                        <label style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; line-height: 16px; white-space: nowrap; background: {{ chip.bg }}; color: {{ chip.fg }};">{{ chip.label }}</label>
+                        <span class="{{ chip.cls }}">{{ chip.label }}</span>
                       </sc-for>
                     </div>
                   </td>
-                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                    <div style="font-size: 14px; line-height: 20px; color: #25282a;">{{ row.ndc }}</div>
-                    <div style="font-size: 14px; line-height: 20px; font-style: italic; color: #767676;">{{ row.invType }}</div>
-                  </td>
-                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;"><div style="line-height: 20px; color: #25282a;">{{ row.sendClinic }}</div><div style="font-size: 14px; line-height: 20px; font-style: italic; color: #767676;">{{ row.sendLoc }}</div></td>
-                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.qtyShort }}</td>
-                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.created }}</td>
-                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                    <span style="display: inline-block; padding: 3px 10px; border-radius: 999px; background: {{ row.statusBg }}; color: {{ row.statusFg }}; font-size: 12px; font-weight: 500; white-space: nowrap;">{{ row.status }}</span>
-                  </td>
-                  <td style="padding: 14px 16px; text-align: center; vertical-align: top; border-bottom: 1px solid #eef1f5; cursor: {{ row.rowCursor }};" onClick="{{ row.chevClick }}">
+                  <td><span>{{ row.ndc }}</span><span class="ak-cell-sub">{{ row.invType }}</span></td>
+                  <td><span>{{ row.sendClinic }}</span><span class="ak-cell-sub">{{ row.sendLoc }}</span></td>
+                  <td>{{ row.qtyShort }}</td>
+                  <td>{{ row.created }}</td>
+                  <td><span class="ak-chip">{{ row.status }}</span></td>
+                  <td class="ak-cell-action" style="cursor: {{ row.rowCursor }};" onClick="{{ row.chevClick }}">
                     <sc-if value="{{ row.showChevron }}" hint-placeholder-val="{{ true }}">
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="color: #095192; cursor: pointer;"><path d="M4.5 2 9.5 7l-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                      <span class="ak-icon ak-icon--20" data-icon="chevron-right" style="cursor: pointer;"></span>
                     </sc-if>
                   </td>
                 </tr>
@@ -234,89 +211,67 @@
           </table>
         </div>
 
-        <div style="margin-top: 32px; font-size: 16px; font-weight: 500; line-height: 24px; color: #25282a;">Unallocated Products ({{ unallocCount }})</div>
+        <div class="ak-body ak-medium" style="margin-top: 32px; line-height: 24px;">Unallocated Products ({{ unallocCount }})</div>
 
-        <div style="margin-top: 12px; border: 1px solid #e9ecf1; border-radius: 6px;">
-          <table style="width: 100%; min-width: 1200px; border-collapse: collapse; ">
+        <div style="margin-top: 12px;">
+          <table class="ak-table" style="min-width: 1200px;">
             <thead>
-              <tr style="background: #f8fafc;">
-                <th style="display: {{ boxCol }}; width: 1%; padding: 14px 0 14px 16px; text-align: left; border-bottom: 1px solid #e9ecf1;">
-                  <div style="width: 20px; height: 20px; border-radius: 4px; background: #ffffff; border: 1px solid #bcc3cd;"></div>
+              <tr>
+                <th class="ak-cell-check" style="display: {{ boxCol }}; width: 1%;">
+                  <div class="ak-check" style="cursor: default;"></div>
                 </th>
-                <th style="width: 28%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
-                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">Product Name
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color: #25282a; flex-shrink: 0;"><path d="M3 2v8M3 10 1.5 8.4M3 10l1.5-1.6M9 10V2M9 2 7.5 3.6M9 2l1.5 1.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>
-                  </span>
+                <th style="width: 28%;">
+                  <div class="ak-th__inner"><span>Product Name</span><span class="ak-th__sort" data-icon="sort-alt"></span></div>
                 </th>
-                <th style="width: 16%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
-                  <span style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer;">
-                    <span style="display: flex; flex-direction: column; gap: 2px;">
-                      <span>NDC/AIC</span>
-                      <span style="font-size: 12px; font-weight: 400; font-style: italic; color: #6b7280;">Inventory Type</span>
-                    </span>
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color: #25282a; flex-shrink: 0;"><path d="M3 2v8M3 10 1.5 8.4M3 10l1.5-1.6M9 10V2M9 2 7.5 3.6M9 2l1.5 1.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>
-                  </span>
+                <th style="width: 16%;">
+                  <div class="ak-th__inner"><span>NDC/AIC<span class="ak-th__sub">Inventory Type</span></span><span class="ak-th__sort" data-icon="sort-alt"></span></div>
                 </th>
-                
-                <th style="width: 13%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
-                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">Sending Location
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color: #25282a; flex-shrink: 0;"><path d="M3 2v8M3 10 1.5 8.4M3 10l1.5-1.6M9 10V2M9 2 7.5 3.6M9 2l1.5 1.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>
-                  </span>
+                <th style="width: 13%;">
+                  <div class="ak-th__inner"><span>Sending Location</span><span class="ak-th__sort" data-icon="sort-alt"></span></div>
                 </th>
-                <th style="width: 12%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
-                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">Quantity
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color: #25282a; flex-shrink: 0;"><path d="M3 2v8M3 10 1.5 8.4M3 10l1.5-1.6M9 10V2M9 2 7.5 3.6M9 2l1.5 1.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>
-                  </span>
+                <th style="width: 12%;">
+                  <div class="ak-th__inner"><span>Quantity</span><span class="ak-th__sort" data-icon="sort-alt"></span></div>
                 </th>
-                <th style="width: 9%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
-                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">Created On
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color: #25282a; flex-shrink: 0;"><path d="M3 2v8M3 10 1.5 8.4M3 10l1.5-1.6M9 10V2M9 2 7.5 3.6M9 2l1.5 1.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>
-                  </span>
+                <th style="width: 9%;">
+                  <div class="ak-th__inner"><span>Created On</span><span class="ak-th__sort" data-icon="sort-alt"></span></div>
                 </th>
-                <th style="width: 8%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #25282a; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">
-                  <span style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">Status
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color: #25282a; flex-shrink: 0;"><path d="M3 2v8M3 10 1.5 8.4M3 10l1.5-1.6M9 10V2M9 2 7.5 3.6M9 2l1.5 1.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>
-                  </span>
+                <th style="width: 8%;">
+                  <div class="ak-th__inner"><span>Status</span><span class="ak-th__sort" data-icon="sort-alt"></span></div>
                 </th>
-                <th style="width: 3%; padding: 14px 16px; border-bottom: 1px solid #e9ecf1;"></th>
-                <th style="width: 3%; padding: 14px 16px; border-bottom: 1px solid #e9ecf1;"></th>
+                <th class="ak-cell-action" style="width: 3%;"></th>
+                <th class="ak-cell-action" style="width: 3%;"></th>
               </tr>
             </thead>
             <tbody>
               <sc-for list="{{ unallocRows }}" as="row" hint-placeholder-count="2">
-                <tr style="background: #ffffff;" style-hover="background: #f5f9fe;">
-                  <td style="display: {{ boxCol }}; padding: 14px 0 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                    <div style="width: 20px; height: 20px; border-radius: 4px; background: #ececec; border: 1px solid #dadee3; cursor: not-allowed;"></div>
+                <tr>
+                  <td class="ak-cell-check" style="display: {{ boxCol }};">
+                    <div class="ak-check is-disabled"></div>
                   </td>
-                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                    <div style="font-size: 14px; font-weight: 400; line-height: 20px; text-transform: uppercase; color: #25282a;">{{ row.name }}</div>
-                    <div style="display: block; font-size: 14px; font-style: italic; color: #757575; line-height: 20px;">{{ row.desc }}</div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px;">
+                  <td>
+                    <span class="ak-product__name">{{ row.name }}</span>
+                    <span class="ak-product__generic">{{ row.desc }}</span>
+                    <div class="ak-product__badges">
                       <sc-for list="{{ row.chips }}" as="chip" hint-placeholder-count="1">
-                        <label style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; line-height: 16px; white-space: nowrap; background: {{ chip.bg }}; color: {{ chip.fg }};">{{ chip.label }}</label>
+                        <span class="{{ chip.cls }}">{{ chip.label }}</span>
                       </sc-for>
                     </div>
                   </td>
-                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                    <div style="font-size: 14px; line-height: 20px; color: #25282a;">{{ row.ndc }}</div>
-                    <div style="font-size: 14px; line-height: 20px; font-style: italic; color: #767676;">{{ row.invType }}</div>
-                  </td>
-                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;"><div style="line-height: 20px; color: #25282a;">{{ row.sendClinic }}</div><div style="font-size: 14px; line-height: 20px; font-style: italic; color: #767676;">{{ row.sendLoc }}</div></td>
-                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.qty }}</td>
-                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.created }}</td>
-                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                    <span style="display: inline-block; padding: 3px 10px; border-radius: 999px; background: #008774; color: #ffffff; font-size: 12px; font-weight: 500; white-space: nowrap;">{{ row.status }}</span>
-                  </td>
-                  <td style="padding: 14px 8px; text-align: center; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                    <span onMouseEnter="{{ row.tipShow }}" onMouseLeave="{{ row.tipHide }}" style="position: relative; display: inline-flex; color: #a855f7; cursor: help;">
-                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.3" stroke="currentColor" stroke-width="1.3"></circle><path d="M9 8v4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path><circle cx="9" cy="5.6" r="0.9" fill="currentColor"></circle></svg>
+                  <td><span>{{ row.ndc }}</span><span class="ak-cell-sub">{{ row.invType }}</span></td>
+                  <td><span>{{ row.sendClinic }}</span><span class="ak-cell-sub">{{ row.sendLoc }}</span></td>
+                  <td>{{ row.qty }}</td>
+                  <td>{{ row.created }}</td>
+                  <td><span class="ak-chip">{{ row.status }}</span></td>
+                  <td class="ak-cell-action">
+                    <span onMouseEnter="{{ row.tipShow }}" onMouseLeave="{{ row.tipHide }}" style="position: relative; display: inline-flex; color: var(--ak-pill-emphasis); cursor: help;">
+                      <span class="ak-icon ak-icon--20 ak-icon--current" data-icon="info-circle"></span>
                       <sc-if value="{{ row.tipOpen }}" hint-placeholder-val="{{ false }}">
-                        <span role="tooltip" style="position: absolute; right: -8px; bottom: calc(100% + 10px); z-index: 60; width: 320px; padding: 8px 12px; background: #465161; color: #F5F5F5; font-size: 14px; line-height: 20px; font-weight: 400; text-align: left; white-space: normal; border-radius: 4px; box-shadow: 0 1px 2px rgba(228,229,231,0.24), 0 12px 24px rgba(136,140,152,0.12); pointer-events: none;">This product is not in formulary and/or not allocated to this station. Please update the formulary and/or allocation to complete the transfer.</span>
+                        <span role="tooltip" class="ak-tooltip" style="right: -8px; bottom: calc(100% + 10px); width: 320px; text-align: left; white-space: normal; pointer-events: none;">This product is not in formulary and/or not allocated to this station. Please update the formulary and/or allocation to complete the transfer.</span>
                       </sc-if>
                     </span>
                   </td>
-                  <td style="padding: 14px 16px 14px 8px; text-align: center; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                    <span title="Allocate" style="display: inline-flex; color: #095192; cursor: pointer;" style-hover="color: #073f73;">
+                  <td class="ak-cell-action">
+                    <span title="Allocate" style="display: inline-flex; color: var(--ak-brand); cursor: pointer;" style-hover="color: var(--ak-brand-hover);">
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4" width="15" height="13" rx="2" stroke="currentColor" stroke-width="1.5"></rect><path d="M6.5 4V2.8M13.5 4V2.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path d="M8 13.2l4.2-4.2a1.3 1.3 0 0 0-1.8-1.8L7.6 10a1.8 1.8 0 0 0 2.6 2.6l2.4-2.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     </span>
                   </td>
@@ -330,8 +285,10 @@
     </div>
   </div>
   <sc-if value="{{ showStartBar }}" hint-placeholder-val="{{ true }}">
-  <div style="position: sticky; bottom: 0; z-index: 30; display: flex; align-items: center; justify-content: flex-end; gap: 16px; padding: 14px 24px; background: #ffffff; border-top: 1px solid #e3e7ed; box-shadow: 0 -2px 8px rgba(16,24,40,0.06);">
-    <button type="button" disabled="{{ noneSelected }}" onClick="{{ startTransfer }}" style="height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: {{ startBg }}; border: 1px solid {{ startBg }}; border-radius: 4px; cursor: {{ startCursor }};">Start transfer</button>
+  <div class="ak-bottom-bar" style="position: sticky; left: auto; right: auto; bottom: 0; z-index: 30;">
+    <div class="ak-bottom-bar__actions">
+      <button type="button" class="ak-btn ak-btn--lg ak-btn--primary" disabled="{{ noneSelected }}" onClick="{{ startTransfer }}">START TRANSFER</button>
+    </div>
   </div>
   </sc-if>
   </sc-if>
@@ -339,145 +296,139 @@
   <sc-if value="{{ isAccept }}" hint-placeholder-val="{{ false }}">
   <div style="padding: 0 0 80px;">
 
-    <div style="display: flex; align-items: center; gap: 24px; padding: 20px 24px; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
+    <div class="ak-page-header" style="align-items: center;">
       <div style="flex: 1; min-width: 0;">
-        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
-          <div style="font-size: 22px; font-weight: 600; line-height: 28px; color: #21252b; min-width: 0;">{{ acc.name }}</div>
-          <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+          <h1 class="ak-page-title" style="min-width: 0;">{{ acc.name }}</h1>
+          <div class="ak-product__badges" style="padding-top: 0;">
             <sc-for list="{{ acc.chips }}" as="chip" hint-placeholder-count="2">
-              <label style="display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.2px; white-space: nowrap; background: {{ chip.bg }}; color: {{ chip.fg }}; border: 1px solid {{ chip.bd }};">{{ chip.label }}</label>
+              <span class="{{ chip.cls }}">{{ chip.label }}</span>
             </sc-for>
           </div>
         </div>
-        <div style="margin-top: 6px; font-size: 13px; font-style: italic; color: #6b7280;">{{ acc.desc }}</div>
+        <span class="ak-product__generic" style="margin-top: 4px;">{{ acc.desc }}</span>
       </div>
       <sc-if value="{{ acc.picked }}" hint-placeholder-val="{{ true }}">
-      <button type="button" onClick="{{ acc.onUnlock }}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer; flex-shrink: 0;" style-hover="background: rgba(9,81,146,0.06);">
+      <button type="button" class="ak-btn ak-btn--secondary" onClick="{{ acc.onUnlock }}" style="flex-shrink: 0;">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.4"></rect><path d="M5.5 7V4.8a2.5 2.5 0 0 1 4.9-.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>
-        <span>Unlock door</span>
+        <span>UNLOCK DOOR</span>
       </button>
       </sc-if>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px 32px; padding: 16px 24px; background: #e9eef4; border-bottom: 1px solid #e3e7ed;">
-      <div style="display: grid; grid-template-columns: 120px 1fr; gap: 4px 8px; align-content: start;">
-        <span style="font-size: 14px; color: #6b7480;">NDC</span><span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ acc.ndc }}</span>
-        <span style="font-size: 14px; color: #6b7480;">Inventory Type</span><span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ acc.invType }}</span>
+    <div class="ak-info-bar" style="flex-wrap: wrap; padding: 16px 24px; border-bottom: 1px solid var(--ak-border-divider);">
+      <div class="ak-info-bar__col">
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label" style="min-width: 120px;">NDC</span><span>{{ acc.ndc }}</span></div>
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label" style="min-width: 120px;">Inventory Type</span><span>{{ acc.invType }}</span></div>
       </div>
-      <div style="display: grid; grid-template-columns: 130px 1fr; gap: 4px 8px; align-content: start;">
-        <span style="font-size: 14px; color: #6b7480;">Sending Location</span><span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ acc.sendLoc }}</span>
-        <span style="font-size: 14px; color: #6b7480;">Transfer Status</span><span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ acc.status }}</span>
+      <div class="ak-info-bar__col">
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label" style="min-width: 140px;">Sending Location</span><span>{{ acc.sendLoc }}</span></div>
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label" style="min-width: 140px;">Transfer Status</span><span>{{ acc.status }}</span></div>
       </div>
-      <div style="display: grid; grid-template-columns: 100px 1fr; gap: 4px 8px; align-content: start;">
-        <span style="font-size: 14px; color: #6b7480;">Created On</span><span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ acc.created }}</span>
-        <span style="font-size: 14px; color: #6b7480;">Created By</span><span style="font-size: 14px; font-weight: 500; color: #21252b;">User Super</span>
+      <div class="ak-info-bar__col">
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label">Created On</span><span>{{ acc.created }}</span></div>
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label">Created By</span><span>User Super</span></div>
       </div>
-      <div style="display: flex; flex-direction: column; gap: 4px;">
-        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 16px;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 14px; color: #6b7480;">Door</span>
-            <span style="display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; color: #21252b;">
-              <sc-if value="{{ acc.picked }}" hint-placeholder-val="{{ true }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6B7B" stroke-width="1.6" stroke-linecap="round" style="flex: 0 0 16px;"><path d="M4 3h16v18H4z M4 9h16 M4 15h16 M9.5 6h2 M9.5 12h2 M9.5 18h2"></path></svg></sc-if>
-              <span>{{ acc.hdrDoor }}</span>
-            </span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 14px; color: #6b7480;">Bin</span>
-            <span style="font-size: 14px; font-weight: 500; color: #21252b; padding: 1px 6px; margin: -1px -6px; border-radius: 4px; animation: {{ acc.binFlash }};">{{ acc.hdrBin }}</span>
-          </div>
+      <div class="ak-info-bar__col">
+        <div class="ak-info-bar__row">
+          <span class="ak-info-bar__label" style="min-width: 72px;">Door</span>
+          <span class="ak-door">
+            <sc-if value="{{ acc.picked }}" hint-placeholder-val="{{ true }}"><span class="ak-icon" data-icon="door-physical"></span></sc-if>
+            <span>{{ acc.hdrDoor }}</span>
+          </span>
+          <span class="ak-label" style="margin-left: 16px;">Bin</span>
+          <span style="padding: 1px 6px; margin: -1px -6px; border-radius: var(--ak-radius); animation: {{ acc.binFlash }};">{{ acc.hdrBin }}</span>
         </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 14px; color: #6b7480;">Inventory</span>
-          <span style="font-size: 14px; font-weight: 500; color: #21252b;">{{ acc.hdrInv }}</span>
+        <div class="ak-info-bar__row">
+          <span class="ak-info-bar__label" style="min-width: 72px;">Inventory</span>
+          <span>{{ acc.hdrInv }}</span>
         </div>
       </div>
     </div>
 
-    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 24px; padding: 20px 24px; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
-      <div style="display: flex; align-items: stretch;">
-        <div style="display: flex; align-items: center; gap: 10px; width: 320px; height: 40px; padding: 0 12px; background: {{ acc.scanBg }}; border: 1px solid #ced4da; border-right: none; border-radius: 4px 0 0 4px; cursor: {{ acc.scanCursor }};">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="color: {{ acc.scanGlyph }}; flex-shrink: 0;"><rect x="2" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="11" y="2" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><rect x="2" y="11" width="5" height="5" rx="0.8" stroke="currentColor" stroke-width="1.3"></rect><path d="M11 11h2v2h-2zM14 14h2v2h-2zM14 11h2M11 15v1" stroke="currentColor" stroke-width="1.3"></path></svg>
-          <input type="text" placeholder="Scan or type serial number" readOnly="{{ acc.scanLocked }}" onFocus="{{ acc.onScanFocus }}" style="flex: 1; min-width: 0; height: 100%; border: none; outline: none; font-family: inherit; font-size: 14px; color: #21252b; background: transparent; cursor: {{ acc.scanCursor }};" />
-        </div>
-        <button type="button" onClick="{{ acc.onScan }}" style="width: 44px; height: 40px; display: flex; align-items: center; justify-content: center; background: {{ acc.scanBtn }}; border: 1px solid {{ acc.scanBtn }}; border-radius: 0 4px 4px 0; color: #ffffff; cursor: {{ acc.scanCursor }};">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.8" stroke="currentColor" stroke-width="1.5"></circle><path d="m10.6 10.6 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
-        </button>
+    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 24px; padding: 16px 24px; background: var(--ak-bg); border-bottom: 1px solid var(--ak-border-divider);">
+      <div class="ak-input-group" style="width: 386px;">
+        <span class="{{ acc.scanClass }}" style="cursor: {{ acc.scanCursor }};">
+          <span class="ak-icon" data-icon="qrcode"></span>
+          <input type="text" placeholder="Scan or type serial number" readOnly="{{ acc.scanLocked }}" onFocus="{{ acc.onScanFocus }}" style="cursor: {{ acc.scanCursor }};" />
+        </span>
+        <button type="button" class="ak-addon" onClick="{{ acc.onScan }}" aria-label="Search" aria-disabled="{{ acc.scanLocked }}" style="cursor: {{ acc.scanCursor }};"><span class="ak-icon" data-icon="search"></span></button>
       </div>
       <div style="display: flex; align-items: stretch; margin-left: auto;">
-      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; padding: 0 24px; border-right: 1px solid #e3e7ed;">
-        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Transfer Quantity ({{ acc.unitLabel }})</span>
-        <span style="font-size: 32px; line-height: 40px; font-weight: 400; color: #21252b;">{{ acc.total }}</span>
+      <div class="ak-counter" style="padding: 0 24px; border-right: 1px solid var(--ak-border-divider);">
+        <span class="ak-label" style="white-space: nowrap;">Transfer Quantity ({{ acc.unitLabel }})</span>
+        <span class="ak-counter__value">{{ acc.total }}</span>
       </div>
-      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; padding: 0 24px; border-right: 1px solid #e3e7ed;">
-        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Accepted ({{ acc.unitLabel }})</span>
-        <span style="font-size: 32px; line-height: 40px; font-weight: 400; color: #21252b;">{{ acc.accepted }}</span>
+      <div class="ak-counter" style="padding: 0 24px; border-right: 1px solid var(--ak-border-divider);">
+        <span class="ak-label" style="white-space: nowrap;">Accepted ({{ acc.unitLabel }})</span>
+        <span class="ak-counter__value">{{ acc.accepted }}</span>
       </div>
-      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; padding: 0 24px; border-right: 1px solid #e3e7ed;">
-        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Damaged ({{ acc.unitLabel }})</span>
-        <span style="font-size: 32px; line-height: 40px; font-weight: 400; color: #21252b;">{{ acc.damaged }}</span>
+      <div class="ak-counter" style="padding: 0 24px; border-right: 1px solid var(--ak-border-divider);">
+        <span class="ak-label" style="white-space: nowrap;">Damaged ({{ acc.unitLabel }})</span>
+        <span class="ak-counter__value">{{ acc.damaged }}</span>
       </div>
-      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; padding: 0 24px;">
-        <span style="font-size: 14px; color: #6b7480; white-space: nowrap;">Not Received ({{ acc.unitLabel }})</span>
-        <span style="font-size: 32px; line-height: 40px; font-weight: 400; color: #21252b;">{{ acc.notReceived }}</span>
+      <div class="ak-counter" style="padding: 0 0 0 24px;">
+        <span class="ak-label" style="white-space: nowrap;">Not Received ({{ acc.unitLabel }})</span>
+        <span class="ak-counter__value">{{ acc.notReceived }}</span>
       </div>
       </div>
     </div>
 
     <sc-if value="{{ acc.notPicked }}" hint-placeholder-val="{{ false }}">
-      <div style="padding: 24px; background: #ffffff;">
-        <div style="padding: 56px 24px; border: 1px dashed #D8D8D8; border-radius: 4px; text-align: center; font-size: 16px; line-height: 24px; color: #9FA9B7;">Select a bin location to load its inventory to transfer</div>
+      <div style="padding: 24px; background: var(--ak-bg);">
+        <div class="ak-empty-box">Select a bin location to load its inventory to transfer</div>
       </div>
     </sc-if>
     <sc-if value="{{ acc.picked }}" hint-placeholder-val="{{ true }}">
-    <div style="padding: 16px 24px 24px; background: #ffffff; display: flex; flex-direction: column; gap: 16px;">
+    <div style="padding: 16px 24px 24px; background: var(--ak-bg); display: flex; flex-direction: column; gap: 16px;">
       <div style="display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 16px;">
-        <button type="button" onClick="{{ acc.acceptSelected }}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: {{ acc.acceptSelCursor }}; opacity: {{ acc.acceptSelOpacity }};" style-hover="background: rgba(9,81,146,0.06);">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.3" stroke="currentColor" stroke-width="1.4"></circle><path d="m5.3 8.2 1.9 1.9 3.6-3.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          <span>Accept selected</span>
+        <button type="button" class="ak-btn ak-btn--secondary" onClick="{{ acc.acceptSelected }}" aria-disabled="{{ acc.acceptSelDisabled }}">
+          <span class="ak-icon" data-icon="check-circle"></span>
+          <span>ACCEPT SELECTED</span>
         </button>
-        <button type="button" onClick="{{ acc.resetSelected }}" style="display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: {{ acc.resetCursor }}; opacity: {{ acc.resetOpacity }};" style-hover="background: rgba(9,81,146,0.06);">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.2 8a4.8 4.8 0 1 0 1.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path><path d="M4.4 2v2.7h2.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          <span>Reset selected</span>
+        <button type="button" class="ak-btn ak-btn--secondary" onClick="{{ acc.resetSelected }}" aria-disabled="{{ acc.resetDisabled }}">
+          <span class="ak-icon" data-icon="undo"></span>
+          <span>RESET SELECTED</span>
         </button>
       </div>
-      <div style="border: 1px solid #e9ecf1; border-radius: 6px; background: #ffffff; overflow-x: auto;">
-        <table style="width: 100%; min-width: 1140px; border-collapse: collapse;">
+      <div style="overflow-x: auto;">
+        <table class="ak-table" style="min-width: 1140px;">
           <thead>
-            <tr style="background: #f7f8fa;">
-              <th style="width: 52px; padding: 14px 0 14px 16px; text-align: left; border-bottom: 1px solid #e9ecf1;">
-                <div onClick="{{ acc.toggleAllSel }}" style="position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ acc.allBoxBg }}; border: 1px solid {{ acc.allBoxBd }}; cursor: {{ acc.allCursor }};">
-                  <sc-if value="{{ acc.allChecked }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+            <tr>
+              <th class="ak-cell-check" style="width: 52px;">
+                <div onClick="{{ acc.toggleAllSel }}" class="{{ acc.allBoxClass }}" style="cursor: {{ acc.allCursor }};">
+                  <sc-if value="{{ acc.allChecked }}" hint-placeholder-val="{{ false }}"><span class="ak-icon ak-icon--14" data-icon="check"></span></sc-if>
                 </div>
               </th>
-              <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Serial</th>
-              <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Lot</th>
-              <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Expiration</th>
-              <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Source</th>
-              <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Quantity</th>
-              <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Location</th>
-              <th style="width: 240px; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1; white-space: nowrap;">Status</th>
+              <th>Serial</th>
+              <th>Lot</th>
+              <th>Expiration</th>
+              <th>Source</th>
+              <th>Quantity</th>
+              <th>Location</th>
+              <th style="width: 240px;">Status</th>
             </tr>
           </thead>
           <tbody>
             <sc-for list="{{ acc.rows }}" as="s" hint-placeholder-count="3">
-              <tr style="background: #ffffff;">
-                <td style="padding: 16px 0 16px 16px; border-bottom: 1px solid #eef1f5; vertical-align: middle;">
+              <tr>
+                <td class="ak-cell-check" style="vertical-align: middle;">
                   <sc-if value="{{ s.pending }}" hint-placeholder-val="{{ true }}">
-                    <div onClick="{{ s.onToggleSel }}" style="position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; background: {{ s.boxBg }}; border: 1px solid {{ s.boxBd }}; cursor: pointer;">
-                      <sc-if value="{{ s.checked }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; position: absolute;"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                    <div onClick="{{ s.onToggleSel }}" class="{{ s.boxClass }}">
+                      <sc-if value="{{ s.checked }}" hint-placeholder-val="{{ false }}"><span class="ak-icon ak-icon--14" data-icon="check"></span></sc-if>
                     </div>
                   </sc-if>
                   <sc-if value="{{ s.isCommitted }}" hint-placeholder-val="{{ false }}">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="display: block; color: #008774;"><path d="m4 10.5 4 4 8-9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    <span class="ak-icon ak-icon--20 ak-icon--current" data-icon="check" style="color: var(--ak-pill-success);"></span>
                   </sc-if>
                 </td>
-                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; vertical-align: middle;">{{ s.serial }}</td>
-                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; vertical-align: middle;">{{ s.lot }}</td>
-                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; vertical-align: middle;"><span style="white-space: nowrap;">{{ s.expiration }}</span></td>
-                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; vertical-align: middle;">{{ s.source }}</td>
-                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; vertical-align: middle;"><span style="white-space: nowrap;">{{ s.qty }}</span></td>
-                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; vertical-align: middle; line-height: 21px; white-space: nowrap;">
-                  <div style="min-height: 42px; display: flex; flex-direction: column; justify-content: center;">
+                <td style="vertical-align: middle;">{{ s.serial }}</td>
+                <td style="vertical-align: middle;">{{ s.lot }}</td>
+                <td style="vertical-align: middle;"><span style="white-space: nowrap;">{{ s.expiration }}</span></td>
+                <td style="vertical-align: middle;">{{ s.source }}</td>
+                <td style="vertical-align: middle;"><span style="white-space: nowrap;">{{ s.qty }}</span></td>
+                <td style="vertical-align: middle; white-space: nowrap;">
+                  <div style="min-height: 40px; display: flex; flex-direction: column; justify-content: center;">
                     <sc-if value="{{ s.hasLoc }}" hint-placeholder-val="{{ false }}">
                       <div>Door: {{ s.locDoor }}</div>
                       <div>Bin: {{ s.locBin }}</div>
@@ -485,21 +436,20 @@
                     <sc-if value="{{ s.noLoc }}" hint-placeholder-val="{{ true }}"><div>--</div></sc-if>
                   </div>
                 </td>
-                <td style="padding: 8px 16px; border-bottom: 1px solid #eef1f5; vertical-align: middle;">
+                <td style="vertical-align: middle;">
                   <sc-if value="{{ s.pending }}" hint-placeholder-val="{{ true }}">
-                    <div style="position: relative; width: 100%;">
-                      <select value="{{ s.status }}" onChange="{{ s.onChange }}" style="width: 100%; height: 40px; padding: 0 36px 0 12px; font-family: inherit; font-size: 14px; color: #21252b; background: #ffffff; border: 1px solid {{ s.selBd }}; border-radius: 4px; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer;" style-focus="border-color: #095192; box-shadow: 0 0 0 2px rgba(9,81,146,0.15);">
+                    <span class="{{ s.selClass }}" style="width: 100%;">
+                      <select value="{{ s.status }}" onChange="{{ s.onChange }}">
                         <option value="--">--</option>
                         <option value="Accept">Accept</option>
                         <option value="Damaged">Damaged</option>
                         <option value="Damaged - Replacement Required">Damaged - Replacement Required</option>
                         <option value="Not Received">Not Received</option>
                       </select>
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="position: absolute; right: 12px; top: 13px; color: #6b7480; pointer-events: none;"><path d="M7.017 10.398a1.02 1.02 0 0 1-.563-.234L1.139 4.849a.78.78 0 0 1 1.127-1.095l4.751 4.72 4.752-4.72a.78.78 0 0 1 1.127 1.063l-5.315 5.315a1.03 1.03 0 0 1-.564.266Z" fill="currentColor"></path></svg>
-                    </div>
+                    </span>
                   </sc-if>
                   <sc-if value="{{ s.isCommitted }}" hint-placeholder-val="{{ false }}">
-                    <span style="font-size: 14px; font-weight: 500; color: {{ s.doneColor }};">{{ s.doneLabel }}</span>
+                    <span class="{{ s.doneClass }}">{{ s.doneLabel }}</span>
                   </sc-if>
                 </td>
               </tr>
@@ -510,30 +460,33 @@
     </div>
     </sc-if>
 
-    <div style="position: fixed; bottom: 0; left: 70px; right: 0; z-index: {{ barZ }}; display: flex; flex-wrap: wrap; align-items: stretch; gap: 0 16px; padding: 0 24px 0 0; background: #ffffff; border-top: 1px solid #e3e7ed; box-shadow: 0 -2px 8px rgba(16,24,40,0.06);">
-      <sc-if value="{{ acc.showCounters }}" hint-placeholder-val="{{ true }}">
-      <dc-import name="Product Switcher" products="{{ acc.queueProducts }}" current-id="{{ acc.curId }}" on-select="{{ acc.onProductSelect }}" flow-label="Transfer" done-label="Transferred" on-open-change="{{ onPanelOpen }}" hint-size="170px,66px"></dc-import>
-      </sc-if>
-      <sc-if value="{{ acc.showLocTile }}" hint-placeholder-val="{{ true }}">
-      <dc-import name="Bin Location Switcher" locations="{{ acc.locations }}" current-key="{{ acc.locKey }}" open="{{ acc.locOpen }}" on-select="{{ acc.onLocSelect }}" product-name="{{ acc.name }}" product-sub="{{ acc.desc }}" stats="{{ acc.locStats }}" unit="{{ acc.unitWord }}" moved-unit="{{ acc.unitWord }}" title="Select a Location to Transfer" verb="accept" moved-label="Transferred" issue-label="Damaged / Not received" on-open-change="{{ acc.onLocOpen }}" hint-size="200px,66px"></dc-import>
-      </sc-if>
-      <sc-if value="{{ acc.showCounters }}" hint-placeholder-val="{{ true }}">
-      <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-right: 1px solid #e3e7ed;">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="color: #008774;"><path d="M19 10.3V11a8 8 0 1 1-4.7-7.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path d="m19 4-8 8-2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-        <div style="display: flex; flex-direction: column;">
-          <span style="font-size: 13px; color: #6b7480;">Transfer</span>
-          <span style="font-size: 18px; font-weight: 500; color: #21252b;">{{ acc.transferred }}</span>
-        </div>
-      </div>
-      </sc-if>
-      <div style="display: flex; align-items: center; gap: 12px; margin-left: auto; padding: 12px 0;">
-        <button type="button" onClick="{{ acc.onCancel }}" aria-disabled="{{ acc.cancelDisabled }}" style="white-space: nowrap; flex-shrink: 0; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ acc.cancelFg }}; background: #ffffff; border: 1px solid {{ acc.cancelBd }}; border-radius: 4px; cursor: {{ acc.cancelCursor }};" style-hover="background: {{ acc.cancelHover }};">Cancel</button>
-        <sc-if value="{{ acc.showSkip }}" hint-placeholder-val="{{ true }}">
-        <button type="button" onClick="{{ acc.onSkip }}" aria-disabled="{{ acc.skipDisabled }}" style="white-space: nowrap; flex-shrink: 0; height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ acc.skipFg }}; background: #ffffff; border: 1px solid {{ acc.skipBd }}; border-radius: 4px; cursor: {{ acc.skipCursor }};" style-hover="background: {{ acc.skipHover }};">{{ acc.skipLabel }}</button>
+    <div class="ak-bottom-bar" style="z-index: {{ barZ }}; padding-top: 0; padding-bottom: 0; padding-left: 0;">
+      <div class="ak-bar-info" style="align-self: stretch; align-items: stretch;">
+        <sc-if value="{{ acc.showCounters }}" hint-placeholder-val="{{ true }}">
+        <dc-import name="Product Switcher" products="{{ acc.queueProducts }}" current-id="{{ acc.curId }}" on-select="{{ acc.onProductSelect }}" flow-label="Transfer" done-label="Transferred" on-open-change="{{ onPanelOpen }}" hint-size="170px,66px"></dc-import>
         </sc-if>
-        <button type="button" onClick="{{ acc.onAccept }}" aria-disabled="{{ acc.acceptDisabled }}" style="white-space: nowrap; flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 20px; font-family: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; color: {{ acc.accFg }}; background: {{ acc.accBg }}; border: 1px solid {{ acc.accBd }}; border-radius: 4px; cursor: {{ acc.accCursor }};" style-hover="background: {{ acc.accHover }};">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.3" stroke="currentColor" stroke-width="1.4"></circle><path d="m5.3 8.2 1.9 1.9 3.6-3.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          {{ acc.acceptLabel }}
+        <sc-if value="{{ acc.showLocTile }}" hint-placeholder-val="{{ true }}">
+        <dc-import name="Bin Location Switcher" locations="{{ acc.locations }}" current-key="{{ acc.locKey }}" open="{{ acc.locOpen }}" on-select="{{ acc.onLocSelect }}" product-name="{{ acc.name }}" product-sub="{{ acc.desc }}" stats="{{ acc.locStats }}" unit="{{ acc.unitWord }}" moved-unit="{{ acc.unitWord }}" title="Select a Location to Transfer" verb="accept" moved-label="Transferred" issue-label="Damaged / Not received" on-open-change="{{ acc.onLocOpen }}" hint-size="200px,66px"></dc-import>
+        </sc-if>
+        <sc-if value="{{ acc.showCounters }}" hint-placeholder-val="{{ true }}">
+        <div class="ak-bar-info__item">
+          <span class="ak-icon" data-icon="check-circle"></span>
+          <div class="ak-bar-info__text">
+            <span class="ak-bar-info__label">Transfer</span>
+            <span class="ak-bar-info__value ak-bar-info__value--plain">{{ acc.transferred }}</span>
+          </div>
+        </div>
+        <span class="ak-bar-info__divider"></span>
+        </sc-if>
+      </div>
+      <div class="ak-bottom-bar__actions">
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--secondary" onClick="{{ acc.onCancel }}" aria-disabled="{{ acc.cancelDisabled }}">CANCEL</button>
+        <sc-if value="{{ acc.showSkip }}" hint-placeholder-val="{{ true }}">
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--secondary tp-caps" onClick="{{ acc.onSkip }}" aria-disabled="{{ acc.skipDisabled }}">{{ acc.skipLabel }}</button>
+        </sc-if>
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--primary tp-caps ak-btn--guarded" onClick="{{ acc.onAccept }}" aria-disabled="{{ acc.acceptDisabled }}">
+          <span class="ak-icon" data-icon="check-circle"></span>
+          <span>{{ acc.acceptLabel }}</span>
         </button>
       </div>
     </div>
@@ -543,107 +496,99 @@
   <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
   <div style="padding: 0 0 96px;">
 
-    <div style="padding: 20px 24px 16px; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
+    <div class="ak-page-header" style="display: block;">
       <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
-        <div style="font-size: 18px; font-weight: 400; line-height: 28px; color: #25282a; min-width: 0;">{{ product.name }}</div>
-        <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+        <h1 class="ak-page-title" style="min-width: 0;">{{ product.name }}</h1>
+        <div class="ak-product__badges" style="padding-top: 0;">
           <sc-for list="{{ product.chips }}" as="chip" hint-placeholder-count="1">
-            <label style="display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.2px; white-space: nowrap; background: {{ chip.bg }}; color: {{ chip.fg }}; border: 1px solid {{ chip.bd }};">{{ chip.label }}</label>
+            <span class="{{ chip.cls }}">{{ chip.label }}</span>
           </sc-for>
         </div>
       </div>
-      <div style="margin-top: 4px; font-size: 13px; font-style: italic; color: #6b7280;">({{ product.desc }})</div>
+      <span class="ak-product__generic" style="margin-top: 4px;">({{ product.desc }})</span>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px 32px; padding: 20px 24px; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
-        <div style="display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 12px 8px; align-content: start;">
-          <span style="font-size: 14px; font-weight: 500; color: #64748b;">NDC</span>
-          <span style="font-size: 14px; font-weight: 500; color: #25282a; min-width: 0;">{{ product.ndc }}</span>
-          <span style="font-size: 14px; font-weight: 500; color: #64748b;">Inventory Type</span>
-          <span style="font-size: 14px; font-weight: 500; color: #25282a; min-width: 0;">{{ product.invType }}</span>
+    <div class="ak-info-bar" style="flex-wrap: wrap; padding: 16px 24px; border-bottom: 1px solid var(--ak-border-divider);">
+        <div class="ak-info-bar__col">
+          <div class="ak-info-bar__row"><span class="ak-info-bar__label" style="min-width: 140px;">NDC</span><span style="min-width: 0;">{{ product.ndc }}</span></div>
+          <div class="ak-info-bar__row"><span class="ak-info-bar__label" style="min-width: 140px;">Inventory Type</span><span style="min-width: 0;">{{ product.invType }}</span></div>
         </div>
-        <div style="display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 12px 8px; align-content: start;">
-          <span style="font-size: 14px; font-weight: 500; color: #64748b;">Sending Location</span>
-          <span style="font-size: 14px; font-weight: 500; color: #25282a; min-width: 0;">{{ product.sendLocFull }}</span>
-          <span style="font-size: 14px; font-weight: 500; color: #64748b;">Transfer Status</span>
-          <span style="font-size: 14px; font-weight: 500; color: #25282a; min-width: 0;">{{ product.status }}</span>
+        <div class="ak-info-bar__col">
+          <div class="ak-info-bar__row"><span class="ak-info-bar__label" style="min-width: 140px;">Sending Location</span><span style="min-width: 0;">{{ product.sendLocFull }}</span></div>
+          <div class="ak-info-bar__row"><span class="ak-info-bar__label" style="min-width: 140px;">Transfer Status</span><span style="min-width: 0;">{{ product.status }}</span></div>
         </div>
-        <div style="display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 12px 8px; align-content: start;">
-          <span style="font-size: 14px; font-weight: 500; color: #64748b;">Created On</span>
-          <span style="font-size: 14px; font-weight: 500; color: #25282a; min-width: 0;">{{ product.created }}</span>
-          <span style="font-size: 14px; font-weight: 500; color: #64748b;">Created By</span>
-          <span style="font-size: 14px; font-weight: 500; color: #25282a; min-width: 0;">{{ product.createdBy }}</span>
+        <div class="ak-info-bar__col">
+          <div class="ak-info-bar__row"><span class="ak-info-bar__label" style="min-width: 140px;">Created On</span><span style="min-width: 0;">{{ product.created }}</span></div>
+          <div class="ak-info-bar__row"><span class="ak-info-bar__label" style="min-width: 140px;">Created By</span><span style="min-width: 0;">{{ product.createdBy }}</span></div>
         </div>
     </div>
 
-    <div style="display: flex; align-items: stretch; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding: 0 24px; background: #ffffff; border-bottom: 1px solid #e3e7ed;">
-      <div style="display: flex; align-items: flex-end; gap: 24px;">
+    <div style="display: flex; align-items: stretch; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding: 0 24px; background: var(--ak-bg); border-bottom: 1px solid var(--ak-border-divider);">
+      <div class="ak-tabs" role="tablist" style="align-self: flex-end;">
         <sc-for list="{{ product.tabs }}" as="tab" hint-placeholder-count="3">
-          <div onClick="{{ tab.select }}" style="display: flex; align-items: center; gap: 8px; padding: 18px 8px; font-size: 14px; font-weight: {{ tab.weight }}; color: {{ tab.color }}; box-shadow: {{ tab.shadow }}; cursor: pointer;">
+          <button type="button" class="ak-tab" role="tab" aria-selected="{{ tab.selected }}" onClick="{{ tab.select }}">
             <span>{{ tab.label }}</span>
             <sc-if value="{{ tab.hasCount }}" hint-placeholder-val="{{ false }}">
-              <span style="min-width: 20px; height: 20px; padding: 0 6px; display: inline-flex; align-items: center; justify-content: center; border-radius: 20px; background: #095192; color: #ffffff; font-size: 12px; font-weight: 500;">{{ tab.count }}</span>
+              <span class="ak-tab__count" style="display: inline-flex; align-items: center; justify-content: center;">{{ tab.count }}</span>
             </sc-if>
-          </div>
+          </button>
         </sc-for>
       </div>
       <div style="display: flex; align-items: stretch;">
-        <div style="padding: 10px 24px; border-left: 1px solid #e3e7ed; display: flex; flex-direction: column; gap: 4px;">
-          <div style="font-size: 14px; font-weight: 500; color: #64748b; white-space: nowrap;">Transfer Quantity ({{ product.qtyUnit }})</div>
-          <div style="font-size: 24px; line-height: 32px; font-weight: 400; color: #25282a; text-align: right;">{{ product.transferQty }}</div>
+        <div class="ak-counter" style="padding: 8px 24px; border-left: 1px solid var(--ak-border-divider);">
+          <span class="ak-label ak-medium" style="white-space: nowrap;">Transfer Quantity ({{ product.qtyUnit }})</span>
+          <span class="ak-counter__value">{{ product.transferQty }}</span>
         </div>
-        <div style="padding: 10px 24px; border-left: 1px solid #e3e7ed; display: flex; flex-direction: column; gap: 4px;">
-          <div style="font-size: 14px; font-weight: 500; color: #64748b; white-space: nowrap;">Verified Quantity ({{ product.qtyUnit }})</div>
-          <div style="font-size: 24px; line-height: 32px; font-weight: 400; color: #25282a; text-align: right;">{{ product.verifiedQty }}</div>
+        <div class="ak-counter" style="padding: 8px 24px; border-left: 1px solid var(--ak-border-divider);">
+          <span class="ak-label ak-medium" style="white-space: nowrap;">Verified Quantity ({{ product.qtyUnit }})</span>
+          <span class="ak-counter__value">{{ product.verifiedQty }}</span>
         </div>
       </div>
     </div>
 
-    <div style="padding: 24px; background: #ffffff;">
-      <div style="border: 1px solid #e9ecf1; border-radius: 6px; background: #ffffff; overflow-x: auto;">
-        <table style="width: 100%; min-width: 720px; border-collapse: collapse;">
+    <div style="padding: 24px; background: var(--ak-bg);">
+      <div style="overflow-x: auto;">
+        <table class="ak-table" style="min-width: 720px;">
           <thead>
-            <tr style="background: #f7f8fa;">
-              <th style="width: 22%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1;">Serial</th>
-              <th style="width: 14%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1;">Lot</th>
-              <th style="width: 14%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1;">Expiration</th>
-              <th style="width: 14%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1;">Source</th>
-              <th style="width: 18%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1;">Location</th>
-              <th style="width: 22%; padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1;">Quantity</th>
+            <tr>
+              <th style="width: 22%;">Serial</th>
+              <th style="width: 14%;">Lot</th>
+              <th style="width: 14%;">Expiration</th>
+              <th style="width: 14%;">Source</th>
+              <th style="width: 18%;">Location</th>
+              <th style="width: 22%;">Quantity</th>
               <sc-if value="{{ product.showReason }}" hint-placeholder-val="{{ false }}">
-                <th style="padding: 14px 16px; text-align: left; font-size: 13px; font-weight: 600; color: #4b5563; border-bottom: 1px solid #e9ecf1;">Reason</th>
+                <th>Reason</th>
               </sc-if>
             </tr>
           </thead>
           <tbody>
             <sc-for list="{{ product.tabRows }}" as="lot" hint-placeholder-count="2">
-              <tr style="background: #ffffff;" style-hover="background: #f5f9fe;">
-                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">
-                  {{ lot.serial }}
-                </td>
-                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ lot.lot }}</td>
-                <td style="padding: 16px; border-bottom: 1px solid #eef1f5;">
-                  <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px;">
-                    <span style="font-size: 14px; color: #21252b; white-space: nowrap;">{{ lot.expiration }}</span>
+              <tr>
+                <td>{{ lot.serial }}</td>
+                <td>{{ lot.lot }}</td>
+                <td>
+                  <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px;">
+                    <span style="white-space: nowrap;">{{ lot.expiration }}</span>
                     <sc-if value="{{ lot.expired }}" hint-placeholder-val="{{ false }}">
-                      <span style="padding: 3px 10px; border-radius: 999px; background: #dc2626; color: #ffffff; font-size: 11px; font-weight: 500; white-space: nowrap;">Expired</span>
+                      <span class="ak-chip ak-chip--danger">Expired</span>
                     </sc-if>
                   </div>
                 </td>
-                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ lot.source }}</td>
-                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; line-height: 1.5; white-space: nowrap;">
+                <td>{{ lot.source }}</td>
+                <td style="white-space: nowrap;">
                   <div>Door: {{ lot.door }}</div>
                   <div>Bin: {{ lot.bin }}</div>
                 </td>
-                <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5; white-space: nowrap;">{{ lot.qtyLabel }}</td>
+                <td style="white-space: nowrap;">{{ lot.qtyLabel }}</td>
                 <sc-if value="{{ product.showReason }}" hint-placeholder-val="{{ false }}">
-                  <td style="padding: 16px; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ lot.reason }}</td>
+                  <td>{{ lot.reason }}</td>
                 </sc-if>
               </tr>
             </sc-for>
             <sc-if value="{{ product.tabEmpty }}" hint-placeholder-val="{{ false }}">
-              <tr style="background: #ffffff;">
-                <td colSpan="6" style="padding: 34px 16px; text-align: center; font-size: 14px; color: #6b7480; border-bottom: 1px solid #eef1f5;">{{ product.tabEmptyText }}</td>
+              <tr>
+                <td colSpan="6" class="ak-empty">{{ product.tabEmptyText }}</td>
               </tr>
             </sc-if>
           </tbody>
@@ -651,48 +596,48 @@
       </div>
     </div>
 
-    <div style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 30; padding: 14px 24px; background: #ffffff; border-top: 1px solid #e3e7ed; box-shadow: 0 -2px 8px rgba(16,24,40,0.06); display: flex; justify-content: flex-end;">
-      <button type="button" onClick="{{ backToList }}" style="display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 18px; font-family: inherit; font-size: 13px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; color: #ffffff; background: #095192; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: #073f73;">
-        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M12 7H2.5M6 3L2 7l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-        Back to transfers
-      </button>
+    <div class="ak-bottom-bar" style="z-index: 30;">
+      <div class="ak-bottom-bar__actions">
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--primary" onClick="{{ backToList }}">
+          <svg width="16" height="16" viewBox="0 0 14 14" fill="none"><path d="M12 7H2.5M6 3L2 7l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          BACK TO TRANSFERS
+        </button>
+      </div>
     </div>
   </div>
 
     <sc-if value="{{ unallocOpen }}" hint-placeholder-val="{{ false }}">
-      <div style="position: fixed; inset: 0; z-index: 80; background: rgba(16,24,40,0.45); display: flex; align-items: center; justify-content: center; padding: 24px;">
-        <div style="width: 480px; max-width: 100%; background: #ffffff; border-radius: 6px; box-shadow: 0 20px 50px rgba(16,24,40,0.28); overflow: hidden;">
+      <div class="ak-overlay" style="z-index: 80;">
+        <div class="ak-modal" role="dialog" aria-modal="true">
 
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px;">
-            <div style="font-size: 20px; font-weight: 700; color: #21252b;">Unallocate Product</div>
-            <div onClick="{{ closeUnalloc }}" style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; color: #21252b; cursor: pointer;" style-hover="color: #6b7480;">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 2.5l11 11M13.5 2.5l-11 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
-            </div>
+          <div class="ak-modal__header">
+            <h2 class="ak-modal__title">Unallocate Product</h2>
+            <button type="button" class="ak-modal__close" onClick="{{ closeUnalloc }}" aria-label="Close" data-icon="times"></button>
           </div>
 
-          <div style="padding: 20px 24px 22px; border-top: 1px solid #e9ecf1;">
-            <div style="font-size: 15px; font-weight: 600; color: #095192;">Select Locations to unallocate from</div>
-            <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 18px;">
+          <div class="ak-modal__body">
+            <div class="ak-body ak-semibold" style="color: var(--ak-brand);">Select Locations to unallocate from</div>
+            <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 16px;">
               <sc-for list="{{ product.locations }}" as="loc" hint-placeholder-count="3">
                 <div onClick="{{ loc.toggle }}" style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
-                  <div style="width: 20px; height: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 3px; background: {{ loc.boxBg }}; border: 1px solid {{ loc.boxBd }};">
-                    <svg width="12" height="12" viewBox="0 0 10 10" fill="none" style="color: #ffffff; opacity: {{ loc.tickOpacity }};"><path d="M1.6 5.2 3.9 7.5 8.4 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  <div class="{{ loc.boxClass }}">
+                    <sc-if value="{{ loc.checked }}" hint-placeholder-val="{{ true }}"><span class="ak-icon ak-icon--14" data-icon="check"></span></sc-if>
                   </div>
-                  <div style="display: flex; align-items: baseline; gap: 6px; font-size: 15px; white-space: nowrap;">
-                    <span style="color: #6b7480;">Door:</span>
-                    <span style="font-weight: 600; color: #21252b;">{{ loc.door }}</span>
-                    <span style="color: #9aa4b0; padding: 0 6px;">-</span>
-                    <span style="color: #6b7480;">Bin:</span>
-                    <span style="font-weight: 600; color: #21252b;">{{ loc.bin }}</span>
+                  <div style="display: flex; align-items: baseline; gap: 6px; font-size: 16px; font-weight: 400; white-space: nowrap;">
+                    <span class="ak-label">Door:</span>
+                    <span class="ak-semibold">{{ loc.door }}</span>
+                    <span style="color: var(--ak-text-placeholder); padding: 0 6px;">-</span>
+                    <span class="ak-label">Bin:</span>
+                    <span class="ak-semibold">{{ loc.bin }}</span>
                   </div>
                 </div>
               </sc-for>
             </div>
           </div>
 
-          <div style="display: flex; justify-content: flex-end; gap: 12px; padding: 16px 24px; border-top: 1px solid #e9ecf1;">
-            <button type="button" onClick="{{ closeUnalloc }}" style="height: 38px; padding: 0 20px; font-family: inherit; font-size: 13px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: #095192; background: #ffffff; border: 1px solid #095192; border-radius: 4px; cursor: pointer;" style-hover="background: rgba(9,81,146,0.06);">Cancel</button>
-            <button type="button" onClick="{{ confirmUnalloc }}" style="height: 38px; padding: 0 20px; font-family: inherit; font-size: 13px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: #ffffff; background: {{ product.unallocBg }}; border: 1px solid {{ product.unallocBg }}; border-radius: 4px; cursor: {{ product.unallocCursor }};">Unallocate</button>
+          <div class="ak-modal__footer">
+            <button type="button" class="ak-btn ak-btn--secondary" onClick="{{ closeUnalloc }}">CANCEL</button>
+            <button type="button" class="ak-btn ak-btn--primary" onClick="{{ confirmUnalloc }}" aria-disabled="{{ product.unallocDisabled }}">UNALLOCATE</button>
           </div>
         </div>
       </div>
@@ -705,15 +650,9 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;guidedWorkflow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;Guided Workflow&quot;}}">
 class Component extends DCLogic {
   chip(label) {
-    const map = {
-      SDV: { bg: "#282e38", fg: "#ffffff", bd: "#282e38" },
-      MDV: { bg: "#282e38", fg: "#ffffff", bd: "#282e38" },
-      CLIMATE: { bg: "#06b6d4", fg: "#ffffff", bd: "#06b6d4" },
-      PACK: { bg: "#465161", fg: "#ffffff", bd: "#465161" },
-      CIV: { bg: "#eec038", fg: "#25282a", bd: "#eec038" },
-      "NON SERIALIZED": { bg: "#fe4603", fg: "#ffffff", bd: "#fe4603" }
-    };
-    return Object.assign({ label }, map[label] || { bg: "#465161", fg: "#ffffff", bd: "#465161" });
+    // Product Badge variant (ally-kit .ak-badge--*)
+    const map = { SDV: "sdv", MDV: "mdv", CLIMATE: "climate", PACK: "pack", CIV: "civ", "MDV-WNB": "mdv-wnb", "NON SERIALIZED": "non-serial" };
+    return { label, cls: "ak-badge ak-badge--" + (map[label] || "pack") };
   }
   state = { belowPar: false, parFlip: false, parMaxH: 0, sortKey: "name", sortDir: "asc", openPar: null, view: "list", selected: null, unalloc: false, checkedLocs: {}, queue: [], qIdx: 0, serialStatus: {}, done: {}, transferred: 0 };
 
@@ -846,7 +785,7 @@ class Component extends DCLogic {
     const sel = this.state.accSel || {};
     const tally = { "--": 0, Accept: 0, Damaged: 0, "Damaged - Replacement Required": 0, "Not Received": 0, prior: 0 };
     const base = this.state.sessionBase || {};
-    const doneStyle = { Accept: ["Accepted", "#008774"], Damaged: ["Damaged", "#D9342B"], "Damaged - Replacement Required": ["Damaged - Replacement Required", "#D9342B"], "Not Received": ["Not Received", "#64748B"] };
+    const doneStyle = { Accept: ["Accepted", "positive"], Damaged: ["Damaged", "negative"], "Damaged - Replacement Required": ["Damaged - Replacement Required", "negative"], "Not Received": ["Not Received", "incomplete"] };
     const serials = layout.slice().sort((a, b) => a.i - b.i).map(l => {
       const i = l.i, id = r.key + "-" + i;
       const c = cm[id];
@@ -868,11 +807,10 @@ class Component extends DCLogic {
         id, status, dirty, edited, saved, pending: editable, isCommitted: !editable,
         commitBin: c ? c.door + "-" + c.bin : null,
         hasLoc: !!loc, noLoc: !loc, locDoor: loc ? loc.door : "", locBin: loc ? loc.bin : "",
-        doneLabel: c ? doneStyle[c.status][0] : "", doneColor: c ? doneStyle[c.status][1] : "#21252b",
+        doneLabel: c ? doneStyle[c.status][0] : "", doneClass: c ? "ak-status ak-status--" + doneStyle[c.status][1] : "ak-status",
         checked: editable && !!sel[id],
-        boxBg: sel[id] ? "#095192" : "#ffffff",
-        boxBd: sel[id] ? "#095192" : "#bcc3cd",
-        selBd: status !== "--" ? "#095192" : "#ced4da",
+        boxClass: sel[id] ? "ak-check is-on" : "ak-check",
+        selClass: status !== "--" ? "ak-input ak-select ak-select--set" : "ak-input ak-select",
         onToggleSel: () => this.setState(s => ({ accSel: Object.assign({}, s.accSel, { [id]: !(s.accSel || {})[id] }) })),
         onChange: e => { const v = e.target.value; this.setState(s => ({ serialStatus: Object.assign({}, s.serialStatus, { [id]: v }) })); }
       };
@@ -940,9 +878,7 @@ class Component extends DCLogic {
       hdrInv: picked && curLoc ? curLoc.inventory + " " + (curLoc.inventory === 1 ? unitWord : unitPl) : "--",
       onUnlock: () => this.toast("Door " + curBin.door + " is unlocked now", null, "success"),
       scanLocked: !picked,
-      scanBg: picked ? "#ffffff" : "#F3F5F7",
-      scanGlyph: picked ? "#6b7480" : "#BCC3CD",
-      scanBtn: picked ? "#095192" : "#9FA9B7",
+      scanClass: picked ? "ak-input" : "ak-input ak-input--disabled",
       scanCursor: picked ? "text" : "not-allowed",
       onScanFocus: e => { if (!picked) { e.target.blur(); needLoc(); } },
       onScan: () => { if (!picked) needLoc(); },
@@ -950,21 +886,8 @@ class Component extends DCLogic {
       onSkip,
       skipDisabled: !skipOk,
       cancelDisabled: hasEdits,
-      cancelFg: hasEdits ? "#BCC3CD" : "#095192",
-      cancelBd: hasEdits ? "#DADEE3" : "#095192",
-      cancelCursor: hasEdits ? "not-allowed" : "pointer",
-      cancelHover: hasEdits ? "#ffffff" : "rgba(9,81,146,0.06)",
       onCancel: () => { if (!hasEdits) this.setState({ confirmClose: true }); },
-      skipFg: skipOk ? "#095192" : "#BCC3CD",
-      skipBd: skipOk ? "#095192" : "#DADEE3",
-      skipCursor: skipOk ? "pointer" : "not-allowed",
-      skipHover: skipOk ? "rgba(9,81,146,0.06)" : "#ffffff",
       acceptDisabled: !hasUncommitted,
-      accFg: hasUncommitted ? "#ffffff" : "#BCC3CD",
-      accBg: hasUncommitted ? "#095192" : "#F3F5F7",
-      accBd: hasUncommitted ? "#095192" : "#DADEE3",
-      accCursor: hasUncommitted ? "pointer" : "not-allowed",
-      accHover: hasUncommitted ? "#073f73" : "#F3F5F7",
       leaveOpen: !!leave,
       leaveTitle: leave && leave.kind === "product" ? "Save changes to this product?" : "Save changes to this bin?",
       leaveBody: leave && leave.kind === "product" ? "You've made some changes to this product. Do you want to save them before switching, or discard them?" : "You've made some changes in the current bin. Do you want to save them before switching, or discard them?",
@@ -980,16 +903,13 @@ class Component extends DCLogic {
         const bulk = v => () => { if (!selIds.length || (v === "--" && !resetOk) || (v === "Accept" && !acceptOk)) return; this.setState(s => { const ns = Object.assign({}, s.serialStatus); selIds.forEach(id => { ns[id] = v; }); return { serialStatus: ns, accSel: {} }; }); };
         return {
           allChecked: all,
-          allBoxBg: all ? "#095192" : "#ffffff",
-          allBoxBd: all ? "#095192" : "#bcc3cd",
+          allBoxClass: all ? "ak-check is-on" : "ak-check",
           allCursor: openIds.length ? "pointer" : "default",
           toggleAllSel: () => this.setState(s => { const n = Object.assign({}, s.accSel); openIds.forEach(id => { n[id] = !all; }); return { accSel: n }; }),
           bulkOpacity: selIds.length ? 1 : 0.5,
           bulkCursor: selIds.length ? "pointer" : "not-allowed",
-          resetOpacity: resetOk ? 1 : 0.5,
-          acceptSelOpacity: acceptOk ? 1 : 0.5,
-          acceptSelCursor: acceptOk ? "pointer" : "not-allowed",
-          resetCursor: resetOk ? "pointer" : "not-allowed",
+          resetDisabled: !resetOk,
+          acceptSelDisabled: !acceptOk,
           acceptSelected: bulk("Accept"),
           resetSelected: bulk("--")
         };
@@ -1054,28 +974,14 @@ class Component extends DCLogic {
 
 
   sortIcon(key) {
+    // Kit sort-alt icon (ally-kit fills [data-icon]); brand when it's the active sort.
     const active = this.state.sortKey === key;
-    const dir = this.state.sortDir;
     const e = React.createElement;
-    const stroke = { stroke: "currentColor", strokeWidth: 1.2, strokeLinecap: "round" };
-    const props = { width: 12, height: 12, viewBox: "0 0 12 12", fill: "none", style: { color: active ? "#095192" : "#25282a", flexShrink: 0 } };
-    if (key === "name") {
-      const up = active && dir === "desc" ? "M9 1.5V10M9 10 7.2 8.2M9 10l1.8-1.8" : "M9 10.5V2M9 2 7.2 3.8M9 2l1.8 1.8";
-      return e("span", {
-        style: { display: "inline-flex", alignItems: "center", gap: "2px", color: active ? "#095192" : "#25282a", flexShrink: 0 }
-      }, [
-        e("svg", Object.assign({ key: "s" }, props, { style: { color: "inherit", flexShrink: 0 } }), e("path", Object.assign({ key: "p", d: up }, stroke))),
-        e("span", { key: "t", style: { fontSize: "11px", fontWeight: 600, letterSpacing: "0.2px", lineHeight: 1 } }, active && dir === "desc" ? "Z-A" : "A-Z")
-      ]);
-    }
-    if (!active) {
-      return e("svg", props, e("path", Object.assign({ key: "p", d: "M3 2v8M3 10 1.5 8.4M3 10l1.5-1.6M9 10V2M9 2 7.5 3.6M9 2l1.5 1.6" }, stroke)));
-    }
-    const arrow = dir === "asc" ? "M3.5 10.5V2M3.5 2 1.5 4M3.5 2l2 2" : "M3.5 1.5V10M3.5 10 1.5 8M3.5 10l2-2";
-    const bars = dir === "asc" ? ["M7 3.5h2", "M7 6h3", "M7 8.5h4"] : ["M7 3.5h4", "M7 6h3", "M7 8.5h2"];
-    return e("svg", props, [
-      e("path", Object.assign({ key: "a", d: arrow }, stroke)),
-      bars.map((d, i) => e("path", Object.assign({ key: "b" + i, d: d }, stroke)))
+    const icon = e("span", { key: "i", className: active ? "ak-th__sort ak-icon--current" : "ak-th__sort", "data-icon": "sort-alt", style: active ? { color: "var(--ak-brand)" } : undefined });
+    if (key !== "name") return icon;
+    return e("span", { style: { display: "inline-flex", alignItems: "center", gap: "2px", flexShrink: 0, color: active ? "var(--ak-brand)" : "var(--ak-text)" } }, [
+      e("span", { key: "t", style: { fontSize: "12px", fontWeight: 600, lineHeight: 1 } }, active && this.state.sortDir === "desc" ? "Z-A" : "A-Z"),
+      icon
     ]);
   }
 
@@ -1126,9 +1032,7 @@ class Component extends DCLogic {
     const on = id => checked[id] !== false;
     const locs = derivedLocs.map(l => Object.assign({}, l, {
       checked: on(l.id),
-      boxBg: on(l.id) ? "#095192" : "#ffffff",
-      boxBd: on(l.id) ? "#095192" : "#ced4da",
-      tickOpacity: on(l.id) ? 1 : 0,
+      boxClass: on(l.id) ? "ak-check is-on" : "ak-check",
       toggle: () => this.setState(s => ({ checkedLocs: Object.assign({}, s.checkedLocs, { [l.id]: s.checkedLocs[l.id] === false }) }))
     }));
     const picked = locs.filter(l => l.checked).length;
@@ -1154,9 +1058,7 @@ class Component extends DCLogic {
     const tabDefs = [["remaining", "Remaining", remaining.length], ["transferred", "Transferred", transferredRows.length], ["not", "Not Transferred", notRows.length]];
     const tabs = tabDefs.map(([id, label, count]) => ({
       label, count, hasCount: count > 0,
-      weight: dTab === id ? 600 : 400,
-      color: dTab === id ? "#095192" : "#4b5563",
-      shadow: dTab === id ? "inset 0 -3px 0 #095192" : "none",
+      selected: dTab === id,
       select: () => this.setState({ detailTab: id })
     }));
     const tabRows = (dTab === "remaining" ? remaining : dTab === "transferred" ? transferredRows : notRows).map(x => Object.assign({ source: p.source }, x));
@@ -1188,8 +1090,7 @@ class Component extends DCLogic {
         ? (picked ? "Unallocate " + picked + (picked === 1 ? " location" : " locations") : "Unallocate")
         : "Unallocate",
       unallocReady: picked > 0,
-      unallocBg: picked > 0 ? "#095192" : "#b9c6d5",
-      unallocCursor: picked > 0 ? "pointer" : "default"
+      unallocDisabled: picked === 0
     });
   }
 
@@ -1227,8 +1128,6 @@ class Component extends DCLogic {
       key: idx, name: r[0], desc: r[1], chips: r[2].map(c => this.chip(c)),
       ndc: r[3], source: r[4], invType: "Purchased", sendClinic: "Onco Clinic Center", sendLoc: "Onco Station",
       qty: r[5], qtyShort: r[5].split(" / ")[0], inventory: r[5], created: r[6], status: r[7],
-      statusBg: r[7] === "Submitted" ? "#008774" : r[7] === "In-Progress" ? "#EEC038" : "#3b83f7",
-      statusFg: r[7] === "In-Progress" ? "#25282A" : "#ffffff",
       itemType: "Medication", hcpcs: "", parMin: "--", parMax: "--", isBelowPar: false,
       received: "-- each / -- mg",
       hasInfo: r[7] === "In-Progress" || idx % 3 === 1,
@@ -1310,10 +1209,9 @@ class Component extends DCLogic {
       // Guided off: the chevron opens the accept flow for just this product.
       r.startSingle = e => { if (e) e.stopPropagation(); this.setState({ view: "accept", binFlash: 0, singleMode: true, queue: [r.key], qIdx: 0, serialStatus: {}, sessionBase: Object.assign({}, this.state.committed), accBin: 0, accSel: {}, transferred: 0, skipped: {}, pStatus: {}, walk: {}, leave: null, locPicked: false, locOpen: true, panelOpen: true }); window.scrollTo(0, 0); };
       r.nameCursor = "pointer";
-      r.rowBg = on ? "#f5f9fe" : "#ffffff";
-      r.boxBg = on ? "#095192" : "#ffffff";
-      r.boxBd = on ? "#095192" : "#bcc3cd";
-      r.tickOpacity = on ? 1 : 0;
+      r.on = on;
+      r.rowClass = on ? "is-selected" : "";
+      r.boxClass = on ? "ak-check is-on" : "ak-check";
       r.toggleSel = e => { if (e) e.stopPropagation(); this.setState(s => ({ picked: Object.assign({}, s.picked, { [r.key]: !(s.picked || {})[r.key] }) })); };
       r.rowClick = guided ? r.toggleSel : r.startSingle;
       r.nameClick = guided ? r.toggleSel : r.startSingle;
@@ -1322,10 +1220,9 @@ class Component extends DCLogic {
     const nSel = sorted.filter(r => pk[r.key]).length;
     const all = nSel > 0 && nSel === sorted.length;
     const sel = {
-      allBoxBg: nSel ? "#095192" : "#ffffff",
-      allBoxBd: nSel ? "#095192" : "#bcc3cd",
-      allTick: all ? 1 : 0,
-      allDash: nSel && !all ? 1 : 0,
+      allBoxClass: nSel ? "ak-check is-on" : "ak-check",
+      allTickOn: all,
+      allDashOn: nSel > 0 && !all,
       toggleAll: () => this.setState(() => {
         const next = {};
         if (!all) sorted.forEach(r => { next[r.key] = true; });
@@ -1333,8 +1230,6 @@ class Component extends DCLogic {
       }),
       noneSelected: nSel === 0,
       selectedLabel: nSel ? nSel + (nSel === 1 ? " product selected" : " products selected") : "",
-      startBg: nSel ? "#095192" : "#b9c6d5",
-      startCursor: nSel ? "pointer" : "default"
     };
     const sortKeys = ["name", "ndc", "source", "invType", "sendLoc", "qty", "created", "status"];
     const icons = {}, handlers = {};
@@ -1366,11 +1261,8 @@ class Component extends DCLogic {
       toastText: this.state.toast,
       toastTitle: this.state.toastTitle,
       toastHasTitle: !!this.state.toastTitle,
-      toastIconTop: this.state.toastTitle ? "9px" : "0px",
-      toastAlign: this.state.toastTitle ? "flex-start" : "center",
-      toastBtnTop: this.state.toastTitle ? "4px" : "0px",
-      toastBg: this.state.toastTone === "warning" ? "#EFDABB" : "#dff3ef",
-      toastAccent: this.state.toastTone === "warning" ? "#A36E1E" : "#008774",
+      toastClass: "ak-alert ak-alert--" + (this.state.toastTone === "warning" ? "warning" : "success"),
+      toastIcon: this.state.toastTone === "warning" ? "exclamation-triangle" : "check-circle",
       closeToast: () => { clearTimeout(this._toastT); this.setState({ toast: null }); },
       startTransfer: () => { if (!nSel) return; this.setState({ view: "accept", binFlash: 0, singleMode: false, queue: sorted.filter(r => pk[r.key]).map(r => r.key), qIdx: 0, serialStatus: {}, sessionBase: Object.assign({}, this.state.committed), accBin: 0, accSel: {}, transferred: 0, skipped: {}, pStatus: {}, walk: {}, leave: null, locPicked: false, locOpen: true, panelOpen: true }); window.scrollTo(0, 0); },
       skipProduct: () => this.setState({ confirmSkip: true }),

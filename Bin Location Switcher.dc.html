@@ -11,86 +11,91 @@
 <helmet>
 <style>
   @keyframes blsSheetIn { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .tp-bls-table td:last-child, .tp-bls-table th:last-child { text-align: right; }
 </style>
+<link rel="stylesheet" href="ally-kit/ally-kit.css">
+<script src="ally-kit/ally-kit.js"></script>
 </helmet>
-<div style="display: flex; align-items: stretch; height: 100%; font-family: Inter, system-ui, sans-serif; color: #25282A">
+<div class="ak" style="display: flex; align-items: stretch; height: 100%">
 
-  <div onClick="{{ onOpen }}" role="button" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-right: 1px solid #E3E7ED; cursor: {{ tileCursor }}" style-hover="background: {{ tileHover }}">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B6B7B" stroke-width="1.6" style="flex: 0 0 22px"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z M12 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"></path></svg>
-    <div style="display: flex; flex-direction: column">
-      <span style="font-size: 13px; color: #6B7480">Location</span>
-      <span style="font-size: 18px; font-weight: {{ tileWeight }}; color: {{ tileValueColor }}; white-space: nowrap">{{ tileLabel }}</span>
+  <div onClick="{{ onOpen }}" role="button" class="ak-bar-info__item" style="gap: 12px; padding: 12px 16px; border-right: 1px solid var(--ak-border-bar); cursor: {{ tileCursor }}" style-hover="background: {{ tileHover }}">
+    <span class="ak-icon ak-icon--21 ak-icon--current" data-icon="map-marker" style="color: var(--ak-text-label)"></span>
+    <div class="ak-bar-info__text" style="gap: 0">
+      <span class="ak-bar-info__label">Location</span>
+      <span class="ak-bar-info__value" style="font-weight: {{ tileWeight }}; color: {{ tileValueColor }}; white-space: nowrap">{{ tileLabel }}</span>
     </div>
     <sc-if value="{{ interactive }}" hint-placeholder-val="{{ true }}">
-      <div style="display: flex; align-items: center; justify-content: center; width: 24px; height: 32px; color: #095192">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4.5 2 9.5 7l-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      <div style="display: flex; align-items: center; justify-content: center; width: 24px; height: 32px; color: var(--ak-brand)">
+        <span class="ak-icon ak-icon--14 ak-icon--current" data-icon="chevron-right"></span>
       </div>
     </sc-if>
   </div>
 
   <sc-if value="{{ open }}" hint-placeholder-val="{{ false }}">
-    <div onClick="{{ onClose }}" style="position: fixed; inset: 0; background: rgba(11,42,74,0.28); z-index: 1000"></div>
-    <div style="position: fixed; top: 0; right: 0; bottom: 0; width: min(900px, 62vw); min-width: 440px; background: #FFFFFF; z-index: 1001; display: flex; flex-direction: column; box-shadow: 0 20px 48px rgba(11,42,74,0.24); animation: blsSheetIn 160ms cubic-bezier(0.2,0,0,1); font-family: Inter, system-ui, sans-serif; color: #25282A; text-align: left">
-      <div style="padding: 22px 24px 16px; flex: 0 0 auto">
-        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px">
-          <div style="font-size: 24px; font-weight: 600; letter-spacing: -0.3px">{{ title }}</div>
-          <svg onClick="{{ onClose }}" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B6B7B" stroke-width="1.6" style="cursor: pointer; flex: 0 0 22px"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+    <div onClick="{{ onClose }}" class="ak-overlay" style="display: block"></div>
+    <aside class="ak-panel" style="animation: blsSheetIn 160ms cubic-bezier(0.2,0,0,1); text-align: left">
+      <div class="ak-panel__header">
+        <div class="ak-panel__title-row">
+          <h2 class="ak-panel__title">{{ title }}</h2>
+          <button onClick="{{ onClose }}" class="ak-panel__close" aria-label="Close" data-icon="times"></button>
         </div>
-        <div style="font-size: 18px; font-weight: 600; margin-top: 14px">{{ productName }}</div>
-        <div style="font-size: 15px; color: #5B6B7B; font-style: italic; margin-top: 2px">{{ productSub }}</div>
+        <span class="ak-body ak-medium" style="margin-top: 12px">{{ productName }}</span>
+        <span class="ak-italic ak-muted">{{ productSub }}</span>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; padding: 16px 24px 18px; border-top: 1px solid #E3E8ED; flex: 0 0 auto">
-        <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
-          <div><div style="font-size: 13px; color: #757575">{{ s.label }}</div><div style="font-size: 15px; font-weight: 600; margin-top: 4px">{{ s.value }}</div></div>
-        </sc-for>
-      </div>
-
-      <div style="flex: 1; min-height: 0; overflow: auto">
-        <div style="margin: 0 24px; background: #F3E4FD; border: 1px solid #E0C6F5; border-radius: 4px; display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#8B3FD9" stroke-width="1.7" style="flex: 0 0 17px; margin-top: 1px"><path d="M12 21a9 9 0 100-18 9 9 0 000 18M12 8v.1M12 11.5v5"></path></svg>
-          <span style="font-size: 14px; line-height: 1.5">{{ bannerText }}</span>
+      <div class="ak-panel__body">
+        <div class="ak-panel__section ak-stats">
+          <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+            <div class="ak-stat"><span class="ak-stat__label">{{ s.label }}</span><span class="ak-stat__value">{{ s.value }}</span></div>
+          </sc-for>
         </div>
-        <div style="padding: 20px 24px 8px; font-size: 17px; font-weight: 600">Available at ({{ locationCount }})</div>
-        <div style="margin: 4px 24px 24px; border: 1px solid #E3E8ED; border-radius: 8px; overflow: hidden">
+        <div class="ak-panel__section" style="padding-top: 0">
+          <div class="ak-inline-alert">
+            <span class="ak-icon" data-icon="info-circle"></span>
+            <div class="ak-inline-alert__text">{{ bannerText }}</div>
+          </div>
+        </div>
+        <div class="ak-panel__section">
+          <h3 class="ak-panel__section-title">Available at ({{ locationCount }})</h3>
           <div style="overflow-x: auto">
-            <div style="min-width: 760px">
-              <div style="display: grid; grid-template-columns: {{ gridCols }}; background: #EEF1F6; border-bottom: 1px solid #E3E8ED; font-size: 13px; font-weight: 600; color: #5B6B7B; white-space: nowrap">
-                <div style="padding: 12px 18px">Door</div>
-                <div style="padding: 12px 8px">Bin</div>
-                <div style="padding: 12px 8px">Size</div>
-                <div style="padding: 12px 8px">Latest expiration</div>
-                <div style="padding: 12px 8px">{{ movedLabel }}</div>
-                <sc-if value="{{ hasIssue }}" hint-placeholder-val="{{ false }}">
-                  <div style="padding: 12px 8px">{{ issueLabel }}</div>
-                </sc-if>
-                <div style="padding: 12px 18px"></div>
-              </div>
-              <sc-for list="{{ rows }}" as="l" hint-placeholder-count="4">
-                <div style="display: grid; grid-template-columns: {{ gridCols }}; border-bottom: 1px solid #E3E8ED; align-items: center; font-size: 15px; background: {{ l.bg }}">
-                  <div style="padding: 16px 18px; display: flex; align-items: center; gap: 8px">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="{{ l.doorTint }}" stroke-width="1.6" stroke-linecap="round" style="flex: 0 0 17px"><path d="{{ l.doorIconD }}"></path></svg>
-                    <span>{{ l.door }}</span>
-                  </div>
-                  <div style="padding: 16px 8px">{{ l.bin }}</div>
-                  <div style="padding: 16px 8px">{{ l.size }}</div>
-                  <div style="padding: 16px 8px">{{ l.expiration }}</div>
-                  <div style="padding: 16px 8px">{{ l.moved }}</div>
+            <table class="ak-table ak-table--compact ak-table--boxed tp-bls-table" style="white-space: nowrap">
+              <thead>
+                <tr>
+                  <th>Door</th>
+                  <th>Bin</th>
+                  <th>Size</th>
+                  <th>Latest expiration</th>
+                  <th>{{ movedLabel }}</th>
                   <sc-if value="{{ hasIssue }}" hint-placeholder-val="{{ false }}">
-                    <div style="padding: 16px 8px">{{ l.issue }}</div>
+                    <th>{{ issueLabel }}</th>
                   </sc-if>
-                  <div onClick="{{ l.onSelect }}" style="padding: 16px 18px; text-align: right; font-size: 15px; font-weight: 600; color: {{ l.actionColor }}; cursor: {{ l.actionCursor }}">{{ l.action }}</div>
-                </div>
-              </sc-for>
-            </div>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{ rows }}" as="l" hint-placeholder-count="4">
+                  <tr class="{{ l.rowClass }}">
+                    <td><span class="ak-door"><span class="ak-icon" data-icon="{{ l.doorIcon }}"></span>{{ l.door }}</span></td>
+                    <td>{{ l.bin }}</td>
+                    <td>{{ l.size }}</td>
+                    <td>{{ l.expiration }}</td>
+                    <td>{{ l.moved }}</td>
+                    <sc-if value="{{ hasIssue }}" hint-placeholder-val="{{ false }}">
+                      <td>{{ l.issue }}</td>
+                    </sc-if>
+                    <td><button onClick="{{ l.onSelect }}" class="ak-link-btn" disabled="{{ l.isCur }}">{{ l.action }}</button></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
 
-      <div style="border-top: 1px solid #E3E8ED; padding: 16px 24px; display: flex; justify-content: flex-end; flex: 0 0 auto">
-        <div onClick="{{ onClose }}" style="padding: 13px 22px; border: 1px solid #095192; color: #095192; border-radius: 4px; font-size: 15px; font-weight: 600; cursor: pointer">Close</div>
+      <div class="ak-panel__footer">
+        <button onClick="{{ onClose }}" class="ak-btn ak-btn--lg ak-btn--secondary" style="text-transform: uppercase">Close</button>
       </div>
-    </div>
+    </aside>
   </sc-if>
 </div>
 </x-dc>
@@ -122,12 +127,8 @@ class Component extends DCLogic {
     if (this.props.onSelect) this.props.onSelect(l);
   }
 
-  doorMeta(l) {
-    const virtual = l.doorType === 'virtual';
-    return {
-      tint: virtual ? '#8B3FD9' : '#5B6B7B',
-      d: virtual ? 'M5 3h14v18H5z M15.6 12.5h.01' : 'M4 3h16v18H4z M4 9h16 M4 15h16 M9.5 6h2 M9.5 12h2 M9.5 18h2'
-    };
+  doorIcon(l) {
+    return l.doorType === 'virtual' ? 'door-virtual' : 'door-physical';
   }
 
   renderVals() {
@@ -149,27 +150,25 @@ class Component extends DCLogic {
     const rows = locs.map(l => {
       const k = this.keyOf(l);
       const isCur = picked && k === cur;
-      const m = this.doorMeta(l);
       return {
         door: l.door, bin: l.bin, size: l.size, expiration: l.expiration,
         inventory: qty(l.inventory, unit),
         moved: l.moved ? qty(l.moved, movedUnit) : '—',
         issue: l.issue ? qty(l.issue, movedUnit) : '—',
-        doorTint: m.tint, doorIconD: m.d,
-        bg: isCur ? '#F8FAFC' : '#FFFFFF',
+        doorIcon: this.doorIcon(l),
+        rowClass: isCur ? 'is-selected' : '',
+        isCur,
         action: isCur ? 'Current bin' : 'Select',
-        actionColor: isCur ? '#9FA9B7' : '#095192',
-        actionCursor: isCur ? 'default' : 'pointer',
         onSelect: isCur ? () => {} : () => this.pick(l)
       };
     });
 
     return {
       tileLabel: picked ? (pos + 1) + '/' + locs.length : 'Select location',
-      tileValueColor: !picked ? '#8B3FD9' : (multiBin ? '#095192' : '#5B6B7B'),
+      tileValueColor: !picked ? 'var(--ak-door-virtual)' : (multiBin ? 'var(--ak-brand)' : 'var(--ak-text-label)'),
       tileWeight: picked ? 500 : 700,
       tileCursor: interactive ? 'pointer' : 'default',
-      tileHover: interactive ? '#F4F8FC' : 'transparent',
+      tileHover: interactive ? 'var(--ak-bg-table-header)' : 'transparent',
       interactive,
       multiBin,
       onOpen: () => { if (interactive) this.setOpen(true); },
@@ -190,7 +189,6 @@ class Component extends DCLogic {
       movedLabel: p.movedLabel ?? 'Transferred',
       issueLabel: p.issueLabel,
       hasIssue: !!p.issueLabel,
-      gridCols: p.issueLabel ? '0.8fr 0.5fr 0.5fr 1.1fr 0.9fr 1.4fr 0.7fr' : '1.1fr 0.5fr 0.5fr 1fr 0.9fr 1fr',
       locationCount: locs.length,
       rows
     };

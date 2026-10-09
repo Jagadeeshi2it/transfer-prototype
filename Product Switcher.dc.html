@@ -11,78 +11,85 @@
 <helmet>
 <style>
   @keyframes psSheetIn { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .tp-ps-row { flex: 0 0 auto; display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+  .tp-ps-row.is-current, .tp-ps-row.is-current:hover { border-color: var(--ak-brand); background: #eef4fa; }
+  .tp-ps-row.is-done { background: var(--ak-bg-table-header); }
 </style>
+<link rel="stylesheet" href="ally-kit/ally-kit.css">
+<script src="ally-kit/ally-kit.js"></script>
 </helmet>
-<div style="display: flex; align-items: stretch; height: 100%; font-family: Inter, system-ui, sans-serif; color: #25282A">
+<div class="ak" style="display: flex; align-items: stretch; height: 100%">
 
-  <div onClick="{{ onOpen }}" role="button" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-right: 1px solid #E3E7ED; cursor: pointer" style-hover="background: #F4F8FC">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B6B7B" stroke-width="1.6" style="flex: 0 0 22px"><path d="M4 6h10v12H4z M17 6h3v12h-3z"></path></svg>
-    <div style="display: flex; flex-direction: column">
-      <span style="font-size: 13px; color: #6B7480">Product</span>
-      <span style="font-size: 18px; font-weight: 500; color: {{ tileValueColor }}; white-space: nowrap">{{ tileLabel }}</span>
+  <div onClick="{{ onOpen }}" role="button" class="ak-bar-info__item" style="gap: 12px; padding: 12px 16px; border-right: 1px solid var(--ak-border-bar); cursor: pointer" style-hover="background: var(--ak-bg-table-header)">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="flex: 0 0 22px; color: var(--ak-text-label)"><path d="M4 6h10v12H4z M17 6h3v12h-3z"></path></svg>
+    <div class="ak-bar-info__text" style="gap: 0">
+      <span class="ak-bar-info__label">Product</span>
+      <span class="ak-bar-info__value" style="color: {{ tileValueColor }}; white-space: nowrap">{{ tileLabel }}</span>
     </div>
-    <div style="display: flex; align-items: center; justify-content: center; width: 24px; height: 32px; color: #095192">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4.5 2 9.5 7l-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    <div style="display: flex; align-items: center; justify-content: center; width: 24px; height: 32px; color: var(--ak-brand)">
+      <span class="ak-icon ak-icon--14 ak-icon--current" data-icon="chevron-right"></span>
     </div>
   </div>
 
   <sc-if value="{{ open }}" hint-placeholder-val="{{ false }}">
-    <div onClick="{{ onClose }}" style="position: fixed; inset: 0; background: rgba(11,42,74,0.28); z-index: 1000"></div>
-    <div style="position: fixed; top: 0; right: 0; bottom: 0; width: min(640px, 56vw); min-width: 400px; background: #FFFFFF; z-index: 1001; display: flex; flex-direction: column; box-shadow: 0 20px 48px rgba(11,42,74,0.24); animation: psSheetIn 160ms cubic-bezier(0.2,0,0,1); font-family: Inter, system-ui, sans-serif; color: #25282A; text-align: left">
-      <div style="padding: 20px 24px 8px; flex: 0 0 auto">
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px">
-          <div style="font-size: 24px; line-height: 32px; font-weight: 400; color: #25282A">{{ flowLabel }} - List of Products</div>
-          <svg onClick="{{ onClose }}" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B6B7B" stroke-width="1.6" style="cursor: pointer; flex: 0 0 22px"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+    <div onClick="{{ onClose }}" class="ak-overlay" style="display: block"></div>
+    <aside class="ak-panel" style="animation: psSheetIn 160ms cubic-bezier(0.2,0,0,1); text-align: left">
+      <div class="ak-panel__header">
+        <div class="ak-panel__title-row">
+          <h2 class="ak-panel__title">{{ flowLabel }} - List of Products</h2>
+          <button onClick="{{ onClose }}" class="ak-panel__close" aria-label="Close" data-icon="times"></button>
         </div>
       </div>
 
-      <div style="padding: 16px 24px; border-bottom: 1px solid #E3E8ED; display: flex; align-items: center; gap: 12px; flex: 0 0 auto">
-        <div style="display: flex; align-items: stretch; flex: 1 1 200px; min-width: 140px; max-width: 280px; height: 40px">
-          <input value="{{ search }}" onChange="{{ onSearch }}" placeholder="Search by Name or NDC" style="flex: 1; min-width: 0; height: 100%; border: 1px solid #BCC3CD; border-right: none; border-radius: 4px 0 0 4px; padding: 0 12px; font-size: 14px; color: #25282A; font-family: inherit; outline: none; background: #FFFFFF" style-focus="border-color: #095192" />
-          <div style="width: 40px; flex: 0 0 40px; display: flex; align-items: center; justify-content: center; background: #095192; border-radius: 0 4px 4px 0; color: #FFFFFF; cursor: pointer">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.6"></circle><path d="M12.2 12.2 16 16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
-          </div>
+      <div class="ak-panel__section" style="border-bottom: 1px solid var(--ak-border-panel); display: flex; align-items: center; gap: 12px; flex: 0 0 auto">
+        <div class="ak-input-group" style="flex: 1 1 200px; min-width: 140px; max-width: 280px">
+          <label class="ak-input"><input value="{{ search }}" onChange="{{ onSearch }}" placeholder="Search by Name or NDC" /></label>
+          <div class="ak-addon"><span class="ak-icon" data-icon="search"></span></div>
         </div>
         <div style="display: flex; gap: 12px; margin-left: auto; flex: 0 0 auto">
-          <select value="{{ statusFilter }}" onChange="{{ onStatus }}" style="width: 150px; height: 40px; border: 1px solid #BCC3CD; border-radius: 4px; padding: 0 10px; font-size: 14px; color: {{ statusColor }}; background: #FFFFFF; font-family: inherit">
-            <sc-for list="{{ statusOptions }}" as="o" hint-placeholder-count="4">
-              <option value="{{ o.value }}">{{ o.label }}</option>
-            </sc-for>
-          </select>
-          <select value="{{ doorFilter }}" onChange="{{ onDoor }}" style="width: 130px; height: 40px; border: 1px solid #BCC3CD; border-radius: 4px; padding: 0 10px; font-size: 14px; color: {{ doorColor }}; background: #FFFFFF; font-family: inherit">
-            <sc-for list="{{ doorOptions }}" as="o" hint-placeholder-count="4">
-              <option value="{{ o.value }}">{{ o.label }}</option>
-            </sc-for>
-          </select>
+          <span class="ak-input ak-select" style="width: 150px">
+            <select value="{{ statusFilter }}" onChange="{{ onStatus }}" style="color: {{ statusColor }}">
+              <sc-for list="{{ statusOptions }}" as="o" hint-placeholder-count="4">
+                <option value="{{ o.value }}">{{ o.label }}</option>
+              </sc-for>
+            </select>
+          </span>
+          <span class="ak-input ak-select" style="width: 130px">
+            <select value="{{ doorFilter }}" onChange="{{ onDoor }}" style="color: {{ doorColor }}">
+              <sc-for list="{{ doorOptions }}" as="o" hint-placeholder-count="4">
+                <option value="{{ o.value }}">{{ o.label }}</option>
+              </sc-for>
+            </select>
+          </span>
         </div>
       </div>
 
-      <div style="flex: 1; min-height: 0; overflow: auto; padding: 16px 24px 24px; display: flex; flex-direction: column; gap: 12px">
+      <div class="ak-panel__body ak-panel__section" style="min-height: 0; padding-bottom: 24px; display: flex; flex-direction: column; gap: 12px">
         <sc-for list="{{ rows }}" as="p" hint-placeholder-count="4">
-          <div onClick="{{ p.onJump }}" style="flex: 0 0 auto; border-radius: 8px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; cursor: {{ p.cursor }}; border: 1px solid {{ p.border }}; background: {{ p.bg }}">
+          <div onClick="{{ p.onJump }}" class="ak-card tp-ps-row {{ p.rowClass }}" style="cursor: {{ p.cursor }}">
             <div style="flex: 1; min-width: 0">
-              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
-                <span style="font-size: 17px; font-weight: 600">{{ p.name }}</span>
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+                <span class="ak-body ak-semibold">{{ p.name }}</span>
                 <sc-if value="{{ p.hasTag }}" hint-placeholder-val="{{ true }}">
-                  <span style="background: #EEF1F6; color: #5B6B7B; font-size: 11px; font-weight: 600; letter-spacing: 0.6px; padding: 3px 7px; border-radius: 4px">{{ p.tag }}</span>
+                  <span class="ak-badge {{ p.tagClass }}">{{ p.tag }}</span>
                 </sc-if>
               </div>
-              <div style="font-size: 14px; color: #757575; margin-top: 6px">NDC {{ p.ndc }} &nbsp;·&nbsp; {{ p.where }}</div>
+              <div class="ak-small ak-muted" style="margin-top: 4px">NDC {{ p.ndc }} &nbsp;·&nbsp; {{ p.where }}</div>
             </div>
             <sc-if value="{{ p.showChip }}" hint-placeholder-val="{{ false }}">
-              <span style="font-size: 13px; font-weight: 600; border-radius: 999px; padding: 6px 14px; white-space: nowrap; background: {{ p.chipBg }}; color: {{ p.chipFg }}">{{ p.status }}</span>
+              <span class="ak-status {{ p.chipClass }}">{{ p.status }}</span>
             </sc-if>
           </div>
         </sc-for>
         <sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}">
-          <div style="padding: 32px 0; text-align: center; font-size: 15px; color: #8A949E">No products match those filters.</div>
+          <div class="ak-empty" style="padding: 32px 0">No products match those filters.</div>
         </sc-if>
       </div>
 
-      <div style="border-top: 1px solid #E3E8ED; padding: 16px 24px; display: flex; justify-content: flex-end; flex: 0 0 auto">
-        <div onClick="{{ onClose }}" style="padding: 13px 22px; border: 1px solid #095192; color: #095192; border-radius: 4px; font-size: 15px; font-weight: 600; cursor: pointer">Close</div>
+      <div class="ak-panel__footer">
+        <button onClick="{{ onClose }}" class="ak-btn ak-btn--lg ak-btn--secondary" style="text-transform: uppercase">Close</button>
       </div>
-    </div>
+    </aside>
   </sc-if>
 </div>
 </x-dc>
@@ -128,13 +135,14 @@ class Component extends DCLogic {
     const pos = list.findIndex(p => p.id === this.curId);
     const multiProduct = list.length > 1;
     const allDoors = Array.from(new Set(list.flatMap(p => p.doors || []))).sort((a, b) => a - b);
-    const chip = s => s === 'Current' ? { bg: '#E9F1F8', fg: '#095192' }
-      : s === doneLabel ? { bg: '#E6F4F1', fg: '#008774' }
-      : s === 'Skipped' ? { bg: '#A36E1E', fg: '#FFFFFF' }
-      : s === 'Partial' ? { bg: '#FBF1D3', fg: '#7A5A00' }
-      : s === 'Damaged' ? { bg: '#FBE5E4', fg: '#B42318' }
-      : s === 'Not Received' ? { bg: '#EEF1F6', fg: '#465161' }
-      : { bg: '#EEF1F6', fg: '#5B6B7B' };
+    const chip = s => s === 'Current' ? 'ak-status--complete'
+      : s === doneLabel ? 'ak-status--positive'
+      : s === 'Skipped' ? 'ak-status--pending'
+      : s === 'Partial' ? 'ak-status--pending'
+      : s === 'Damaged' ? 'ak-status--negative'
+      : 'ak-status--incomplete';
+    const BADGES = ['sdv', 'mdv', 'climate', 'pack', 'mdv-wnb', 'civ', 'non-serial'];
+    const badge = t => { const k = String(t || '').trim().toLowerCase().replace(/\s+/g, '-'); return BADGES.includes(k) ? 'ak-badge--' + k : ''; };
     const q = st.search.trim().toLowerCase();
     const allowDone = !!pr.allowRevisitDone;
 
@@ -150,17 +158,15 @@ class Component extends DCLogic {
         return true;
       })
       .map(({ p, status }) => {
-        const c = chip(status);
         const isCur = status === 'Current';
         const locked = status === doneLabel && !allowDone;
         return {
-          name: p.name, ndc: p.ndc, tag: p.tag || '', hasTag: !!p.tag,
+          name: p.name, ndc: p.ndc, tag: p.tag || '', hasTag: !!p.tag, tagClass: badge(p.tag),
           where: p.where || ((p.doors || []).length ? (p.doors.length === 1 ? 'Door ' + p.doors[0] : 'Multiple locations') : ''),
           status,
           showChip: status !== 'Pending',
-          chipBg: c.bg, chipFg: c.fg,
-          bg: isCur ? '#F4F8FC' : (status === doneLabel ? '#F7F8F9' : '#FFFFFF'),
-          border: isCur ? '#095192' : '#E3E8ED',
+          chipClass: chip(status),
+          rowClass: isCur ? 'is-current' : (status === doneLabel ? 'is-done' : ''),
           cursor: isCur || locked ? 'default' : 'pointer',
           onJump: isCur ? () => this.setOpen(false) : (locked ? () => {} : () => this.pick(p))
         };
@@ -168,7 +174,7 @@ class Component extends DCLogic {
 
     return {
       tileLabel: (pos >= 0 ? pos + 1 : 0) + '/' + list.length,
-      tileValueColor: multiProduct ? '#095192' : '#5B6B7B',
+      tileValueColor: multiProduct ? 'var(--ak-brand)' : 'var(--ak-text-label)',
       tileCursor: multiProduct ? 'pointer' : 'default',
       multiProduct,
       onOpen: () => this.setOpen(true),
@@ -181,8 +187,8 @@ class Component extends DCLogic {
       doorFilter: st.doorFilter,
       statusOptions: [{ value: 'All', label: 'Status' }].concat(['Skipped', 'Remaining', doneLabel].map(s => ({ value: s, label: s }))),
       doorOptions: [{ value: 'All', label: 'Door' }].concat(allDoors.map(d => ({ value: 'Door ' + d, label: 'Door ' + d }))),
-      statusColor: st.statusFilter === 'All' ? '#9FA9B7' : '#25282A',
-      doorColor: st.doorFilter === 'All' ? '#9FA9B7' : '#25282A',
+      statusColor: st.statusFilter === 'All' ? 'var(--ak-text-placeholder)' : 'var(--ak-text)',
+      doorColor: st.doorFilter === 'All' ? 'var(--ak-text-placeholder)' : 'var(--ak-text)',
       onSearch: e => this.setState({ search: e.target.value }),
       onStatus: e => this.setState({ statusFilter: e.target.value }),
       onDoor: e => this.setState({ doorFilter: e.target.value }),
