@@ -94,13 +94,14 @@
   --ak-radius-pill: 25px;
   --ak-shadow-modal: 0 2px 1px -1px rgba(0,0,0,.02), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
   --ak-shadow-bar: 0 -4px 8px rgba(0,0,0,.10);
-  --ak-focus-ring: 0 0 3px 4px #095192;   /* Input / Text Area, State=Active */
+  --ak-focus-border: var(--ak-brand);     /* Input / Text Area active: 1px brand border, no glow (user decision 2026-10-09; Figma Active has a glow) */
 
   /* Layout (1512 x 1024 artboards) */
   --ak-sidenav-w: 70px;
   --ak-topnav-h: 54px;
   --ak-gutter: 24px;              /* content edge = side nav + 24 = 94 */
   --ak-bottom-bar-h: 68px;
+  --ak-cell-pad: 16px;            /* table cell padding: user decision 2026-10-09 (Figma Table Cell uses 8px) */
 
   /* Type */
   --ak-font: "Inter", -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -199,7 +200,7 @@
 }
 input.ak-input { width: 100%; padding: 12px; }
 .ak-input input::placeholder, input.ak-input::placeholder, .ak-textarea::placeholder { color: var(--ak-text-placeholder); }
-.ak-input:focus-within, input.ak-input:focus { border-color: var(--ak-text-placeholder); box-shadow: var(--ak-focus-ring); }
+.ak-input:focus-within, input.ak-input:focus { border-color: var(--ak-focus-border); box-shadow: none; outline: 0; }
 .ak-input--disabled, .ak-input:has(input:disabled) { background: var(--ak-bg-disabled); }
 .ak-input--error { border-color: var(--ak-danger); }
 .ak-input--error input::placeholder { color: var(--ak-danger); }
@@ -230,7 +231,7 @@ input.ak-input { width: 100%; padding: 12px; }
   background: #fff; border: 1px solid var(--ak-border-input); border-radius: var(--ak-radius);
   font: inherit; font-size: 16px; color: var(--ak-text); outline: 0;
 }
-.ak-textarea:focus { border-color: var(--ak-text-label); box-shadow: var(--ak-focus-ring); }
+.ak-textarea:focus { border-color: var(--ak-focus-border); box-shadow: none; outline: 0; }
 
 /* Checkbox (Table Cell Variants · Checkbox) */
 .ak-checkbox { appearance: none; -webkit-appearance: none; width: 16px; height: 16px; margin: 0; border: 1px solid var(--ak-border-input); border-radius: 2px; background: #fff; cursor: pointer; display: inline-grid; place-content: center; vertical-align: middle; }
@@ -277,24 +278,24 @@ input.ak-input { width: 100%; padding: 12px; }
 .ak-table--boxed { /* same as default; kept for older markup */ }
 .ak-table--flush, .ak-box > .ak-table, .ak-box > div > .ak-table, .ak-card .ak-table { border: 0; border-radius: 0; }
 .ak-table th, .ak-th {
-  height: 56px; padding: 8px; text-align: left; vertical-align: top;
+  height: 56px; padding: var(--ak-cell-pad); text-align: left; vertical-align: top;
   background: var(--ak-bg-table-header); border-bottom: 1px solid var(--ak-border-table);
   font-weight: 500; color: var(--ak-text); white-space: nowrap;
 }
-.ak-table--compact th { height: 36px; }
+.ak-table--compact th { height: auto; }
 .ak-th__inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 .ak-th__sub { display: block; font-style: italic; font-weight: 400; color: var(--ak-text-muted); }
 .ak-th__sort { width: 20px; height: 20px; flex: none; cursor: pointer; }
 .ak-table td, .ak-td {
-  padding: 8px; vertical-align: top; background: #fff; border-bottom: 1px solid var(--ak-border-table);
+  padding: var(--ak-cell-pad); vertical-align: top; background: #fff; border-bottom: 1px solid var(--ak-border-table);
   font-weight: 400; color: var(--ak-text);
 }
 .ak-table tbody tr:hover td { background: #f8fafc; }
 .ak-table tbody tr.is-selected td { background: #eef4fa; }
 .ak-table tbody tr.is-disabled td { color: var(--ak-text-placeholder); }
 .ak-cell-sub { display: block; font-style: italic; color: var(--ak-text-muted); }
-.ak-cell-check { width: 40px; }
-.ak-cell-action { width: 48px; text-align: center; vertical-align: middle !important; }
+.ak-cell-check { width: calc(16px + 2 * var(--ak-cell-pad)); }
+.ak-cell-action { width: calc(24px + 2 * var(--ak-cell-pad)); text-align: center; vertical-align: middle !important; }
 
 /* Product Name cell: NAME / generic name / badges */
 .ak-product__name { display: block; text-transform: uppercase; color: var(--ak-text); }
@@ -592,6 +593,31 @@ input.ak-input { width: 100%; padding: 12px; }
 .ak-icon--current svg path { stroke: currentColor; }
 .ak-icon--current svg path[stroke="none"], .ak-icon--current svg path:not([stroke]) { stroke: none; }
 
+/* ==========================================================================
+   Added from the Inventory / Product Catalog pages (2026-10-09)
+   Not in the AllyGPO library yet: flag to design when used.
+   ========================================================================== */
+
+/* Segmented toggle (e.g. PAR level HCPCS | NDC). Use aria-pressed on the active button. */
+.ak-segmented { display: inline-flex; height: 36px; padding: 0; border: 1px solid var(--ak-brand); border-radius: var(--ak-radius); overflow: hidden; background: var(--ak-bg); }
+.ak-segmented__btn { height: 100%; padding: 0 16px; border: 0; background: var(--ak-bg); color: var(--ak-brand); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.ak-segmented__btn + .ak-segmented__btn { border-left: 1px solid var(--ak-brand); }
+.ak-segmented__btn:hover { background: #eef4fa; }
+.ak-segmented__btn[aria-pressed="true"] { background: var(--ak-brand); color: var(--ak-text-on-brand); }
+
+/* Stats grid + item rows inside a popover (PAR details: code, min, max, total) */
+.ak-popover__stats { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 4px 16px; font-size: 14px; }
+.ak-popover__stats-label { color: var(--ak-text-label); white-space: nowrap; }
+/* With a Dose column after the code (HCPCS level): 5 columns. --no-dose hides the .is-dose cells. */
+.ak-popover__stats--dose { grid-template-columns: auto auto 1fr 1fr auto; }
+.ak-popover__stats--no-dose .is-dose { display: none; }
+.ak-popover__row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid var(--ak-border-divider); }
+
+/* PAR status text */
+.ak-par--unset { color: var(--ak-text-label); }
+.ak-par--below { color: var(--ak-danger); }
+.ak-par--ok { color: var(--ak-pill-success); }
+
 </style>
 <script>
 /* Ally prototype kit: icons + small helpers. Works from file:// (icons are inlined).
@@ -817,7 +843,7 @@ input.ak-input { width: 100%; padding: 12px; }
   </div>
   <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
     <li>Prototype inputs and selects were 40px tall, 14px, with a <code>#ced4da</code> border. Figma's are <b>48px</b> with padding 12, <b>16px Body/Regular</b> and a <code>#bcc3cd</code> border.</li>
-    <li>On focus, the prototype used a 2px ring at 15% opacity. Figma's Active state uses a <code>#9fa9b7</code> border with a solid brand glow (0 0 3px 4px <code>#095192</code>). This is copied exactly; the glow is strong, so confirm it with design.</li>
+    <li>On focus, the prototype used a 2px ring at 15% opacity, and Figma's Active state adds a brand glow. <b>The kit uses a plain 1px brand border with no glow</b> (<code>--ak-focus-border</code>), a deliberate choice for the prototypes; raise it with design so Figma matches.</li>
     <li>The search add-on was 40–48px wide in the prototype. Figma's is <b>52×48</b>.</li>
     <li>The Text Area was 14px with 10/12 padding in the prototype. Figma's is 16px, padding 12, at least 108px tall.</li>
   </ul>
@@ -947,7 +973,7 @@ input.ak-input { width: 100%; padding: 12px; }
     </table>
   </div>
   <ul class="g-diff"><span class="g-diff-title">Prototype vs Figma</span>
-    <li>Prototype cells had 14/16 padding, headers were 13px Semi Bold on <code>#f8fafc</code>, and borders were <code>#e9ecf1</code> / <code>#eef1f5</code>. Figma cells have <b>8px</b> padding, headers are <b>14px Medium</b> on <b><code>#f5f7fa</code></b>, and borders are <code>#dadee3</code>. Every line is 14/20.</li>
+    <li>Prototype cells had 14/16 padding, headers were 13px Semi Bold on <code>#f8fafc</code>, and borders were <code>#e9ecf1</code> / <code>#eef1f5</code>. Figma cells have 8px padding; <b>the kit uses 16px</b> (<code>--ak-cell-pad</code>, a deliberate choice for the prototypes; raise it with design so Figma matches), headers are <b>14px Medium</b> on <b><code>#f5f7fa</code></b>, and borders are <code>#dadee3</code>. Every line is 14/20.</li>
     <li>Figma has <b>no column dividers</b>. Every table, page or panel, sits in a 1px <code>#dadee3</code> frame with radius 4, and the last row has no bottom line. Inside an <code>ak-box</code> or a card, use <code>ak-table--flush</code> (applied automatically) so the border isn't doubled.</li>
     <li>Secondary lines (inventory type, station, generic name) are 14px italic <code>#757575</code> with no top margin. The prototype used 13px <code>#6b7280</code> with 2px margin in some tables.</li>
     <li>The prototype's sort icon was a 12px custom glyph with an "A-Z" label. Figma's is the 20px <b>sort-alt</b> icon.</li>
@@ -1182,6 +1208,20 @@ input.ak-input { width: 100%; padding: 12px; }
     <li><code>ak-select--set</code>: a dropdown with a chosen value shows a brand border, as in the serial status column.</li>
     <li><code>ak-sort</code>: header sort label; <code>--on</code> marks the active column and <code>--desc</code> flips the icon.</li>
   </ul>
+  <details class="g-code"><summary>HTML</summary><pre></pre></details>
+</section>
+
+<section class="g-sec" id="added-inv" data-title="Segmented, PAR popover">
+  <div class="g-sec__head"><h2>Segmented toggle · PAR popover stats</h2><span class="g-figma">From the Inventory and Product Catalog pages; not in the AllyGPO library</span></div>
+  <div class="g-demo">
+    <div><div class="g-label">PAR level</div><div class="ak-segmented" role="group"><button class="ak-segmented__btn" aria-pressed="true">HCPCS</button><button class="ak-segmented__btn" aria-pressed="false">NDC</button></div></div>
+    <div style="position:relative;width:360px;height:220px"><div class="ak-popover" style="top:0;left:0;width:400px;padding:16px">
+      <div class="ak-popover__stats ak-popover__stats--dose"><div class="ak-popover__stats-label">HCPCS</div><div class="ak-popover__stats-label">Dose</div><div class="ak-popover__stats-label">PAR Min</div><div class="ak-popover__stats-label">PAR Max</div><div class="ak-popover__stats-label" style="text-align:right">Total Inventory</div><div>J9305</div><div>100 mg</div><div>10</div><div>20</div><div class="ak-par--below" style="text-align:right">7 vials</div></div>
+      <div class="ak-popover__row" style="margin-top:12px"><span>00002764001</span><b>4 vials</b></div><div class="ak-popover__row"><span>00002764061</span><b>3 vials</b></div>
+    </div></div>
+    <span class="ak-par--below">Below PAR</span><span class="ak-par--ok">At PAR</span><span class="ak-par--unset">PAR not set</span>
+  </div>
+  <ul class="g-diff"><span class="g-diff-title">Before using these</span><li>Neither component exists in the AllyGPO library. Ask design for a segmented control and a PAR popover before building them into Figma screens.</li></ul>
   <details class="g-code"><summary>HTML</summary><pre></pre></details>
 </section>
 

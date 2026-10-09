@@ -86,13 +86,14 @@
   --ak-radius-pill: 25px;
   --ak-shadow-modal: 0 2px 1px -1px rgba(0,0,0,.02), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
   --ak-shadow-bar: 0 -4px 8px rgba(0,0,0,.10);
-  --ak-focus-ring: 0 0 3px 4px #095192;   /* Input / Text Area, State=Active */
+  --ak-focus-border: var(--ak-brand);     /* Input / Text Area active: 1px brand border, no glow (user decision 2026-10-09; Figma Active has a glow) */
 
   /* Layout (1512 x 1024 artboards) */
   --ak-sidenav-w: 70px;
   --ak-topnav-h: 54px;
   --ak-gutter: 24px;              /* content edge = side nav + 24 = 94 */
   --ak-bottom-bar-h: 68px;
+  --ak-cell-pad: 16px;            /* table cell padding: user decision 2026-10-09 (Figma Table Cell uses 8px) */
 
   /* Type */
   --ak-font: "Inter", -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -191,7 +192,7 @@
 }
 input.ak-input { width: 100%; padding: 12px; }
 .ak-input input::placeholder, input.ak-input::placeholder, .ak-textarea::placeholder { color: var(--ak-text-placeholder); }
-.ak-input:focus-within, input.ak-input:focus { border-color: var(--ak-text-placeholder); box-shadow: var(--ak-focus-ring); }
+.ak-input:focus-within, input.ak-input:focus { border-color: var(--ak-focus-border); box-shadow: none; outline: 0; }
 .ak-input--disabled, .ak-input:has(input:disabled) { background: var(--ak-bg-disabled); }
 .ak-input--error { border-color: var(--ak-danger); }
 .ak-input--error input::placeholder { color: var(--ak-danger); }
@@ -222,7 +223,7 @@ input.ak-input { width: 100%; padding: 12px; }
   background: #fff; border: 1px solid var(--ak-border-input); border-radius: var(--ak-radius);
   font: inherit; font-size: 16px; color: var(--ak-text); outline: 0;
 }
-.ak-textarea:focus { border-color: var(--ak-text-label); box-shadow: var(--ak-focus-ring); }
+.ak-textarea:focus { border-color: var(--ak-focus-border); box-shadow: none; outline: 0; }
 
 /* Checkbox (Table Cell Variants · Checkbox) */
 .ak-checkbox { appearance: none; -webkit-appearance: none; width: 16px; height: 16px; margin: 0; border: 1px solid var(--ak-border-input); border-radius: 2px; background: #fff; cursor: pointer; display: inline-grid; place-content: center; vertical-align: middle; }
@@ -269,24 +270,24 @@ input.ak-input { width: 100%; padding: 12px; }
 .ak-table--boxed { /* same as default; kept for older markup */ }
 .ak-table--flush, .ak-box > .ak-table, .ak-box > div > .ak-table, .ak-card .ak-table { border: 0; border-radius: 0; }
 .ak-table th, .ak-th {
-  height: 56px; padding: 8px; text-align: left; vertical-align: top;
+  height: 56px; padding: var(--ak-cell-pad); text-align: left; vertical-align: top;
   background: var(--ak-bg-table-header); border-bottom: 1px solid var(--ak-border-table);
   font-weight: 500; color: var(--ak-text); white-space: nowrap;
 }
-.ak-table--compact th { height: 36px; }
+.ak-table--compact th { height: auto; }
 .ak-th__inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 .ak-th__sub { display: block; font-style: italic; font-weight: 400; color: var(--ak-text-muted); }
 .ak-th__sort { width: 20px; height: 20px; flex: none; cursor: pointer; }
 .ak-table td, .ak-td {
-  padding: 8px; vertical-align: top; background: #fff; border-bottom: 1px solid var(--ak-border-table);
+  padding: var(--ak-cell-pad); vertical-align: top; background: #fff; border-bottom: 1px solid var(--ak-border-table);
   font-weight: 400; color: var(--ak-text);
 }
 .ak-table tbody tr:hover td { background: #f8fafc; }
 .ak-table tbody tr.is-selected td { background: #eef4fa; }
 .ak-table tbody tr.is-disabled td { color: var(--ak-text-placeholder); }
 .ak-cell-sub { display: block; font-style: italic; color: var(--ak-text-muted); }
-.ak-cell-check { width: 40px; }
-.ak-cell-action { width: 48px; text-align: center; vertical-align: middle !important; }
+.ak-cell-check { width: calc(16px + 2 * var(--ak-cell-pad)); }
+.ak-cell-action { width: calc(24px + 2 * var(--ak-cell-pad)); text-align: center; vertical-align: middle !important; }
 
 /* Product Name cell: NAME / generic name / badges */
 .ak-product__name { display: block; text-transform: uppercase; color: var(--ak-text); }
@@ -583,3 +584,28 @@ input.ak-input { width: 100%; padding: 12px; }
 /* Icon recolour: follow the text colour (fill and stroke) */
 .ak-icon--current svg path { stroke: currentColor; }
 .ak-icon--current svg path[stroke="none"], .ak-icon--current svg path:not([stroke]) { stroke: none; }
+
+/* ==========================================================================
+   Added from the Inventory / Product Catalog pages (2026-10-09)
+   Not in the AllyGPO library yet: flag to design when used.
+   ========================================================================== */
+
+/* Segmented toggle (e.g. PAR level HCPCS | NDC). Use aria-pressed on the active button. */
+.ak-segmented { display: inline-flex; height: 36px; padding: 0; border: 1px solid var(--ak-brand); border-radius: var(--ak-radius); overflow: hidden; background: var(--ak-bg); }
+.ak-segmented__btn { height: 100%; padding: 0 16px; border: 0; background: var(--ak-bg); color: var(--ak-brand); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.ak-segmented__btn + .ak-segmented__btn { border-left: 1px solid var(--ak-brand); }
+.ak-segmented__btn:hover { background: #eef4fa; }
+.ak-segmented__btn[aria-pressed="true"] { background: var(--ak-brand); color: var(--ak-text-on-brand); }
+
+/* Stats grid + item rows inside a popover (PAR details: code, min, max, total) */
+.ak-popover__stats { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 4px 16px; font-size: 14px; }
+.ak-popover__stats-label { color: var(--ak-text-label); white-space: nowrap; }
+/* With a Dose column after the code (HCPCS level): 5 columns. --no-dose hides the .is-dose cells. */
+.ak-popover__stats--dose { grid-template-columns: auto auto 1fr 1fr auto; }
+.ak-popover__stats--no-dose .is-dose { display: none; }
+.ak-popover__row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid var(--ak-border-divider); }
+
+/* PAR status text */
+.ak-par--unset { color: var(--ak-text-label); }
+.ak-par--below { color: var(--ak-danger); }
+.ak-par--ok { color: var(--ak-pill-success); }

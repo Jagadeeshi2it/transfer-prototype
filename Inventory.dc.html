@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./_bundle.js"></script>
+<script src="./support.js"></script>
+
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/colors_and_type.css">
+<link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/components.css">
+<link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/tokens/fig-tokens.css">
+<link rel="stylesheet" href="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/styles.css">
+<script src="_ds/ally-ui-design-system-f878db00-3789-4215-8e33-fa9137dd35d0/_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; padding: 0; background: var(--ak-bg, #ffffff); }
+  a { color: var(--ak-brand); text-decoration: none; }
+  a:hover { color: var(--ak-brand-hover); text-decoration: underline; }
+  *, *::before, *::after { box-sizing: border-box; }
+  input::placeholder { color: var(--ak-text-placeholder); }
+
+  /* --- Not in kit: PAR level segmented toggle (HCPCS / NDC) --- */
+
+  /* --- Not in kit: table pagination row --- */
+  .tp-pager { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--ak-bg); border-top: 1px solid var(--ak-border-table); font-size: 14px; }
+  .tp-pager__info, .tp-pager__label { font-size: 14px; color: var(--ak-text-label); }
+  .tp-pager__btn { min-width: 36px; height: 36px; padding: 0 8px; display: inline-flex; align-items: center; justify-content: center; background: var(--ak-bg); border: 1px solid var(--ak-border-input); border-radius: var(--ak-radius); color: var(--ak-text); font-size: 14px; font-weight: 600; cursor: pointer; }
+  .tp-pager__btn:disabled { color: var(--ak-text-placeholder); border-color: var(--ak-border-table); cursor: default; }
+  .tp-pager__btn[aria-current="page"] { background: var(--ak-brand); border-color: var(--ak-brand); color: var(--ak-text-on-brand); }
+  .tp-pager .ak-input { height: 36px; padding: 0 8px; font-size: 14px; }
+
+  /* --- Not in kit: filter row inside a table header --- */
+  .ak-table .tp-filter-row th { height: auto; padding: 12px var(--ak-cell-pad); background: var(--ak-bg); }
+  .tp-filter-row .ak-input { height: 36px; padding: 0 8px; font-size: 14px; }
+  .tp-filter-row .ak-input input { font-size: 14px; }
+  .tp-filter-row .ak-select::after { right: 4px; }
+
+  /* --- Not in kit: PAR popover stats grid + its rows --- */
+</style>
+<link rel="stylesheet" href="ally-kit/ally-kit.css">
+<script src="ally-kit/ally-kit.js"></script>
+</helmet>
+<div class="ak" style="display: flex; align-items: stretch; width: 100%; min-height: 100vh; background: var(--ak-bg);">
+
+  <dc-import name="App Side Nav" selected="Inventory" hint-size="70px,100vh"></dc-import>
+
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+
+  <dc-import name="App Top Nav" hint-size="100%,50px"></dc-import>
+
+  <div style="width: 100%; min-width: 0; padding: 0 0 40px;">
+
+  <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 24px; background: var(--ak-bg); border-bottom: 1px solid var(--ak-border-divider);">
+    <div class="ak-tabs" role="tablist">
+      <button type="button" class="ak-tab" role="tab" aria-selected="true">All Products</button>
+      <button type="button" class="ak-tab" role="tab" aria-selected="false">Patient Products</button>
+      <button type="button" class="ak-tab" role="tab" aria-selected="false">Bolus Products</button>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span class="ak-label" style="white-space: nowrap;">PAR level</span>
+      <div class="ak-segmented" role="group">
+        <button type="button" class="ak-segmented__btn" sc-camel-on-click="{{ setHcpcs }}" aria-pressed="{{ hcpcsSel }}">HCPCS</button>
+        <button type="button" class="ak-segmented__btn" sc-camel-on-click="{{ setNdc }}" aria-pressed="{{ ndcSel }}">NDC</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 24px;">
+    <div>
+
+      <div>
+
+        <div class="ak-search-filter">
+          <div class="ak-search-filter__fields">
+            <span class="ak-input" style="width: 320px;"><input type="text" placeholder="Search by Name, NDC, or AIC"></span>
+
+            <div class="ak-input ak-select" style="width: 240px; cursor: pointer;">
+              <span>Current Inventory</span>
+            </div>
+
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 16px; cursor: pointer; white-space: nowrap;">
+              <input type="checkbox" class="ak-checkbox" checked="{{ belowPar }}" sc-camel-on-change="{{ toggleBelowPar }}">
+              Products Below PAR
+            </label>
+          </div>
+
+          <div class="ak-search-filter__actions">
+            <button type="button" class="ak-btn ak-btn--lg ak-btn--secondary" sc-camel-on-click="{{ reset }}">RESET</button>
+            <button type="button" class="ak-btn ak-btn--lg ak-btn--primary">SEARCH</button>
+          </div>
+        </div>
+
+        <div class="ak-box" style="margin-top: 24px;">
+          <sc-raw-table class="ak-table ak-table--flush" style="min-width: 1040px;">
+            <sc-raw-thead>
+              <sc-raw-tr>
+                <sc-raw-th style="width: 30%;">
+                  <span class="ak-th__inner" style="cursor: pointer;" sc-camel-on-click="{{ sort_name }}"><span>Product Name</span>{{ icon_name }}</span>
+                </sc-raw-th>
+                <sc-raw-th style="width: 13%;">
+                  <span class="ak-th__inner" style="cursor: pointer;" sc-camel-on-click="{{ sort_ndc }}"><span style="display: inline-flex; align-items: center; gap: 4px;">NDC/AIC <span class="ak-icon ak-icon--16 ak-label" data-icon="info-circle"></span></span>{{ icon_ndc }}</span>
+                </sc-raw-th>
+                <sc-raw-th style="width: 13%;">
+                  <span class="ak-th__inner" style="cursor: pointer;" sc-camel-on-click="{{ sort_invType }}"><span>Inventory Type</span>{{ icon_invType }}</span>
+                </sc-raw-th>
+                <sc-raw-th style="width: 11%;">
+                  <span class="ak-th__inner" style="cursor: pointer;" sc-camel-on-click="{{ sort_itemType }}"><span>Item Type</span>{{ icon_itemType }}</span>
+                </sc-raw-th>
+                <sc-raw-th style="width: 10%;">
+                  <span class="ak-th__inner" style="cursor: pointer;" sc-camel-on-click="{{ sort_hcpcs }}"><span>HCPCS</span>{{ icon_hcpcs }}</span>
+                </sc-raw-th>
+                <sc-raw-th style="width: 8%;"><span class="ak-th__inner" style="cursor: pointer;" sc-camel-on-click="{{ sort_parMin }}"><span>PAR Min</span>{{ icon_parMin }}</span></sc-raw-th>
+                <sc-raw-th style="width: 8%;"><span class="ak-th__inner" style="cursor: pointer;" sc-camel-on-click="{{ sort_parMax }}"><span>PAR Max</span>{{ icon_parMax }}</span></sc-raw-th>
+                <sc-raw-th style="width: 10%;">
+                  <span class="ak-th__inner" style="cursor: pointer;" sc-camel-on-click="{{ sort_inventory }}"><span>Inventory</span>{{ icon_inventory }}</span>
+                </sc-raw-th>
+                <sc-raw-th style="width: 3%;"></sc-raw-th>
+              </sc-raw-tr>
+            </sc-raw-thead>
+            <sc-raw-tbody>
+              <sc-for list="{{ rows }}" as="row" hint-placeholder-count="7">
+                <sc-raw-tr class="{{ row.rowClass }}">
+                  <sc-raw-td>
+                    <span class="ak-product__name" sc-camel-on-click="{{ row.open }}" style="display: inline-block; cursor: pointer;" style-hover="color: var(--ak-brand);">{{ row.name }}</span>
+                    <span class="ak-product__generic">{{ row.desc }}</span>
+                    <div class="ak-product__badges">
+                      <sc-for list="{{ row.chips }}" as="chip" hint-placeholder-count="2">
+                        <label class="{{ chip.cls }}">{{ chip.label }}</label>
+                      </sc-for>
+                    </div>
+                  </sc-raw-td>
+                  <sc-raw-td>{{ row.ndc }}</sc-raw-td>
+                  <sc-raw-td>{{ row.invType }}</sc-raw-td>
+                  <sc-raw-td>{{ row.itemType }}</sc-raw-td>
+                  <sc-raw-td>
+                    <div>{{ row.hcpcs }}</div>
+                  </sc-raw-td>
+                  <sc-raw-td>{{ row.parMin }}</sc-raw-td>
+                  <sc-raw-td>{{ row.parMax }}</sc-raw-td>
+                  <sc-raw-td>
+                    <div>{{ row.inventory }}</div>
+                    <sc-if value="{{ row.isBelowPar }}" hint-placeholder-val="{{ true }}">
+                      <div style="position: relative; margin-top: 2px;">
+                        <div sc-camel-on-click="{{ row.onBelowPar }}" style="display: inline-block; font-size: 12px; font-weight: 500; color: var(--ak-danger); text-decoration: {{ row.linkDeco }}; cursor: {{ row.linkCursor }};">Below PAR</div>
+
+                        <sc-if value="{{ row.parOpen }}" hint-placeholder-val="{{ false }}">
+                          <div>
+                            <div sc-camel-on-click="{{ row.closePar }}" style="position: fixed; inset: 0; z-index: 40;" data-comment-anchor="b863a35570-div"></div>
+                            <div class="ak-popover" style="top: 26px; right: -8px; width: {{ row.popW }}; overflow-y: auto; max-height: {{ row.popMaxH }}; text-align: left; cursor: default; padding: 16px 16px 4px; transform: {{ row.popShift }};" data-comment-anchor="cca99a3ff6-div">
+                              <div style="position: absolute; top: {{ row.arrowTop }}; bottom: {{ row.arrowBottom }}; right: 34px; width: 14px; height: 14px; background: var(--ak-bg); transform: rotate(45deg); box-shadow: {{ row.arrowShadow }};"></div>
+
+                              <div class="ak-popover__stats {{ row.pop.statsCls }}">
+                                <div class="ak-popover__stats-label">{{ row.pop.codeLabel }}</div>
+                                <div class="ak-popover__stats-label is-dose">Dose</div>
+                                <div class="ak-popover__stats-label">PAR Min</div>
+                                <div class="ak-popover__stats-label">PAR Max</div>
+                                <div class="ak-popover__stats-label" style="text-align: right;">Total Inventory</div>
+                                <div>{{ row.pop.code }}</div>
+                                <div class="is-dose">{{ row.pop.dose }}</div>
+                                <div>{{ row.pop.minLabel }}</div>
+                                <div>{{ row.pop.maxLabel }}</div>
+                                <div class="{{ row.pop.shortClass }}" style="font-weight: 600; text-align: right; white-space: nowrap;">{{ row.pop.total }}</div>
+                              </div>
+
+                              <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--ak-border-divider);">
+                                <span class="ak-product__name ak-semibold">{{ row.name }}</span>
+                                <span class="ak-product__generic">{{ row.desc }}</span>
+                                <div class="ak-product__badges">
+                                  <sc-for list="{{ row.chips }}" as="chip" hint-placeholder-count="2">
+                                    <label class="{{ chip.cls }}">{{ chip.label }}</label>
+                                  </sc-for>
+                                </div>
+                              </div>
+
+                              <div style="display: flex; flex-direction: column; margin-top: 12px;">
+                                <sc-for list="{{ row.pop.items }}" as="item" hint-placeholder-count="2">
+                                  <div class="ak-popover__row">
+                                    <div style="flex: 1; min-width: 0;">
+                                      <div>{{ item.name }}</div>
+<sc-if value="{{ item.hasSub }}" hint-placeholder-val="{{ true }}"><div style="margin-top: 4px;">{{ item.sub }}</div></sc-if>
+<sc-if value="{{ item.hasDesc }}" hint-placeholder-val="{{ true }}"><div><div class="ak-product__generic" style="margin-top: 4px;">{{ item.desc }}</div>
+                                      <div class="ak-product__badges">
+                                        <sc-for list="{{ item.chips }}" as="chip" hint-placeholder-count="2">
+                                          <label class="{{ chip.cls }}">{{ chip.label }}</label>
+                                        </sc-for>
+                                      </div></div></sc-if>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0;">
+                                      <div class="ak-semibold" style="white-space: nowrap;">{{ item.inventory }}</div>
+                                    </div>
+                                  </div>
+                                </sc-for>
+                              </div>
+                            </div>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </sc-if>
+                  </sc-raw-td>
+                  <sc-raw-td style="text-align: center; cursor: pointer;" sc-camel-on-click="{{ row.open }}">
+                    <span class="ak-icon ak-icon--20 ak-icon--current" data-icon="chevron-right" style="color: var(--ak-brand);"></span>
+                  </sc-raw-td>
+                </sc-raw-tr>
+              </sc-for>
+            </sc-raw-tbody>
+          </sc-raw-table>
+
+          <div class="tp-pager">
+            <span class="tp-pager__info" style="margin-right: auto;">{{ showingLabel }}</span>
+
+            <button type="button" class="tp-pager__btn" disabled="">
+              <svg width="12" height="12" sc-camel-view-box="0 0 12 12" fill="none"><path d="M7.5 2 3.5 6l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </button>
+            <button type="button" class="tp-pager__btn" aria-current="page">1</button>
+            <button type="button" class="tp-pager__btn" disabled="">
+              <svg width="12" height="12" sc-camel-view-box="0 0 12 12" fill="none"><path d="M4.5 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </button>
+
+            <div style="margin-left: auto; display: flex; align-items: center; gap: 8px;">
+              <span class="tp-pager__label">Items per page</span>
+              <div class="ak-input ak-select" style="width: 88px; cursor: pointer;">
+                <span>100</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+  <div style="padding: 0 0 96px;">
+
+    <div class="ak-page-header" style="align-items: center; gap: 40px;">
+      <div style="flex: 1; min-width: 0;">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+          <h1 class="ak-page-title">{{ product.name }}</h1>
+          <div class="ak-product__badges" style="padding-top: 0;">
+            <sc-for list="{{ product.chips }}" as="chip" hint-placeholder-count="2">
+              <label class="{{ chip.cls }}">{{ chip.label }}</label>
+            </sc-for>
+          </div>
+        </div>
+        <div class="ak-product__generic" style="margin-top: 4px;">{{ product.desc }}</div>
+      </div>
+
+      <div class="ak-transfer-info" style="flex-shrink: 0; padding-left: 32px; border-left: 1px solid var(--ak-border-divider); font-size: 14px;">
+        <div class="ak-transfer-info__row"><span class="ak-transfer-info__label" style="width: 180px;">{{ product.basisLabel }} PAR Min - Max</span><span class="ak-transfer-info__value" style="white-space: nowrap;">{{ product.parRangeShort }}</span></div>
+        <div class="ak-transfer-info__row"><span class="ak-transfer-info__label" style="width: 180px;">{{ product.basisLabel }} Total Inventory</span><span class="ak-transfer-info__value" style="white-space: nowrap;">{{ product.pop.total }}</span></div>
+        <div class="ak-transfer-info__row"><span class="ak-transfer-info__label" style="width: 180px;">Status</span>
+        <div style="position: relative;">
+          <span class="ak-transfer-info__value {{ product.pop.shortClass }}" sc-camel-on-click="{{ product.onBelowPar }}" style="white-space: nowrap; text-decoration: {{ product.statusDeco }}; cursor: {{ product.statusCursor }};">{{ product.statusLabel }}</span>
+
+          <sc-if value="{{ product.parOpen }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div sc-camel-on-click="{{ product.closePar }}" style="position: fixed; inset: 0; z-index: 40;"></div>
+              <div class="ak-popover" style="top: 26px; right: -8px; width: {{ product.popW }}; text-align: left; cursor: default; padding: 16px 16px 4px;">
+                <div style="position: absolute; top: -7px; right: 34px; width: 14px; height: 14px; background: var(--ak-bg); transform: rotate(45deg); box-shadow: -1px -1px 0 var(--ak-border-table);"></div>
+
+                <div class="ak-popover__stats {{ product.pop.statsCls }}">
+                  <div class="ak-popover__stats-label">{{ product.pop.codeLabel }}</div>
+                  <div class="ak-popover__stats-label is-dose">Dose</div>
+                  <div class="ak-popover__stats-label">PAR Min</div>
+                  <div class="ak-popover__stats-label">PAR Max</div>
+                  <div class="ak-popover__stats-label" style="text-align: right;">Total Inventory</div>
+                  <div>{{ product.pop.code }}</div>
+                  <div class="is-dose">{{ product.pop.dose }}</div>
+                  <div>{{ product.pop.minLabel }}</div>
+                  <div>{{ product.pop.maxLabel }}</div>
+                  <div class="{{ product.pop.shortClass }}" style="font-weight: 600; text-align: right; white-space: nowrap;">{{ product.pop.total }}</div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; margin-top: 12px;">
+                  <sc-for list="{{ product.pop.items }}" as="item" hint-placeholder-count="2">
+                    <div class="ak-popover__row">
+                      <div style="flex: 1; min-width: 0;">
+                        <div>{{ item.name }}</div>
+<sc-if value="{{ item.hasSub }}" hint-placeholder-val="{{ true }}"><div style="margin-top: 4px;">{{ item.sub }}</div></sc-if>
+<sc-if value="{{ item.hasDesc }}" hint-placeholder-val="{{ true }}"><div><div class="ak-product__generic" style="margin-top: 4px;">{{ item.desc }}</div>
+                        <div class="ak-product__badges">
+                          <sc-for list="{{ item.chips }}" as="chip" hint-placeholder-count="2">
+                            <label class="{{ chip.cls }}">{{ chip.label }}</label>
+                          </sc-for>
+                        </div></div></sc-if>
+                      </div>
+                      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0;">
+                        <div class="ak-semibold" style="white-space: nowrap;">{{ item.inventory }}</div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ak-info-bar" style="justify-content: flex-start; gap: 80px; padding: 16px 24px; border-bottom: 1px solid var(--ak-border-divider);">
+      <div class="ak-info-bar__col">
+        <div class="ak-xs ak-semibold ak-label">Product Details</div>
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label" style="min-width: 120px;">NDC</span><span>{{ product.ndc }}</span></div>
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label" style="min-width: 120px;">Item Type</span><span>{{ product.itemType }}</span></div>
+      </div>
+      <div class="ak-info-bar__col">
+        <div class="ak-xs ak-semibold ak-label">Product Inventory Details</div>
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label" style="min-width: 120px;">Inventory Type</span><span>{{ product.invType }}</span></div>
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label" style="min-width: 120px;" data-comment-anchor="0fae12537c-span">HCPCS</span><span>{{ product.hcpcs }}</span></div>
+      </div>
+      <div class="ak-info-bar__col">
+        <div class="ak-xs ak-semibold ak-label">Product Inventory</div>
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label">Current</span><span>{{ product.qty }}</span></div>
+        <div class="ak-info-bar__row"><span class="ak-info-bar__label">Received</span><span>{{ product.received }}</span></div>
+      </div>
+    </div>
+
+    <div style="padding: 16px 24px 0;">
+      <div style="display: flex; justify-content: flex-end; padding-bottom: 16px;">
+        <sc-if value="{{ product.hasStock }}" hint-placeholder-val="{{ true }}">
+          <button type="button" class="ak-btn ak-btn--primary">MOVE PRODUCT</button>
+        </sc-if>
+        <sc-if value="{{ product.isEmpty }}" hint-placeholder-val="{{ false }}">
+          <button type="button" class="ak-btn ak-btn--secondary ak-btn--danger" sc-camel-on-click="{{ openUnalloc }}">UNALLOCATE</button>
+        </sc-if>
+      </div>
+
+      <sc-raw-table class="ak-table" style="min-width: 1040px;">
+        <sc-raw-thead>
+          <sc-raw-tr>
+            <sc-raw-th style="width: 17%;">
+              <span class="ak-th__inner"><span>Serial<span class="ak-th__sub">Lot</span></span><span class="ak-th__sort" data-icon="sort-alt"></span></span>
+            </sc-raw-th>
+            <sc-raw-th style="width: 14%;">
+              <span class="ak-th__inner"><span>Expiration</span><span class="ak-th__sort" data-icon="sort-alt"></span></span>
+            </sc-raw-th>
+            <sc-raw-th style="width: 14%;">
+              <span class="ak-th__inner"><span>Source</span><span class="ak-th__sort" data-icon="sort-alt"></span></span>
+            </sc-raw-th>
+            <sc-raw-th style="width: 15%;">
+              <span class="ak-th__inner"><span>Restocked Date</span><span class="ak-th__sort" data-icon="sort-alt"></span></span>
+            </sc-raw-th>
+            <sc-raw-th style="width: 10%;">
+              <span class="ak-th__inner"><span>Location</span><span class="ak-th__sort" data-icon="sort-alt"></span></span>
+            </sc-raw-th>
+            <sc-raw-th style="width: 18%;">
+              <span class="ak-th__inner"><span>Inventory</span><span class="ak-th__sort" data-icon="sort-alt"></span></span>
+            </sc-raw-th>
+            <sc-raw-th style="width: 12%;"></sc-raw-th>
+          </sc-raw-tr>
+          <sc-raw-tr class="tp-filter-row">
+            <sc-raw-th>
+              <span class="ak-input"><input type="text" placeholder="Search by Serial or Lot"></span>
+            </sc-raw-th>
+            <sc-raw-th>
+              <span class="ak-input"><input type="text" placeholder="Search by Expiration Date"></span>
+            </sc-raw-th>
+            <sc-raw-th>
+              <div class="ak-input ak-select" style="cursor: pointer;" data-comment-anchor="1bb0079d0f-input">
+                <span style="color: var(--ak-text-placeholder); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">All sources</span>
+              </div>
+            </sc-raw-th>
+            <sc-raw-th>
+              <span class="ak-input"><input type="text" placeholder="Search by Restocked Date"></span>
+            </sc-raw-th>
+            <sc-raw-th></sc-raw-th>
+            <sc-raw-th></sc-raw-th>
+            <sc-raw-th></sc-raw-th>
+          </sc-raw-tr>
+        </sc-raw-thead>
+        <sc-raw-tbody>
+          <sc-for list="{{ product.lots }}" as="lot" hint-placeholder-count="3">
+            <sc-raw-tr>
+              <sc-raw-td>
+                {{ lot.serial }}
+                <span class="ak-cell-sub">{{ lot.lot }}</span>
+              </sc-raw-td>
+              <sc-raw-td>
+                <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px;">
+                  <span style="white-space: nowrap;">{{ lot.expiration }}</span>
+                  <sc-if value="{{ lot.expired }}" hint-placeholder-val="{{ false }}">
+                    <span class="ak-chip ak-chip--danger">Expired</span>
+                  </sc-if>
+                </div>
+              </sc-raw-td>
+              <sc-raw-td>{{ lot.source }}</sc-raw-td>
+              <sc-raw-td>{{ lot.restocked }}</sc-raw-td>
+              <sc-raw-td style="white-space: nowrap;">
+                <div>Door: {{ lot.door }}</div>
+                <div>Bin: {{ lot.bin }}</div>
+              </sc-raw-td>
+              <sc-raw-td style="white-space: nowrap;">{{ lot.qtyLabel }}</sc-raw-td>
+              <sc-raw-td>
+                <div style="display: flex; align-items: center; justify-content: flex-end; gap: 24px;">
+                  <button type="button" class="ak-link-btn">
+                    <span class="ak-icon ak-icon--16 ak-icon--current" data-icon="edit"></span>
+                    Edit
+                  </button>
+                  <button type="button" class="ak-link-btn" style="white-space: nowrap;">
+                    <svg width="16" height="16" sc-camel-view-box="0 0 14 14" fill="none"><path d="M4 5V1.8h6V5M4 10.5H2.5V5.5h9v5H10M4 8.5h6v3.7H4V8.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+                    Print QR
+                  </button>
+                </div>
+              </sc-raw-td>
+            </sc-raw-tr>
+          </sc-for>
+          <sc-if value="{{ product.noLots }}" hint-placeholder-val="{{ false }}">
+            <sc-raw-tr>
+              <sc-raw-td sc-camel-col-span="7" class="ak-empty">No inventory for this product.</sc-raw-td>
+            </sc-raw-tr>
+          </sc-if>
+        </sc-raw-tbody>
+      </sc-raw-table>
+    </div>
+
+    <div class="ak-bottom-bar">
+      <div class="ak-bottom-bar__actions">
+        <button type="button" class="ak-btn ak-btn--lg ak-btn--primary" sc-camel-on-click="{{ backToList }}">
+          <svg width="16" height="16" sc-camel-view-box="0 0 14 14" fill="none"><path d="M12 7H2.5M6 3L2 7l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          BACK TO ALL PRODUCTS
+        </button>
+      </div>
+    </div>
+  </div>
+
+    <sc-if value="{{ unallocOpen }}" hint-placeholder-val="{{ false }}">
+      <div class="ak-overlay">
+        <div class="ak-modal" role="dialog" aria-modal="true">
+
+          <div class="ak-modal__header">
+            <h2 class="ak-modal__title">Unallocate Product</h2>
+            <button type="button" class="ak-modal__close" aria-label="Close" data-icon="times" sc-camel-on-click="{{ closeUnalloc }}"></button>
+          </div>
+
+          <div class="ak-modal__body">
+            <div class="ak-semibold" style="color: var(--ak-brand);">Select Locations to unallocate from</div>
+            <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 16px;">
+              <sc-for list="{{ product.locations }}" as="loc" hint-placeholder-count="3">
+                <div sc-camel-on-click="{{ loc.toggle }}" style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                  <span class="ak-check" role="checkbox" aria-checked="{{ loc.checked }}"></span>
+                  <div style="display: flex; align-items: baseline; gap: 6px; white-space: nowrap;">
+                    <span class="ak-label">Door:</span>
+                    <span class="ak-semibold">{{ loc.door }}</span>
+                    <span style="color: var(--ak-text-placeholder); padding: 0 6px;">-</span>
+                    <span class="ak-label">Bin:</span>
+                    <span class="ak-semibold">{{ loc.bin }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div class="ak-modal__footer">
+            <button type="button" class="ak-btn ak-btn--secondary" sc-camel-on-click="{{ closeUnalloc }}">CANCEL</button>
+            <button type="button" class="ak-btn ak-btn--primary ak-btn--danger ak-btn--guarded" sc-camel-on-click="{{ confirmUnalloc }}" aria-disabled="{{ product.unallocDisabled }}">UNALLOCATE</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </sc-if>
+  </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{}">
+class Component extends DCLogic {
+  chip(label) {
+    const map = { SDV: "sdv", MDV: "mdv", CLIMATE: "climate", PACK: "pack", CIV: "civ", "NON SERIALIZED": "non-serial" };
+    return { label, cls: "ak-badge ak-badge--" + (map[label] || "pack") };
+  }
+  state = { removed: {}, freed: {}, basis: null, belowPar: false, parFlip: false, parMaxH: 0, sortKey: "name", sortDir: "asc", openPar: null, view: "list", selected: null, unalloc: false, checkedLocs: {} };
+
+  dsChips() {
+    const NS = window.AllyUIDesignSystem_f878db;
+    if (!NS || !NS.TopNavChip) {
+      if (!this._dsWait) {
+        this._dsWait = setInterval(() => {
+          if (window.AllyUIDesignSystem_f878db) { clearInterval(this._dsWait); this._dsWait = null; this.forceUpdate(); }
+        }, 100);
+      }
+      return null;
+    }
+    const C = NS.TopNavChip, noop = () => {};
+    const rule = k => React.createElement(NS.TopNavDivider, { key: k });
+    return [
+      React.createElement(C, { key: "org", iconName: "building", onClick: noop }, "Onco Demo"),
+      rule("d1"),
+      React.createElement(C, { key: "clinic", iconName: "marker", onClick: noop }, "Onco Clinic Center"),
+      rule("d2"),
+      React.createElement(C, { key: "station", iconName: "box" }, "Anil-MedOrderStation Station-Virtual")
+    ];
+  }
+
+
+  sortIcon(key) {
+    const active = this.state.sortKey === key;
+    const desc = active && this.state.sortDir === "desc";
+    const e = React.createElement;
+    return e("span", { className: "ak-sort" + (active ? " ak-sort--on" : "") + (desc ? " ak-sort--desc" : "") }, [
+      key === "name" ? e("span", { key: "t" }, desc ? "Z-A" : "A-Z") : null,
+      e("span", { key: "i", className: "ak-th__sort ak-icon--current", "data-icon": "sort-alt" })
+    ]);
+  }
+
+  detailProduct(rows) {
+    const p = this.state.selected === null ? rows[0] : rows[this.state.selected];
+    const num = v => { const m = String(v).match(/-?\d+(\.\d+)?/); return m ? parseFloat(m[0]) : 0; };
+    const empty = num(p.inventory) === 0;
+    const unit = String(p.inventory).replace(/[\d.\s-]+/g, "") || p.unit || "vials";
+    const total = empty ? 0 : num(p.inventory);
+    const dashStrength = String(p.strength || "").replace(/[\d.]+/g, "--");
+    const plan = p.plan || [];
+    const planTotal = plan.reduce((a, x) => a + x.n, 0) || 1;
+
+    // distribute the product's on-hand quantity across its locations
+    const alloc = [];
+    let left = total;
+    plan.forEach((x, i) => {
+      const share = i === plan.length - 1 ? left : (total < 1 ? (i ? 0 : total) : Math.round(total * x.n / planTotal));
+      left = Math.round((left - share) * 100) / 100;
+      alloc.push(Object.assign({}, x, { qtyNum: Math.max(0, Math.round(share * 100) / 100) }));
+    });
+
+    const lots = [];
+    alloc.forEach((a, ai) => {
+      const whole = a.qtyNum >= 1 ? Math.floor(a.qtyNum) : (a.qtyNum > 0 ? 1 : 0);
+      for (let i = 0; i < whole; i++) {
+        const q = a.qtyNum >= 1 ? 1 : a.qtyNum;
+        lots.push({
+          serial: String((p.serial || 10000000) + ai * 100 + i),
+          lot: String(p.lot),
+          expiration: p.expiration,
+          expired: p.expired && ai === 0 && i === 0,
+          restocked: p.restocked,
+          source: a.source,
+          door: a.door,
+          bin: a.bin,
+          qtyLabel: q + " " + (q === 1 ? unit.replace(/s$/, "") : unit) + " / " + p.strength
+        });
+      }
+    });
+
+    const gone = this.state.freed[p.key] || {};
+    const derivedLocs = (empty ? plan : alloc.filter(a => a.qtyNum > 0)).map(a => ({
+      id: a.door + "|" + a.bin, door: a.door, bin: a.bin,
+      qty: empty ? "-- " + unit : a.qtyNum + " " + (a.qtyNum === 1 ? unit.replace(/s$/, "") : unit)
+    })).filter(l => !gone[l.id]);  // locations already unallocated are no longer listed
+
+    const checked = this.state.checkedLocs;
+    const on = id => checked[id] === true;  // nothing is ticked when the dialog opens
+    const locs = derivedLocs.map(l => Object.assign({}, l, {
+      checked: on(l.id),
+      toggle: () => this.setState(s => ({ checkedLocs: Object.assign({}, s.checkedLocs, { [l.id]: !s.checkedLocs[l.id] }) }))
+    }));
+    const picked = locs.filter(l => l.checked).length;
+    const multi = locs.length > 1;
+    return Object.assign({}, p, {
+      isEmpty: empty,
+      hasStock: !empty,
+      qty: empty ? "-- " + unit + " / " + dashStrength : p.inventory + " / " + p.strength,
+      received: "-- " + unit + " / " + dashStrength,
+      lots: lots,
+      hasLots: lots.length > 0,
+      noLots: lots.length === 0,
+      locations: locs,
+      locCount: locs.length,
+      multiLocation: multi,
+      singleLocation: !multi,
+      singleLocLabel: locs.length ? "Door " + locs[0].door + " · " + locs[0].bin : "--",
+      unallocLabel: multi
+        ? (picked ? "Unallocate " + picked + (picked === 1 ? " location" : " locations") : "Unallocate")
+        : "Unallocate",
+      unallocReady: picked > 0,
+      unallocDisabled: !(picked > 0)
+    });
+  }
+
+  sorter(key) {
+    return () => this.setState(s => ({
+      sortKey: key,
+      sortDir: s.sortKey === key && s.sortDir === "asc" ? "desc" : "asc"
+    }));
+  }
+
+  compare(a, b, key) {
+    const num = v => {
+      const m = String(v).match(/-?\d+(\.\d+)?/);
+      return m ? parseFloat(m[0]) : null;
+    };
+    const na = num(a[key]), nb = num(b[key]);
+    const numericKeys = { inventory: 1, parMin: 1, parMax: 1, ndc: 1 };
+    if (numericKeys[key] && na !== null && nb !== null) return na - nb;
+    if (numericKeys[key] && (na === null) !== (nb === null)) return na === null ? 1 : -1;
+    return String(a[key]).localeCompare(String(b[key]));
+  }
+  renderVals() {
+    const basis = (this.state.basis || this.props.parBasis) === "NDC" ? "NDC" : "HCPCS";
+    const byHcpcs = basis === "HCPCS";
+    const pemDesc100 = "pemetrexed disodium 100 mg intravenous powder for solution";
+    const pemDesc500 = "pemetrexed disodium 500 mg intravenous powder for solution";
+    const ggDesc = "immune glob,gamma (IgG) 10 %-gly-IgA over 50 mcg/mL injection solution";
+    // name, desc, chips, ndc, invType, hcpcs, dose, ndcMin, ndcMax, inventory
+    const data = [
+      ["ALIMTA 100 MG VIAL", pemDesc100, ["SDV", "CLIMATE"], "00002764001", "Purchased", "J9305", "100 mg", "6", "12", "4 vials"],
+      ["ALIMTA 100 MG VIAL", pemDesc100, ["SDV", "CLIMATE"], "00002764061", "Sample", "J9305", "100 mg", "4", "8", "3 vials"],
+      ["PEMETREXED 100 MG VIAL", pemDesc100, ["SDV"], "70860020610", "Purchased", "J9305", "100 mg", "4", "8", "2 vials"],
+      ["ALIMTA 500 MG VIAL", pemDesc500, ["SDV"], "00002762301", "Purchased", "J9305", "500 mg", "4", "10", "11 vials"],
+      ["PEMETREXED 500 MG VIAL", pemDesc500, ["SDV"], "70860020710", "Specialty Pharmacy", "J9305", "500 mg", "--", "--", "3 vials"],
+      ["GAMMAGARD LIQUID 10% VIAL 10 g 100mL", ggDesc, ["MDV"], "00944270005", "Purchased", "J1569", "10 g", "10", "50", "3 vials"],
+      ["GAMMAGARD LIQUID 10% VIAL 2.5 g 25 mL", ggDesc, ["MDV", "CLIMATE", "PACK", "NON SERIALIZED"], "00944270003", "Purchased", "J1569", "2.5 g", "10", "20", "3 vials"],
+      ["IZERVAY 2 MG/0.1 ML VIAL", "avacincaptad pegol (PF) 2 mg/0.1 mL intravitreal solution", ["SDV", "NON SERIALIZED"], "82829000201", "Purchased", "J2782", "2 mg", "5", "15", "1 vials"],
+      ["OPDIVO 240 MG/24 ML VIAL", "nivolumab 240 mg/24 mL intravenous solution", ["SDV"], "00003373413", "Purchased", "J9299", "240 mg", "--", "--", "0 vials"],
+      ["RUXIENCE 100 MG/10 ML VIAL", "rituximab-pvvr 10 mg/mL intravenous solution", ["SDV"], "00069023801", "Purchased", "J9312", "100 mg", "10", "50", "8 vials"]
+    ];
+    // PAR at HCPCS level is set per HCPCS + product + dose; every NDC of that combination follows it
+    const hcpcsPar = {
+      "J9305|ALIMTA|100 mg": { min: 10, max: 20 },
+      "J9305|PEMETREXED|100 mg": { min: 4, max: 8 },
+      "J9305|ALIMTA|500 mg": { min: 8, max: 16 },
+      "J1569|GAMMAGARD|10 g": { min: 4, max: 10 },
+      "J1569|GAMMAGARD|2.5 g": { min: 4, max: 8 },
+      "J2782|IZERVAY|2 mg": { min: 3, max: 8 },
+      "J9312|RUXIENCE|100 mg": { min: 6, max: 20 }
+    };
+    const num = v => { const m = String(v).match(/-?\d+(\.\d+)?/); return m ? parseFloat(m[0]) : 0; };
+    const detail = [
+      { strength: "100 mg/ 100 mL", unit: "vials", serial: 87654321, lot: "234567", expiration: "07/31/2026", expired: true, restocked: "06/30/2026",
+        plan: [{ door: "1", bin: "My Bin 3", n: 2, source: "AmerisourceBergen" }, { door: "5", bin: "My Bin 7", n: 2, source: "McKesson Corporation" }] },
+      { strength: "100 mg/ 100 mL", unit: "vials", serial: 87655902, lot: "236114", expiration: "03/31/2027", expired: false, restocked: "07/08/2026",
+        plan: [{ door: "3", bin: "My Bin 1", n: 3, source: "BioCareSD" }] },
+      { strength: "100 mg/ 100 mL", unit: "vials", serial: 87660410, lot: "240881", expiration: "12/31/2026", expired: false, restocked: "07/02/2026",
+        plan: [{ door: "1", bin: "My Bin 4", n: 2, source: "BioCareSD" }] },
+      { strength: "500 mg/ 500 mL", unit: "vials", serial: 91240377, lot: "884120", expiration: "11/30/2026", expired: false, restocked: "07/12/2026",
+        plan: [{ door: "2", bin: "My Bin 1", n: 6, source: "Poly Medicure Ltd" }, { door: "5", bin: "My Bin 4", n: 5, source: "AmerisourceBergen" }] },
+      { strength: "500 mg/ 500 mL", unit: "vials", serial: 91240512, lot: "884377", expiration: "01/31/2027", expired: false, restocked: "07/20/2026",
+        plan: [{ door: "2", bin: "My Bin 2", n: 3, source: "CuraScript SD" }] },
+      { strength: "10 g/ 100 mL", unit: "vials", serial: 70345512, lot: "551203", expiration: "02/28/2027", expired: false, restocked: "06/04/2026",
+        plan: [{ door: "1", bin: "My Bin 5", n: 3, source: "Hercules" }] },
+      { strength: "2.5 g/ 25 mL", unit: "vials", serial: 70345518, lot: "551377", expiration: "09/30/2026", expired: false, restocked: "05/22/2026",
+        plan: [{ door: "3", bin: "My Bin 2", n: 3, source: "Poly Medicure Ltd" }] },
+      { strength: "2 mg/ 0.1 mL", unit: "vials", serial: 44190822, lot: "119827", expiration: "07/31/2026", expired: true, restocked: "04/18/2026",
+        plan: [{ door: "2", bin: "My Bin 4", n: 1, source: "CuraScript SD" }] },
+      { strength: "240 mg/ 24 mL", unit: "vials", serial: 38220144, lot: "402118", expiration: "01/31/2027", expired: false, restocked: "07/29/2026",
+        plan: [{ door: "1", bin: "My Bin 3", n: 1, source: "AmerisourceBergen" }, { door: "4", bin: "My Bin 2", n: 1, source: "McKesson Corporation" }] },
+      { strength: "100 mg/ 10 mL", unit: "vials", serial: 56901233, lot: "690455", expiration: "10/31/2026", expired: true, restocked: "06/15/2026",
+        plan: [{ door: "4", bin: "My Bin 6", n: 5, source: "McKesson Corporation" }, { door: "2", bin: "My Bin 9", n: 2, source: "Hercules" }, { door: "6", bin: "My Bin 12", n: 1, source: "McKesson Corporation" }] }
+    ];
+    const rows = data.map((r, idx) => Object.assign({
+      key: idx, name: r[0], desc: r[1], chips: r[2].map(c => this.chip(c)),
+      ndc: r[3], invType: r[4], itemType: "Medication", hcpcs: r[5], dose: r[6], product: r[0].split(" ")[0],
+      ndcMin: r[7], ndcMax: r[8], inventory: r[9],
+      received: "-- each / -- mg",
+      open: e => { if (e) e.stopPropagation(); this.setState({ view: "detail", selected: idx, openPar: null }); }
+    }, detail[idx]));
+
+    // only Purchased and Sample inventory carry PAR; at HCPCS level both share the group value
+    const groups = {};
+    rows.forEach(r => {
+      r.hasPar = r.invType === "Purchased" || r.invType === "Sample";
+      if (!r.hasPar) return;
+      const k = byHcpcs ? r.hcpcs + "|" + r.product + "|" + r.dose : r.ndc;
+      const def = byHcpcs ? hcpcsPar[k] : (r.ndcMin !== "--" ? { min: num(r.ndcMin), max: num(r.ndcMax) } : null);
+      const g = groups[k] || (groups[k] = {
+        code: byHcpcs ? r.hcpcs : r.ndc,
+        total: 0, unit: "vials", set: !!def, min: def ? def.min : 0, max: def ? def.max : 0, items: [], bySource: {}
+      });
+      g.total += num(r.inventory);
+      g.unit = String(r.inventory).replace(/[\d.\s-]+/g, "") || g.unit;
+      if (byHcpcs) {
+        g.items.push({ ndc: r.ndc, name: r.ndc, sub: "", hasSub: false, desc: "", hasDesc: false, chips: [], inventory: r.inventory });
+      } else {
+        (r.plan || []).forEach(p => {
+          let it = g.bySource[p.source];
+          if (!it) { it = g.bySource[p.source] = { name: p.source, sub: "", hasSub: false, desc: "", hasDesc: false, chips: [], n: 0 }; g.items.push(it); }
+          it.n += p.n;
+          it.inventory = it.n + " " + g.unit;
+        });
+      }
+      r.groupKey = k;
+    });
+
+    rows.forEach(r => {
+      const g = r.hasPar ? groups[r.groupKey] : null;
+      const set = !!(g && g.set);
+      const short = set ? Math.max(0, g.min - g.total) : 0;
+      r.parMin = set ? String(g.min) : "--";
+      r.parMax = set ? String(g.max) : "--";
+      r.showDose = byHcpcs;
+      r.basisLabel = basis;
+      r.parRangeShort = set ? g.min + " - " + g.max : "--";
+      r.statusLabel = !r.hasPar ? "No PAR" : !set ? "PAR not set" : short > 0 ? "Below PAR" : "In PAR";
+      const multi = set && g.items.length > 1;
+      r.statusDeco = multi ? "underline" : "none";
+      r.statusCursor = multi ? "pointer" : "default";
+      r.linkDeco = r.statusDeco;
+      r.linkCursor = r.statusCursor;
+      r.isBelowPar = short > 0;
+      r.parOpen = set && this.state.openPar === r.key;
+      r.rowClass = r.parOpen ? "is-selected" : "";
+      r.onBelowPar = e => {
+        e.stopPropagation();
+        if (!multi) return;
+        let flip = false, maxH = Math.round(window.innerHeight * 0.62);
+        const t = e.currentTarget;
+        if (t && t.getBoundingClientRect) {
+          const bar = [].slice.call(document.querySelectorAll("*")).find(el => {
+            const cs = getComputedStyle(el);
+            const b = el.getBoundingClientRect();
+            return cs.position === "sticky" && b.width > 200 && b.height > 0 && b.height < 120;
+          });
+          const navBottom = (bar ? bar.getBoundingClientRect().bottom : 60) + 16;
+          const rect = t.getBoundingClientRect();
+          const est = Math.min(window.innerHeight * 0.62, 150 + g.items.length * 92);
+          const availAbove = rect.top - navBottom - 20;
+          const availBelow = window.innerHeight - rect.bottom - 40;
+          flip = availBelow < est && availAbove > availBelow;
+          maxH = Math.max(160, Math.round(Math.min(est, flip ? availAbove : availBelow)));
+        }
+        this.setState(s => ({ openPar: s.openPar === r.key ? null : r.key, parFlip: flip, parMaxH: maxH }));
+      };
+      r.popShift = this.state.parFlip ? "translateY(calc(-100% - 46px))" : "none";
+      r.popW = byHcpcs ? "460px" : "400px";
+      r.popMaxH = (this.state.parMaxH || Math.round(window.innerHeight * 0.62)) + "px";
+      r.arrowTop = this.state.parFlip ? "auto" : "-7px";
+      r.arrowBottom = this.state.parFlip ? "-7px" : "auto";
+      r.arrowShadow = this.state.parFlip ? "1px 1px 0 var(--ak-border-table)" : "-1px -1px 0 var(--ak-border-table)";
+      r.closePar = e => { e.stopPropagation(); this.setState({ openPar: null }); };
+      r.pop = {
+        codeLabel: byHcpcs ? "HCPCS" : "NDC",
+        dose: r.dose,
+        statsCls: byHcpcs ? "ak-popover__stats--dose" : "ak-popover__stats--no-dose",
+        code: g ? g.code : "--",
+        total: (g ? g.total : num(r.inventory)) + " " + (g ? g.unit : r.unit),
+        minLabel: set ? g.min : "--",
+        maxLabel: set ? g.max : "--",
+        items: g ? g.items : [],
+        shortClass: !set ? "ak-par--unset" : short > 0 ? "ak-par--below" : "ak-par--ok"
+      };
+    });
+    const present = rows.filter(r => !this.state.removed[r.key]);
+    const shown = this.state.belowPar ? present.filter(r => r.isBelowPar) : present;
+    const key = this.state.sortKey;
+    const sorted = shown.slice().sort((a, b) => this.compare(a, b, key) * (this.state.sortDir === "desc" ? -1 : 1));
+    const sortKeys = ["name", "ndc", "invType", "itemType", "hcpcs", "parMin", "parMax", "inventory"];
+    const icons = {}, handlers = {};
+    sortKeys.forEach(k => {
+      icons["icon_" + k] = this.sortIcon(k);
+      handlers["sort_" + k] = this.sorter(k);
+    });
+    return Object.assign(icons, handlers, {
+      rows: sorted,
+      belowPar: this.state.belowPar,
+      count: shown.length,
+      showingLabel: "Showing 1 to " + shown.length + " of " + shown.length + " items",
+      topChips: this.dsChips(),
+      hcpcsSel: byHcpcs, ndcSel: !byHcpcs,
+      setHcpcs: () => this.setState({ basis: "HCPCS", openPar: null }),
+      setNdc: () => this.setState({ basis: "NDC", openPar: null }),
+      isList: this.state.view === "list",
+      isDetail: this.state.view === "detail",
+      product: this.detailProduct(rows),
+      unallocOpen: this.state.unalloc,
+      openUnalloc: () => this.setState({ unalloc: true, openPar: null }),
+      closeUnalloc: () => this.setState({ unalloc: false, checkedLocs: {} }),
+      confirmUnalloc: () => {
+        const prod = this.detailProduct(rows);
+        if (prod.unallocDisabled) return;
+        const picked = prod.locations.filter(l => l.checked);
+        const all = picked.length === prod.locations.length;
+        const freed = Object.assign({}, this.state.freed[prod.key] || {});
+        picked.forEach(l => { freed[l.id] = true; });
+        if (all) {
+          // Every location unallocated: the product leaves the station, so its detail can't be opened any more.
+          this.setState(s => ({ unalloc: false, checkedLocs: {}, view: "list", selected: null,
+            removed: Object.assign({}, s.removed, { [prod.key]: true }), freed: Object.assign({}, s.freed, { [prod.key]: freed }) }));
+          if (window.AllyKit) window.AllyKit.toast({ title: prod.name, message: "has been unallocated.", type: "success" });
+        } else {
+          // Some locations left: stay on the product and name the locations that were freed.
+          const where = picked.map(l => "Door " + l.door + " · " + l.bin).join(", ");
+          this.setState(s => ({ unalloc: false, checkedLocs: {}, freed: Object.assign({}, s.freed, { [prod.key]: freed }) }));
+          if (window.AllyKit) window.AllyKit.toast({ title: prod.name, message: "has been unallocated from " + where + ".", type: "success" });
+        }
+      },
+      backToList: () => this.setState({ view: "list", selected: null, unalloc: false, checkedLocs: {} }),
+      toggleBelowPar: () => this.setState(s => ({ belowPar: !s.belowPar })),
+      reset: () => this.setState({ belowPar: false, sortKey: "name", sortDir: "asc", openPar: null })
+    });
+  }
+}
+</script>
+
+
+</body></html>
