@@ -205,19 +205,19 @@
                     </div>
                   </td>
                   <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                    <div onClick="{{ row.nameClick }}" style="display: inline-block; font-size: 14px; font-weight: 500; color: #21252b; cursor: pointer;" style-hover="color: #095192;">{{ row.name }}</div>
-                    <div style="display: block; margin-top: 4px; font-size: 13px; font-style: italic; color: #6b7280; line-height: 1.4;">{{ row.desc }}</div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px;">
+                    <div onClick="{{ row.nameClick }}" style="display: inline-block; font-size: 14px; font-weight: 400; line-height: 20px; text-transform: uppercase; color: #25282a; cursor: pointer;" style-hover="color: #095192;">{{ row.name }}</div>
+                    <div style="display: block; font-size: 14px; font-style: italic; color: #757575; line-height: 20px;">{{ row.desc }}</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px;">
                       <sc-for list="{{ row.chips }}" as="chip" hint-placeholder-count="2">
-                        <label style="display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.2px; white-space: nowrap; background: {{ chip.bg }}; color: {{ chip.fg }}; border: 1px solid {{ chip.bd }};">{{ chip.label }}</label>
+                        <label style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; line-height: 16px; white-space: nowrap; background: {{ chip.bg }}; color: {{ chip.fg }};">{{ chip.label }}</label>
                       </sc-for>
                     </div>
                   </td>
                   <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                    <div style="font-size: 14px; color: #21252b;">{{ row.ndc }}</div>
-                    <div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ row.invType }}</div>
+                    <div style="font-size: 14px; line-height: 20px; color: #25282a;">{{ row.ndc }}</div>
+                    <div style="font-size: 14px; line-height: 20px; font-style: italic; color: #767676;">{{ row.invType }}</div>
                   </td>
-                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.sendLoc }}</td>
+                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;"><div style="line-height: 20px; color: #25282a;">{{ row.sendClinic }}</div><div style="font-size: 14px; line-height: 20px; font-style: italic; color: #767676;">{{ row.sendLoc }}</div></td>
                   <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.qtyShort }}</td>
                   <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.created }}</td>
                   <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
@@ -289,19 +289,19 @@
                     <div style="width: 20px; height: 20px; border-radius: 4px; background: #ececec; border: 1px solid #dadee3; cursor: not-allowed;"></div>
                   </td>
                   <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                    <div style="font-size: 14px; font-weight: 500; color: #21252b;">{{ row.name }}</div>
-                    <div style="display: block; margin-top: 4px; font-size: 13px; font-style: italic; color: #6b7280; line-height: 1.4;">{{ row.desc }}</div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px;">
+                    <div style="font-size: 14px; font-weight: 400; line-height: 20px; text-transform: uppercase; color: #25282a;">{{ row.name }}</div>
+                    <div style="display: block; font-size: 14px; font-style: italic; color: #757575; line-height: 20px;">{{ row.desc }}</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px;">
                       <sc-for list="{{ row.chips }}" as="chip" hint-placeholder-count="1">
-                        <label style="display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.2px; white-space: nowrap; background: {{ chip.bg }}; color: {{ chip.fg }}; border: 1px solid {{ chip.bd }};">{{ chip.label }}</label>
+                        <label style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; line-height: 16px; white-space: nowrap; background: {{ chip.bg }}; color: {{ chip.fg }};">{{ chip.label }}</label>
                       </sc-for>
                     </div>
                   </td>
                   <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
-                    <div style="font-size: 14px; color: #21252b;">{{ row.ndc }}</div>
-                    <div style="margin-top: 2px; font-size: 13px; font-style: italic; color: #6b7280;">{{ row.invType }}</div>
+                    <div style="font-size: 14px; line-height: 20px; color: #25282a;">{{ row.ndc }}</div>
+                    <div style="font-size: 14px; line-height: 20px; font-style: italic; color: #767676;">{{ row.invType }}</div>
                   </td>
-                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.sendLoc }}</td>
+                  <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;"><div style="line-height: 20px; color: #25282a;">{{ row.sendClinic }}</div><div style="font-size: 14px; line-height: 20px; font-style: italic; color: #767676;">{{ row.sendLoc }}</div></td>
                   <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.qty }}</td>
                   <td style="padding: 14px 16px; text-align: left; vertical-align: top; font-size: 14px; color: #21252b; border-bottom: 1px solid #eef1f5;">{{ row.created }}</td>
                   <td style="padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #eef1f5;">
@@ -1225,7 +1225,7 @@ class Component extends DCLogic {
     };
     const rows = data.map((r, idx) => Object.assign({}, detailBy[r[0].split(" ")[0]], {
       key: idx, name: r[0], desc: r[1], chips: r[2].map(c => this.chip(c)),
-      ndc: r[3], source: r[4], invType: "Purchased", sendLoc: "Onco Station",
+      ndc: r[3], source: r[4], invType: "Purchased", sendClinic: "Onco Clinic Center", sendLoc: "Onco Station",
       qty: r[5], qtyShort: r[5].split(" / ")[0], inventory: r[5], created: r[6], status: r[7],
       statusBg: r[7] === "Submitted" ? "#008774" : r[7] === "In-Progress" ? "#EEC038" : "#3b83f7",
       statusFg: r[7] === "In-Progress" ? "#25282A" : "#ffffff",
@@ -1297,8 +1297,8 @@ class Component extends DCLogic {
     const key = this.state.sortKey;
     const sorted = shown.slice().sort((a, b) => this.compare(a, b, key) * (this.state.sortDir === "desc" ? -1 : 1));
     const unallocRows = [
-      { name: "ONDANSETRON HCL 4 MG/2 ML VIAL", desc: "ondansetron HCl (PF) 4 mg/2 mL injection solution", chips: ["SDV", "PACK"].map(c => this.chip(c)), ndc: "60505613005", source: "AmerisourceBergen", invType: "Purchased", sendLoc: "Onco Station", qty: "1 vials / 4 mg / 2 mL", created: "10/22/2025", status: "Submitted" },
-      { name: "RUXIENCE 500 MG/50 ML VIAL", desc: "rituximab-pvvr 10 mg/mL intravenous solution", chips: ["SDV"].map(c => this.chip(c)), ndc: "00069024901", source: "McKesson Corporation", invType: "Purchased", sendLoc: "Badri Station-Virtual", qty: "1 vials / 500 mg / 50 mL", created: "08/06/2025", status: "Submitted" }
+      { name: "ONDANSETRON HCL 4 MG/2 ML VIAL", desc: "ondansetron HCl (PF) 4 mg/2 mL injection solution", chips: ["SDV", "PACK"].map(c => this.chip(c)), ndc: "60505613005", source: "AmerisourceBergen", invType: "Purchased", sendClinic: "Onco Clinic Center", sendLoc: "Onco Station", qty: "1 vials / 4 mg / 2 mL", created: "10/22/2025", status: "Submitted" },
+      { name: "RUXIENCE 500 MG/50 ML VIAL", desc: "rituximab-pvvr 10 mg/mL intravenous solution", chips: ["SDV"].map(c => this.chip(c)), ndc: "00069024901", source: "McKesson Corporation", invType: "Purchased", sendClinic: "Badri Clinic", sendLoc: "Badri Station-Virtual", qty: "1 vials / 500 mg / 50 mL", created: "08/06/2025", status: "Submitted" }
     ].map((u, i) => Object.assign(u, { tipOpen: this.state.tipIdx === i, tipShow: () => this.setState({ tipIdx: i }), tipHide: () => this.setState({ tipIdx: null }) }));
     const pk = this.state.picked || {};
     const guided = this.state.guided ?? this.props.guidedWorkflow ?? false;
