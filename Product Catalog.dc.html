@@ -28,14 +28,19 @@
   .tp-cutoff__source { color: var(--ak-text-label); }
   .tp-cutoff__time { color: var(--ak-chip-success); text-align: right; }
 
-  /* --- Not in kit: cart icon with count badge --- */
-  .tp-cart { position: relative; flex-shrink: 0; padding: 0 8px 0 24px; border-left: 1px solid var(--ak-border-divider); color: var(--ak-text-label); }
-  .tp-cart__count { position: absolute; top: -8px; right: 0; min-width: 22px; height: 22px; padding: 0 6px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--ak-radius); background: var(--ak-brand); color: var(--ak-text-on-brand); font-size: 12px; font-weight: 600; }
+  /* Card info values read in regular weight */
+  .ak-card .ak-stat__value { font-weight: 400; }
+
+  /* --- Not in kit: cart icon with count badge (matches the dev app: outline cart, round badge, muted when empty) --- */
+  .tp-cart { position: relative; flex-shrink: 0; margin-right: 8px; color: var(--ak-brand); }
+  .tp-cart.is-empty { color: var(--ak-border-input); }
+  .tp-cart__count { position: absolute; top: -8px; right: -10px; min-width: 20px; height: 20px; padding: 0 5px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--ak-brand); color: var(--ak-text-on-brand); font-size: 12px; font-weight: 600; }
+  .tp-cart.is-empty .tp-cart__count { background: var(--ak-nav-muted); }
 
   /* --- Not in kit: PAR total chip (outlined, opens the PAR popover) --- */
   .tp-par-chip { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 8px 0 10px; border: 1px solid var(--ak-border-input); border-radius: var(--ak-radius); background: var(--ak-bg); font-size: 14px; color: var(--ak-text); white-space: nowrap; cursor: pointer; }
   .tp-par-chip:hover { border-color: var(--ak-brand); }
-  .tp-par-chip.is-open { border-color: var(--ak-brand); background: #eef4fa; box-shadow: 0 0 0 1px var(--ak-brand); }
+  .tp-par-chip.is-open { border-color: var(--ak-brand); background: #eef4fa; }
   .tp-par-chip .ak-icon svg path { fill: var(--ak-text-label); }
   .tp-par--over { color: var(--ak-warning-border); }
 
@@ -87,8 +92,8 @@
       </div>
     </div>
 
-    <div class="tp-cart">
-      <svg width="30" height="28" sc-camel-view-box="0 0 24 24" fill="none"><path d="M1.5 2.5h2.6l1 3.4M5.1 5.9h16.2l-2.2 8.4H7.7L5.1 5.9z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="currentColor"></path><circle cx="9" cy="19.5" r="1.7" fill="currentColor"></circle><circle cx="18" cy="19.5" r="1.7" fill="currentColor"></circle></svg>
+    <div class="tp-cart {{ cartCls }}" title="Cart">
+      <svg width="32" height="32" sc-camel-view-box="0 0 24 24" fill="none"><path d="M2 3h2.4l2.3 11.1a1.6 1.6 0 0 0 1.6 1.3h8.9a1.6 1.6 0 0 0 1.6-1.2L20.5 7H5.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="9" cy="19.6" r="1.5" stroke="currentColor" stroke-width="1.5"></circle><circle cx="17" cy="19.6" r="1.5" stroke="currentColor" stroke-width="1.5"></circle></svg>
       <span class="tp-cart__count">{{ cartCount }}</span>
     </div>
   </div>
@@ -163,8 +168,8 @@
               <sc-if value="{{ p.parOpen }}" hint-placeholder-val="{{ false }}">
                 <div>
                   <div sc-camel-on-click="{{ p.closePar }}" style="position: fixed; inset: 0; z-index: 65;"></div>
-                  <div class="ak-popover" style="top: calc(100% + 8px); left: 0; width: 460px; text-align: left; cursor: default; padding: 16px 16px 4px;" data-comment-anchor="5f5529ef5a-div">
-                    <div style="position: absolute; top: -7px; left: 28px; width: 14px; height: 14px; background: var(--ak-bg); transform: rotate(45deg); box-shadow: -1px -1px 0 var(--ak-border-table);"></div>
+                  <div class="ak-popover" style="{{ p.popPos }} left: 0; width: 460px; text-align: left; cursor: default; padding: 16px 16px 4px;" data-comment-anchor="5f5529ef5a-div">
+                    <div style="position: absolute; {{ p.arrowPos }} left: 28px; width: 14px; height: 14px; background: var(--ak-bg); transform: rotate(45deg);"></div>
 
                     <div class="ak-popover__stats" style="grid-template-columns: 1fr 1fr 1fr 1fr auto;" data-comment-anchor="ca47cb6a63-div">
                       <div class="ak-popover__stats-label">{{ p.par.basisLabel }}</div>
@@ -224,8 +229,8 @@
               <sc-if value="{{ p.parInlineOpen }}" hint-placeholder-val="{{ false }}">
                 <div>
                   <div sc-camel-on-click="{{ p.closePar }}" style="position: fixed; inset: 0; z-index: 65;" data-comment-anchor="0cba6e39c9-div"></div>
-                  <div class="ak-popover" style="top: calc(100% + 8px); left: 0; width: 400px; text-align: left; cursor: default; padding: 16px 16px 4px;">
-                    <div style="position: absolute; top: -7px; left: 28px; width: 14px; height: 14px; background: var(--ak-bg); transform: rotate(45deg); box-shadow: -1px -1px 0 var(--ak-border-table);"></div>
+                  <div class="ak-popover" style="{{ p.popPos }} left: 0; width: 400px; text-align: left; cursor: default; padding: 16px 16px 4px;">
+                    <div style="position: absolute; {{ p.arrowPos }} left: 28px; width: 14px; height: 14px; background: var(--ak-bg); transform: rotate(45deg);"></div>
 
                     <div class="ak-popover__stats">
                       <div class="ak-popover__stats-label">NDC</div>
@@ -413,7 +418,7 @@ class Component extends DCLogic {
         "61703033950", "BioCareSD", "CS4402", "J9045", 7, 10, 25, "low", 15, "vials"],
       ["CARBOPLATIN 600 MG/60 ML VIAL", ["MDV", "CLIMATE", "PACK", "CIV", "NON SERIALIZED"], carbo, "$-- per vials",
         ["Preferred", "External Order Required", "In Draft Order: 30 vials"],
-        "61703033218", "CuraScript SD", "H1", "J9045", 4, 8, 20, "low", 20, "vials"],
+        "61703033218", "CuraScript SD", "H1", "J9045", 4, 8, 20, "unknown", 0, "vials"],
       ["AIC-CARBOPLATIN 450 MG/45 ML VIAL", ["MDV"], "AIC-carboplatin 10 mg/mL intravenous solution", "$-- per vials",
         ["External Order Required", "In Draft Order: 1 vials"],
         "AIC41327950", "AmerisourceBergen", "--", "J9045", 0, 5, 15, "unknown", 0, "vials"],
@@ -443,7 +448,7 @@ class Component extends DCLogic {
         "16729029533", "Hercules", "--", "J9045", 0, 4, 10, "unknown", 0, "vials"],
       ["AVASTIN 400 MG/16 ML VIAL", ["MDV", "CLIMATE"], "bevacizumab 25 mg/mL intravenous solution", "$-- per packs",
         ["Preferred", "NDC Total: 5 vials"],
-        "50242006110", "Henry Schein", "SAP1", "J9035", 30, 8, 24, "low", 20, "packs"]
+        "50242006110", "Henry Schein", "SAP1", "J9035", 30, 8, 24, "unknown", 0, "packs"]
     ];
 
     // HCPCS PAR is set per HCPCS + product + dose
@@ -463,7 +468,8 @@ class Component extends DCLogic {
       total: "--", price: d[3], tags: d[4],
       ndc: d[5], source: d[6], assocId: d[7], hcpcs: d[8],
       onHand: d[9], ndcMin: d[10], ndcMax: d[11],
-      supply: d[12], limit: d[13], unit: d[14]
+      // stock level and order limit are only known for BioCareSD
+      supply: d[6] === "BioCareSD" ? d[12] : "unknown", limit: d[13], unit: d[14]
     }));
     rows.forEach(r => { r.product = r.name.split(" ")[0].toUpperCase(); r.dose = doseOf(r.name); r.gk = r.hcpcs + "|" + r.product + "|" + r.dose; });
 
@@ -499,13 +505,10 @@ class Component extends DCLogic {
       const onHand = byHcpcs ? groups[r.gk].onHand : ndcGroups[r.ndc].onHand;
       const groupGap = Math.max(0, par.min - onHand);
       const isAnchor = byHcpcs ? anchors[r.gk] === r.key : ndcAnchors[r.ndc] === r.key;
-      // siblings' entered quantities already close part of the group gap
-      const siblings = byHcpcs ? groups[r.gk].items : ndcGroups[r.ndc].items;
-      const coveredBySiblings = siblings.reduce((a, it) => a + (it.key === r.key ? 0 : entered(it.key)), 0);
-      const shortfall = isAnchor ? Math.max(0, groupGap - coveredBySiblings) : 0;
+      const shortfall = isAnchor ? groupGap : 0;
 
       const status = onHand < par.min ? "Below PAR" : (onHand > par.max ? "Over PAR" : "In PAR");
-      const statusCls = status === "Below PAR" ? "ak-par--below" : status === "Over PAR" ? "tp-par--over" : "ak-par--ok";
+      const statusCls = status === "Below PAR" ? "ak-par--below" : "";  // in and over PAR read in the default text colour
 
       const touched = this.state.touched[r.key];
       const qty = touched ? this.state.qty[r.key] : (shortfall > 0 ? String(shortfall) : "0");
@@ -548,7 +551,18 @@ class Component extends DCLogic {
         })),
         parOpen: byHcpcs && this.state.openPar === r.key,
         parInlineOpen: !byHcpcs && this.state.openPar === r.key,
-        togglePar: e => { e.stopPropagation(); this.setState(s => ({ openPar: s.openPar === r.key ? null : r.key })); },
+        togglePar: e => {
+          e.stopPropagation();
+          // open above the chip when the breakdown would run under the bottom bar
+          const b = e.currentTarget.getBoundingClientRect();
+          const popH = (byHcpcs ? 163 : 72) + 63 * contributors.length;
+          const below = window.innerHeight - this.state.barH - b.bottom - 16;
+          const above = b.top - 70;
+          const up = popH > below && above > below;
+          this.setState(s => ({ openPar: s.openPar === r.key ? null : r.key, parUp: up }));
+        },
+        popPos: this.state.parUp ? "bottom: calc(100% + 8px);" : "top: calc(100% + 8px);",
+        arrowPos: this.state.parUp ? "bottom: -7px; box-shadow: 1px 1px 0 var(--ak-border-table);" : "top: -7px; box-shadow: -1px -1px 0 var(--ak-border-table);",
         closePar: e => { e.stopPropagation(); this.setState({ openPar: null }); },
         par: Object.assign({
           chipCls: this.state.openPar === r.key ? "tp-par-chip is-open" : "tp-par-chip",
@@ -602,6 +616,7 @@ class Component extends DCLogic {
       topChips: this.dsChips(),
       toggleBelowPar: () => this.setState(s => ({ belowPar: !s.belowPar, openPar: null })),
       cartCount: cart,
+      cartCls: cart === 0 ? "is-empty" : "",
       barRef: el => {
         this.barEl = el;
         if (el && this.ro) this.ro.observe(el);
